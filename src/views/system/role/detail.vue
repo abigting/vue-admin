@@ -2,7 +2,7 @@
   <div>
     <div class="content" style="padding-bottom: 8px">
       <div class="limitedWidth">
-        <p class="title">
+        <p class="small-title">
           请填写角色信息
         </p>
         <el-form ref="form"
@@ -38,7 +38,7 @@
     </div>
     <div class="content mt8">
       <div class="limitedWidth">
-        <p class="title">
+        <p class="small-title">
           请设置角色对应的功能
         </p>
         <div>
@@ -838,14 +838,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .title {
-    border-left: 3px solid #358FFF;
-    padding: 0 8px;
-    font-size: 14px;
-    margin-top: 0;
-    font-weight: 600;
-    color: #1F2022;
-  }
 
   .content {
     background-color: #fff;
@@ -897,7 +889,7 @@
   }
 
   .firstAction {
-    padding: 0 18px;
+    padding: 8px 18px;
   }
 
   .firstMenu {

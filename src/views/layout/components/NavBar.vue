@@ -1,27 +1,26 @@
 <template>
   <div class="navbar-pages">
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container" />
-    <breadcrumb />
+    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
+    <breadcrumb/>
     <div class="admin-block">
       <el-dropdown class="avatar-container">
         <div class="avatar-wrapper">
-<!--          <img src="../../../assets/imgs/admin.png" class="admin-avatar" alt="">-->
+          <!--          <img src="../../../assets/imgs/admin.png" class="admin-avatar" alt="">-->
           <span class="admin-name">{{userInfo.accountName}} admin</span>
-          <i class="el-icon-caret-bottom el-icon-arrow-down" />
+          <i class="el-icon-caret-bottom el-icon-arrow-down"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="avatar-menu-wrap">
-          <el-dropdown-item>
-            <span class="fixed-menu-item" @click="dialogVisible = true">个人信息</span>
-          </el-dropdown-item>
-          <el-dropdown-item class="login-out-item">
-            <span class="fixed-menu-item" @click="logout">退出登录</span>
-          </el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('4')">返回首页</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('1')">账号信息</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('2')">修改密码</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('3')">退出登录</span></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <el-dialog title="个人信息" :visible.sync="dialogVisible" width="700px" :close-on-click-modal="isFirstLogin!=='1'"
-      :show-close="isFirstLogin==='0'" @close="dialogClose">
-      <div v-loading="loading" element-loading-spinner="el-icon-loading" element-loading-background="rgba(255, 255, 255, 0.4)">
+               :show-close="isFirstLogin==='0'" @close="dialogClose">
+      <div v-loading="loading" element-loading-spinner="el-icon-loading"
+           element-loading-background="rgba(255, 255, 255, 0.4)">
         <el-form :model="userInfo" :rules="rules" ref="userInfo" label-width="100px" class="demo-userInfo">
           <div>
             <div class="title-block">基本信息</div>
@@ -57,9 +56,12 @@
         </div>
       </div>
     </el-dialog>
-    <div class="loginout-cover" v-if="loginOut" v-loading="true" element-loading-text="退出中" element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0, 0, 0, 0.2)">
+    <div class="loginout-cover" v-if="loginOut" v-loading="true" element-loading-text="退出中"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.2)">
     </div>
+    <ModifyPassword :modifyPasswordDialog="modifyPasswordDialog" @handCancel="modifyPasswordDialog=false"/>
+    <AccountInfo :accountInfoVisible="accountInfoVisible" @handCancel="accountInfoVisible=false"/>
   </div>
 </template>
 
@@ -67,23 +69,18 @@
   import {
     mapGetters
   } from 'vuex'
+  import ModifyPassword from '../../index/components/modifyPassword'
+  import AccountInfo from '../../index/components/accountInfo'
   import Breadcrumb from '@/components/Breadcrumb'
   import Hamburger from '@/components/Hamburger'
-  import {
-    getUserInfo,
-    removeToken,
-    setUserInfo,
-    removeUserInfo
-  } from '@/utils/auth';
-  // import {
-  //   updateUser
-  // } from "@/api/user";
-  import {
-    resetRouter
-  } from '@/router';
-  import md5 from 'js-md5'; //md5加密
-  // import Screenfull from '@/components/Screenfull'
   export default {
+    name: "index",
+    components: {
+      Breadcrumb,
+      Hamburger,
+      ModifyPassword,
+      AccountInfo
+    },
     data() {
       var checkPhone = (rule, value, callback) => {
         if (value === "") {
@@ -173,7 +170,9 @@
             trigger: "blur",
             validator: checkRepass
           }]
-        }
+        },
+        accountInfoVisible: false,
+        modifyPasswordDialog: false
       };
     },
     created() {
@@ -184,11 +183,6 @@
       //   this.userInfo.flag = "0"
       // }
       // Object.assign(this.userInfo, userInfo);
-    },
-    components: {
-      Breadcrumb,
-      Hamburger,
-      // Screenfull
     },
     computed: {
       ...mapGetters([
@@ -242,6 +236,26 @@
           }
         });
       },
+      goHome() {
+        this.$router.push("/");
+      },
+      handleClick(type) {
+        switch (type) {
+          case '1':
+            this.accountInfoVisible = true;
+            return;
+          case '2':
+            this.modifyPasswordDialog = true;
+            return;
+          case '3':
+            this.$router.push('/login');
+          case '4':
+            this.$router.push("/");
+            return;
+            default:
+              return;
+        }
+      },
       logout() {
         this.loginOut = true;
         setTimeout(() => {
@@ -281,9 +295,10 @@
     background: #fff;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     position: relative;
+
     .el-input__inner {
-      height: 34px!important;
-      line-height: 34px!important;
+      height: 34px !important;
+      line-height: 34px !important;
     }
 
     .loginout-cover {
@@ -295,15 +310,18 @@
       z-index: 9999;
       background: rgba(0, 0, 0, .5);
     }
+
     .el-dialog__body {
       padding-top: 0;
     }
+
     .hamburger-container {
       line-height: 60px;
       height: 54px;
       float: left;
       padding-left: 10px;
     }
+
     .menu-item:hover {
       font-size: 16px;
       padding: 10px 20px 5px;
@@ -340,13 +358,15 @@
       top: 50%;
       transform: translateY(-50%);
     }
+
     .admin-avatar {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       margin-right: 8px;
     }
-    .admin-name{
+
+    .admin-name {
       cursor: pointer;
       color: #333;
       font-size: 16px;
@@ -372,12 +392,15 @@
       text-align: right;
     }
   }
-  .avatar-menu-wrap{
+
+  .avatar-menu-wrap {
     padding: 2px !important;
-    li{
+
+    li {
       border-radius: 14px;
-      background: transparent!important;
+      background: transparent !important;
     }
+
     .fixed-menu-item {
       display: block;
       font-size: 14px;
@@ -389,15 +412,18 @@
       transition: all .1s linear;
       white-space: nowrap;
     }
-    .el-dropdown-menu--mini{
-      padding: 0!important;
+
+    .el-dropdown-menu--mini {
+      padding: 0 !important;
     }
+
     .fixed-menu-item:hover {
       font-size: 18px;
       font-weight: 600;
     }
+
     .login-out-item:hover {
-      color: #F56C6C!important;
+      color: #F56C6C !important;
     }
   }
 </style>

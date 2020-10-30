@@ -1,257 +1,103 @@
 <template>
-  <div id="user-index-pages">
-    <el-form label-width="100px" style="padding-bottom: 20px;" class="search-block">
-      <el-row :gutter="10">
-        <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-          <el-form-item label="手机号码：">
-            <el-input v-model="queryForm.telphone" placeholder="请输入手机号码"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-          <el-form-item label="姓名：">
-            <el-input v-model="queryForm.name" placeholder="请输入姓名"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-          <el-form-item label="账号ID：">
-            <el-input v-model="queryForm.userId" placeholder="请输入账号ID"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-          <el-form-item label="当前状态：">
-            <el-select v-model="queryForm.status" placeholder="请选择" clearable>
-              <el-option label="待审核" :value="0"></el-option>
-              <el-option label="启用" :value="1"></el-option>
-              <el-option label="未启用" :value="2"></el-option>
-              <el-option label="审核未通过" :value="3"></el-option>
-              <el-option label="已删除" :value="4"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-          <el-form-item label="所属子系统：">
-            <el-select v-model="queryForm.systemId" placeholder="请选择" clearable>
-              <el-option label="自查自律" :value="1"></el-option>
-              <el-option label="效能融合" :value="2"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-          <el-form-item label="角色：">
-            <el-input v-model="queryForm.roleId" placeholder="请输入角色ID"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" align="right">
-          <el-button type="primary" plain @click="handAdd">新增</el-button>
-          <el-button type="primary" plain @click="exportExecl">导出</el-button>
-          <el-button type="primary" @click="toQuery">查询</el-button>
-        </el-col>
-      </el-row>
-    </el-form>
-    <el-table :header-cell-style="{background:'#F5F7FA',color:'#606266'}" :data="data" v-loading="loading"
-      :element-loading-text="loadingText" class="table-block">
-      <el-table-column prop="userId" label="账号ID" width="80"></el-table-column>
-      <el-table-column prop="name" label="姓名"></el-table-column>
-      <el-table-column prop="telphone" label="手机号"></el-table-column>
-      <el-table-column prop="idcard" label="身份证号" width="150"></el-table-column>
-      <el-table-column prop="orgname" label="所在机构"></el-table-column>
-      <el-table-column prop="systemNames" label="所属子系统" width="140"></el-table-column>
-      <el-table-column prop="roleNames" label="角色"></el-table-column>
-      <el-table-column prop="status" label="当前状态">
-        <template slot-scope="scope">
-          <span>{{statusMap[scope.row.status]}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="280" align="center">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="handRead(scope.row,2)">详情</el-button>
-          <el-popconfirm title="确定禁用？" @onConfirm="handDisbale(scope.row)">
-            <span class="primary-btn" slot="reference">禁用</span>
-          </el-popconfirm>
-          <span class="primary-btn" @click="handExamine(scope.row,1)">审核</span>
-          <el-button type="text" size="small" style="color:#35AA47;" @click="handEditor(scope.row,0)">修改</el-button>
-          <el-popconfirm title="确定删除吗？" @onConfirm="handDelete(scope.row,scope.$index)">
-            <span class="delete" slot="reference">删除</span>
-          </el-popconfirm>
-          <!-- <el-popconfirm title="确定重置吗？" @onConfirm="reset(scope.row)">
-            <span class="primary-btn" slot="reference">重置</span>
-          </el-popconfirm> -->
-        </template>
-      </el-table-column>
-    </el-table>
-    <!--分页组件-->
-    <el-pagination style="margin-top: 15px;text-align: right;" :total="total" background :current-page="page+1" layout="total, prev, pager, next, sizes"
-      @size-change="sizeChange" @current-change="pageChange" :page-size="size" />
-    <!-- 自定义弹窗 -->
-    <transition name="el-fade-in-linear">
-      <div class="dialog-cover" v-show="dialogVisible" @click.self="handCancle">
-        <div class="dialog-content" v-drag>
-          <div class="drag-title-header">
-            <div class="has-left-border">用记信息变更</div>
-            <i class="el-icon-close" @click="handCancle"></i>
-          </div>
-          <div class="user-info-block">
-            <!-- 基本信息 -->
-            <div class="basic-info clear-float">
-              <div class="block name">
-                <span>姓名</span>
-                <p>{{row.name}}</p>
-              </div>
-              <div class="block id-card">
-                <span>身份证号</span>
-                <p>{{row.idcard}}
-                  <i class="el-icon-warning" :class="{'show-history':current==row.idcard}" @click="handHistory(row.idcard)">
-                    <div class="history-info-wrap">330327196602030214</div>
-                  </i></p>
-              </div>
-              <div class="block phone">
-                <span>手机号</span>
-                <div class="allow-edit" v-if="operationType===0">
-                  <el-input v-model="row.telephone" placeholder="请输入"></el-input>
-                  <i class="el-icon-edit"></i>
-                </div>
-                <p v-else>{{row.telphone}}</p>
-              </div>
-            </div>
-            <!-- 编辑修改情况 -->
-            <div v-if="operationType===0" class="edit-role-block">
-              <el-form :model="info" :rules="rules" ref="infoForm" label-width="140px" label-position="left">
-                <el-form-item label="目前角色：">
-                  <div class="current-role">超级管理员</div>
-                </el-form-item>
-                <el-form-item label="重新分配角色：" prop="checkList">
-                  <el-checkbox-group v-model="info.checkList">
-                    <el-checkbox label="1">卫生监督员</el-checkbox>
-                    <el-checkbox label="2">档案管理员</el-checkbox>
-                    <el-checkbox label="3">投诉举报员</el-checkbox>
-                    <el-checkbox label="4">双随机监督员</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </el-form>
-            </div>
-            <!-- 详细信息 -->
-            <div :class="{'is-edit-status':operationType===0}">
-              <div class="detailed-info-block has-top-line clear-float">
-                <div class="top-title-block" v-if="operationType!==0">
-                  <div class="title">{{yhlx===1?'效能 / 办事人员':'自查 / 监督员'}}</div>
-                  <div class="triangle"></div>
-                </div>
-                <div class="custom-info-list" v-if="yhlx===1">
-                  <el-row>
-                    <el-col :span="12">
-                      <p><span>所在机构：</span>浙江省湖州市吴兴区吴兴区监督所</p>
-                    </el-col>
-                    <el-col :span="12">
-                      <p><span>所在科室：</span></p>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="6">
-                      <p><span>名族：</span>汉族</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>出生日期：</span>1987-08-05</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>政治面貌：</span>党员</p>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="6">
-                      <p><span>学历：</span>本科</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>学位：</span>学士</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>毕业院校：</span>杭州师范大学</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>参加工作日期：</span>2001.02.03</p>
-                    </el-col>
-                  </el-row>
-                  <el-row>
-                    <el-col :span="6">
-                      <p><span>所学专业：</span>土木工程</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>职务：</span>教授</p>
-                    </el-col>
-                    <el-col :span="6">
-                      <p><span>职称：</span>教授</p>
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="zicha-custom-info" v-else>
-                  <p><span>所在企业：</span>浙江省湖州市吴兴区吴兴区监督所</p>
-                </div>
-              </div>
-              <!-- 职位信息 -->
-              <div class="position-info-block has-top-line clear-float" v-if="yhlx===1">
-                <div class="title title-1">卫生监督员</div>
-                <div class="info-list">
-                  <p><span>胸牌号：</span>1245844444</p>
-                  <p><span>行政执法号：</span>123456789</p>
-                  <p><span class="long-title-wrap">参加监督工作日期：</span>2001-01-01</p>
-                </div>
-                <div class="title">档案管理员</div>
-                <div class="title">投诉举报专员</div>
-                <div class="title">双随机监督员</div>
-                <div class="title">双随机在岗</div>
-                <p class="range-block"><span>执业范围：</span>生活饮用水，职业卫生，放射卫生，传染病管理
-                  <i class="el-icon-warning" :class="{'show-history':current=='我是历史信息。。。'}" @click="handHistory('我是历史信息。。。')">
-                    <div class="history-info-wrap">生活饮用水</div>
-                  </i></p>
-                </p>
-              </div>
-            </div>
-            <!-- 审核操作 -->
-            <div class="operation-block has-top-line clear-float" v-if="operationType===1">
-              <el-form :model="info" :rules="rules" ref="infoForm" label-width="140px" label-position="left">
-                <el-form-item label="是否同意：" prop="radio">
-                  <el-radio-group v-model="info.radio">
-                    <el-radio :label="0">是</el-radio>
-                    <el-radio :label="1">否</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="驳回原因：" prop="reson" v-if="info.radio==1">
-                  <div style="width: 60%;">
-                    <el-input type="textarea" :rows="4" maxlength="200" show-word-limit placeholder="请输入原因" v-model="info.reson">
-                    </el-input>
-                  </div>
-                </el-form-item>
-                <el-form-item label="分配角色：" prop="checkList" v-if="yhlx===1">
-                  <el-checkbox-group v-model="info.checkList">
-                    <el-checkbox label="1">卫生监督员</el-checkbox>
-                    <el-checkbox label="2">档案管理员</el-checkbox>
-                    <el-checkbox label="3">投诉举报员</el-checkbox>
-                    <el-checkbox label="4">双随机监督员</el-checkbox>
-                  </el-checkbox-group>
-                </el-form-item>
-              </el-form>
-            </div>
-            <!-- 按钮组 -->
-            <div class="bottom-button">
-              <div v-if="operationType===0||operationType===1">
-                <el-button plain @click="handCancle">取消</el-button>
-                <el-button type="primary" @click="handConfirm">保存</el-button>
-              </div>
-              <div v-if="operationType===2">
-                <el-button type="primary" @click="dialogVisible=false">关闭</el-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </transition>
+  <div>
+    <div class="search-bar">
+      <el-form label-width="100px" class="search-block">
+        <el-row :gutter="10">
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-form-item label="手机号码：">
+              <el-input v-model="queryForm.telphone" placeholder="请输入手机号码"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-form-item label="姓名：">
+              <el-input v-model="queryForm.name" placeholder="请输入姓名"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-form-item label="账号ID：">
+              <el-input v-model="queryForm.userId" placeholder="请输入账号ID"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-form-item label="当前状态：">
+              <el-select v-model="queryForm.status" placeholder="请选择" clearable>
+                <el-option label="待审核" :value="0"></el-option>
+                <el-option label="启用" :value="1"></el-option>
+                <el-option label="未启用" :value="2"></el-option>
+                <el-option label="审核未通过" :value="3"></el-option>
+                <el-option label="已删除" :value="4"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-form-item label="所属子系统：">
+              <el-select v-model="queryForm.systemId" placeholder="请选择" clearable>
+                <el-option label="自查自律" :value="1"></el-option>
+                <el-option label="效能融合" :value="2"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-form-item label="角色：">
+              <el-input v-model="queryForm.roleId" placeholder="请输入角色ID"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+<!--            <el-button type="primary" plain @click="addItem">新增</el-button>-->
+            <el-button type="primary ml24" plain @click="exportExecl">导出</el-button>
+            <el-button type="primary" @click="toQuery">查询</el-button>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <div class="table-wrapper">
+      <el-table :header-cell-style="{background:'#F5F7FA',color:'#606266'}" :data="data" v-loading="loading"
+                :element-loading-text="loadingText" class="table-block" align="center">
+        <el-table-column prop="userId" label="账号ID" width="80"></el-table-column>
+        <el-table-column prop="name" label="姓名"></el-table-column>
+        <el-table-column prop="telphone" label="手机号"></el-table-column>
+        <el-table-column prop="idcard" label="身份证号" width="150"></el-table-column>
+        <el-table-column prop="orgname" label="所在机构"></el-table-column>
+        <el-table-column prop="systemNames" label="所属子系统" width="140"></el-table-column>
+        <el-table-column prop="roleNames" label="角色"></el-table-column>
+        <el-table-column prop="status" label="当前状态">
+          <template slot-scope="scope">
+            <span>{{statusMap[scope.row.status]}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="280" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="handRead(scope.row,2)">详情</el-button>
+            <el-popconfirm title="确定禁用？" @onConfirm="handDisbale(scope.row)">
+              <span class="primary-btn" slot="reference">禁用</span>
+            </el-popconfirm>
+            <span class="primary-btn" @click="handExamine(scope.row,1)">审核</span>
+            <el-button type="text" size="small" style="color:#35AA47;" @click="handEditor(scope.row,0)">修改</el-button>
+            <el-popconfirm title="确定删除吗？" @onConfirm="handDelete(scope.row,scope.$index)">
+              <span class="delete" slot="reference">删除</span>
+            </el-popconfirm>
+            <!-- <el-popconfirm title="确定重置吗？" @onConfirm="reset(scope.row)">
+              <span class="primary-btn" slot="reference">重置</span>
+            </el-popconfirm> -->
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--分页组件-->
+      <el-pagination style="margin-top: 15px;text-align: right;" :total="total" background
+                     :current-page="queryForm.page+1" layout="total, prev, pager, next, sizes"
+                     @size-change="sizeChange" @current-change="pageChange" :page-size="queryForm.size"/>
+    </div>
+    <Detail :dialogVisible="dialogVisible" :operationType="operationType" @handCancel="dialogVisible = false"/>
   </div>
 </template>
 
 <script>
   import initData from "@/mixins/initData";
-  import * as api from "@/api/user/index";
+  import * as userApi from "@/api/system/user";
+  import Detail from './detail'
   export default {
     name: "index",
+    components: {Detail},
     mixins: [initData],
     data() {
       return {
@@ -262,15 +108,11 @@
         current: '', //当前点击的历史信息
         xzqhCode: [], //行政区划
         type: "", //查看/编辑/新增
-        dialogVisible: false,
         queryForm: {
-          "name": "",
-          "roleId": "",
-          "telphone": "",
-          "status":0,
-          "systemId": 0,
-          "userId": ""
+          page: 1,
+          size: 10
         },
+        total: 0,
         info: {
           radio: "",
           checkList: [],
@@ -292,31 +134,50 @@
             message: '请输入驳回原因',
             trigger: 'blur'
           }],
-        }
+        },
+        dialogVisible: false
       };
     },
+    created() {
+      this.getList();
+    },
     methods: {
-      beforeInit() {
-        this.url = "/xnrh-yhzx/api/user/queryUserInfoList"; //新接口
-        this.method = "post";
-        const query = this.query;
-        const blurry = query.blurry;
-        const enabled = query.enabled;
-        this.params = this.queryForm;
-        this.params.page = this.page + 1;
-        this.params.size = this.size;
-        if (blurry) {
-          this.params["blurry"] = blurry;
+      async getList() {
+        this.loading = true;
+        const {
+          professionCode
+        } = this.queryForm;
+        let code = '';
+        if (professionCode) {
+          code = professionCode.map(s => {
+            return s[s.length - 1]
+          }).join(',');
         }
-        if (enabled !== "" && enabled !== null) {
-          this.params["enabled"] = enabled;
+        const res = await userApi.getList({
+          ...this.queryForm,
+          professionCode: code
+        });
+        if (res) {
+          const {
+            totalRecords,
+            datas
+          } = res;
+          this.total = totalRecords;
+          this.data = datas;
+          setTimeout(() => {
+            this.loading = false;
+          }, 280)
         }
-        return true;
       },
       toQuery() {
-        this.loading = true;
-        this.page = 0;
-        this.init();
+        this.getList();
+      },
+      toRest() {
+        this.queryForm = {
+          page: 1,
+          size: 10
+        };
+        this.getList();
       },
       // 审核
       handExamine(row, type) {
@@ -345,12 +206,26 @@
         }
       },
       //新增
-      handAdd() {
-
+      addItem() {
+        this.dialogVisible = true;
       },
       // 导出
       exportExecl() {
 
+      },
+      sizeChange(val) {
+        this.queryForm = {
+          ...this.queryForm,
+          size: val
+        };
+        this.getList();
+      },
+      pageChange(val) {
+        this.queryForm = {
+          ...this.queryForm,
+          page: val
+        };
+        this.getList();
       },
       //dialog弹窗-确定事件
       handConfirm() {
@@ -416,7 +291,7 @@
     },
     directives: {
       drag: {
-        inserted: function(el, binding, vnode) {
+        inserted: function (el, binding, vnode) {
           vnode = vnode.elm
           el.onmousedown = ((event) => {
             if (event.target.className !== "drag-title-header") {
@@ -455,10 +330,6 @@
           })
         }
       }
-    },
-    created() {
-      // this.getAreaInfo();
-      // this.init();
     }
   };
 </script>
@@ -480,7 +351,7 @@
       bottom: 0;
       right: 0;
       background: rgba(0, 0, 0, .6);
-      z-index: 999;
+      z-index: 99999;
 
       .dialog-content {
         position: fixed;
@@ -765,14 +636,6 @@
       }
     }
 
-    //表单列表
-    .table-block {
-      font-size: 14px;
-
-      .el-button {
-        font-size: 14px;
-      }
-    }
 
     .primary-btn {
       color: #409EFF;
@@ -848,8 +711,7 @@
       color: rgba(74, 123, 237, .8);
 
       .history-info-wrap {
-        display: block !important;
-        ;
+        display: block !important;;
       }
     }
   }

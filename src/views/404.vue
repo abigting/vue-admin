@@ -31,7 +31,7 @@ export default {
   },
   methods:{
     backHome(){
-      this.$router.push('/system/user/index')
+      this.$router.push('/')
     }
   }
 }

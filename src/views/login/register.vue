@@ -20,12 +20,12 @@
                  :rules="rules"
                  label-width="110px">
           <el-row>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="姓名：" prop="name">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="性别：" prop="sex">
                 <el-radio-group v-model="form.sex">
                   <el-radio label="男"></el-radio>
@@ -33,7 +33,7 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="民族：" prop="nation">
                 <el-select v-model="form.nation" placeholder="">
                   <el-option label="区域一" value="shanghai"></el-option>
@@ -41,18 +41,18 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="出生日期：" prop="birthday">
                 <el-date-picker type="date" v-model="form.birthday"
                                 style="width: 100%;"></el-date-picker>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="身份证号：" prop="idCard">
                 <el-input v-model="form.idCard"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="政治面貌：" prop="politics">
                 <el-select v-model="form.politics" placeholder="">
                   <el-option label="区域一" value="shanghai"></el-option>
@@ -60,7 +60,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="学历：" prop="education">
                 <el-select v-model="form.education" placeholder="">
                   <el-option label="区域一" value="shanghai"></el-option>
@@ -68,7 +68,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="学位：" prop="degree">
                 <el-select v-model="form.degree" placeholder="">
                   <el-option label="区域一" value="shanghai"></el-option>
@@ -76,37 +76,37 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="毕业院校：" prop="school">
                 <el-input v-model="form.school"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="所学专业：" prop="school1">
                 <el-input v-model="form.school1"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="职务：" prop="school2">
                 <el-input v-model="form.school2"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="职称：" prop="school3">
                 <el-input v-model="form.school3"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="所在机构：" prop="school4">
                 <el-input v-model="form.school4"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="所在科室：" prop="school5">
                 <el-input v-model="form.school5"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="参加工作日期：">
                 <el-input v-model="form.school6"></el-input>
               </el-form-item>
@@ -114,22 +114,22 @@
           </el-row>
           <el-divider class="mb20 mt0"></el-divider>
           <el-row>
-            <el-col span="3">
+            <el-col :span="3">
               <el-form-item label-width="0" prop="school7">
                 <el-checkbox label="卫生监督员"></el-checkbox>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label-width="78px" label="胸牌号：" prop="school7">
                 <el-input v-model="form.school7" style="width: 155px"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="7">
+            <el-col :span="7">
               <el-form-item label-width="136px" label="行政执法证号：" prop="school8">
                 <el-input v-model="form.school8" style="width: 155px"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="8">
+            <el-col :span="8">
               <el-form-item label-width="200px" label="参加卫生监督工作日期：">
                 <el-date-picker type="date" v-model="form.birthday"
                                 style="width: 100%;"></el-date-picker>
@@ -137,31 +137,31 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col span="3">
+            <el-col :span="3">
               <el-form-item label-width="0" prop="school7">
                 <el-checkbox label="档案管理员"></el-checkbox>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col span="3">
+            <el-col :span="3">
               <el-form-item label-width="0" prop="school7">
                 <el-checkbox label="投诉举报专员"></el-checkbox>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col span="3">
+            <el-col :span="3">
               <el-form-item label-width="0" prop="school7">
                 <el-checkbox label="双随机监督员"></el-checkbox>
               </el-form-item>
             </el-col>
-            <el-col span="4">
+            <el-col :span="4">
               <el-form-item label-width="0" prop="school7">
                 <el-checkbox label="双随机在岗"></el-checkbox>
               </el-form-item>
             </el-col>
-            <el-col span="17">
+            <el-col :span="17">
               <span class="subtitle">双随机执业范围</span>
               <el-form-item label-width="0" prop="school7" class="mb0">
                 <el-checkbox-group v-model="form.role">
@@ -174,7 +174,7 @@
           </el-row>
           <el-divider class="mb20 mt0"></el-divider>
           <el-row>
-            <el-col span="24">
+            <el-col :span="24">
               <el-form-item label="申请角色：" label-width="92px" prop="school7" class="mb0">
                 <el-checkbox-group v-model="form.role">
                   <el-checkbox label="卫生监督员"></el-checkbox>
@@ -187,22 +187,22 @@
           </el-row>
           <el-divider class="mb20 mt0"></el-divider>
           <el-row>
-            <el-col span="24" class="hint">
+            <el-col :span="24" class="hint">
               手机验证码5分钟内有效，请先填写上述信息
             </el-col>
-            <el-col span="8">
+            <el-col :span="8">
               <el-form-item label="手机号：" prop="phone" label-width="78px">
                 <el-input v-model="form.phone">
                   <template slot="append"><span class="action">获取验证码</span></template>
                 </el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="手机验证码：" prop="verificationCode">
                 <el-input v-model="form.verificationCode"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="电子邮箱：" prop="email">
                 <el-input v-model="form.email"></el-input>
               </el-form-item>
@@ -220,7 +220,7 @@
 </template>
 
 <script>
-  import * as registerApi from "@/api/register";
+  import * as userApi from "@/api/user";
 
   export default {
     data() {
@@ -369,7 +369,7 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (!valid) {
-            // registerApi.register(this.form).then((res) => {
+            // userApi.register(this.form).then((res) => {
             //   if(res){
             //     this.$message({
             //       message: "注册成功",

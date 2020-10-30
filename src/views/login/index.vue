@@ -78,7 +78,7 @@
       </el-form>
     </div>
     <div class="footer">
-      浙江创得信息技术有限公司 服务电话：0571-85776903
+      浙江创得信息技术有限公司&nbsp;&nbsp;&nbsp;&nbsp;服务电话：0571-85776903
     </div>
   </div>
 </template>

@@ -22,12 +22,10 @@ export default {
 
 <style scoped>
 .app-main {
-  padding: 8px 9px 60px;
   /*50 = navbar  */
   height: calc(100vh - 104px);
   position: relative;
   overflow-x: hidden;
-  background: #ffffff;
-  margin: 8px;
+  margin: 0 10px 10px 10px;
 }
 </style>

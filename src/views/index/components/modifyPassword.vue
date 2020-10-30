@@ -13,12 +13,12 @@
           </el-col>
           <el-col :span="24">
             <el-form-item prop="name">
-              <el-input v-model="form.name" show-password="true"></el-input>
+              <el-input v-model="form.name" :show-password="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item prop="name">
-              <el-input v-model="form.description" show-password="true"></el-input>
+              <el-input v-model="form.description" :show-password="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="16">

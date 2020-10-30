@@ -71,16 +71,16 @@ a,a:focus,a:hover {
     position: relative;
   }
 .el-menu-item.is-active::after{
-    content: '';
-    display: block;
-    position: absolute;
-    right: 45px;
-    top: 50%;
-    width: 6px;
-    height: 6px;
-    background: #fff;
-    border-radius: 50%;
-    transform: translateY(-50%);
+    //content: '';
+    //display: block;
+    //position: absolute;
+    //right: 45px;
+    //top: 50%;
+    //width: 6px;
+    //height: 6px;
+    //background: #fff;
+    //border-radius: 50%;
+    //transform: translateY(-50%);
 }
 //一级不加选中小圆点
 .submenu-title-noDropdown.is-active::after{
@@ -160,11 +160,53 @@ a,a:focus,a:hover {
   transform: translateY(-50%);
 }
 
+.el-table--mini, .el-table--small, .el-table__expand-icon{
+  font-size: 14px;
+}
+
+.el-table--mini td, .el-table--mini th{
+  padding: 8px;
+}
+
 .action{
   margin: 0 4px;
   color: #409EFF;
   font-size: 14px;
   cursor: pointer;
+}
+
+.delete{
+  margin: 0 4px;
+  color: #f56c6c;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.el-dropdown-menu--mini .el-dropdown-menu__item{
+  line-height: 40px;
+  padding: 1px 20px;
+  font-size: 14px;
+}
+
+.el-table{
+  color: #3A3D49;
+}
+
+.el-button--mini{
+  padding: 9px 34px;
+}
+
+.el-input--mini .el-input__inner{
+  height: 32px;
+  line-height: 32px;
+}
+
+.el-button--success{
+  background: #63C9AA;
+}
+
+.el-button--primary{
+  background: #4985FE;
 }
 
 //label超出文案的长度自定义
@@ -187,6 +229,10 @@ a,a:focus,a:hover {
       margin-right: 4px;
     }
   }
+}
+
+.el-select{
+  width: 100%;
 }
 
 //label超出文案的长度自定义
@@ -243,4 +289,35 @@ a,a:focus,a:hover {
   .width#{$i} {
     width: #{$i}px;
   }
+}
+
+//搜索条
+.search-bar{
+  background: #ffffff;
+  padding: 30px 30px;
+  margin-bottom: 10px;
+}
+
+//表单列表
+.table-wrapper {
+  font-size: 14px;
+  background: #ffffff;
+  padding: 20px 30px;
+  .el-button {
+    font-size: 14px;
+  }
+}
+
+.small-title {
+  border-left: 3px solid #358FFF;
+  padding: 0 8px;
+  font-size: 14px;
+  margin-top: 0;
+  font-weight: 600;
+  color: #1F2022;
+  margin-bottom: 8px;
+}
+
+.blue-text{
+  color: #4985FE;
 }

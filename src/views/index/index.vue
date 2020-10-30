@@ -9,13 +9,14 @@
       </div>
       <el-dropdown class="userInfo" @click="handleClick">
           <span class="el-dropdown-link">
-            <el-avatar @click="handleClick" :size="30" style="vertical-align: middle" :src="circleUrl"></el-avatar>
+            <el-avatar @click="handleClick" :size="30" style="vertical-align: middle" :src="circleUrl">
+            </el-avatar>
             <span class="name">用户名<i class="el-icon-arrow-down el-icon--right"></i></span>
           </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><span @click="handleClick('1')">账号信息</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('2')">修改密码</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('3')">退出登录</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -38,6 +39,7 @@
   import ModifyPassword from './components/modifyPassword'
   import AccountInfo from './components/accountInfo'
   import Cookies from 'js-cookie';
+  import avatarSVG from '../../assets/imgs/avatar.svg'
 
   export default {
     name: "index",
@@ -52,37 +54,37 @@
         accountInfoVisible: false,
         menus: [{
           name: '领导驾驶舱',
-          key: 'jsc',
+          key: '0',
           path: '',
           img: require('../../assets/imgs/img_7.png')
         },
           {
             name: '口腔在线监测系统',
-            key: 'kq',
+            key: '1',
             path: '/caseM/index',
             img: require('../../assets/imgs/img_2.png')
           },
           {
             name: '消毒保洁在线监测系统',
-            key: 'xd',
+            key: '2',
             path: '',
             img: require('../../assets/imgs/img_4.png')
           },
           {
             name: '自查自律系统',
-            key: 'zcxt',
+            key: '3',
             path: '',
             img: require('../../assets/imgs/img_3.png')
           },
           {
             name: '智能办案辅助系统',
-            key: 'znba',
+            key: '4',
             path: '',
             img: require('../../assets/imgs/img_5.png')
           },
           {
             name: '系统管理',
-            key: 'xtgl',
+            key: '5',
             path: '',
             img: require('../../assets/imgs/img_1.png')
           }
@@ -92,24 +94,23 @@
     methods: {
       jump(item) {
         switch (item.key) {
-          case 'jsc':
+          case '0':
             // window.open(
             //   'http://192.168.22.128:8004/#/login?name=' + this.$store.state.user.userdata.username + '&token=' +
             //   this.$store.state.user.userdata.token + '&areaCode=' + this.$store.state.user.userdata.areaCode,
             //   "_blank")
-            window.open('http://223.4.64.210:9998/xnrh-sjdp-web/#/', "_blank");
+            window.open(`${window.location.origin}/xnrh-sjdp-web/#/`, "_blank");
             return;
-          case 'znba':
+          case '4':
             this.$router.push({
               path: '/caseM/index',
               redirect: '/caseM/index'
             });
             return;
-            case 'zcxt':
-              // window.open(`http://192.168.22.201:2020/zczl/#/index?token=${Cookies.get('token')}`, "_blank");
-              window.open(`http://192.168.22.201:2020/xnrh-zczl-web/#/login?token=${Cookies.get('token')}`, "_blank");
-              return;
-          case 'xtgl':
+          case '3':
+            window.open(`${window.location.origin}/xnrh-zczl-web/#/login?token=${Cookies.get('token')}`, "_blank");
+            return;
+          case '5':
             this.$router.push('/system/user');
             return;
         }
@@ -124,11 +125,7 @@
             this.modifyPasswordDialog = true;
             return;
           case '3':
-            this.$store.dispatch('FedLogOut').then(() => {
-              console.log("登出")
-              window.localStorage.clear();
-              this.$router.push('/login')
-            })
+            this.$router.push('/login');
             return;
         }
       },
@@ -177,7 +174,7 @@
       cursor: pointer;
       top: 0;
       right: 30px;
-
+      height: 60px;
       .name {
         margin-left: 8px;
       }
@@ -229,6 +226,34 @@
       }
 
       :hover {}
+    }
+  }
+
+  .userInfo /deep/ .avatar-menu-wrap{
+
+    .fixed-menu-item {
+      display: block;
+      font-size: 14px;
+      padding: 4px 0;
+      text-align: center;
+      width: 120px;
+      box-sizing: border-box;
+      overflow: hidden;
+      transition: all .1s linear;
+      white-space: nowrap;
+    }
+
+    .el-dropdown-menu--mini {
+      padding: 0 !important;
+    }
+
+    .fixed-menu-item:hover {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .login-out-item:hover {
+      color: #F56C6C !important;
     }
   }
 </style>
