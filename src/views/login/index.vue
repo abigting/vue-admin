@@ -344,7 +344,7 @@
   .cube0 {
     position: absolute;
     left: 52px;
-    width: 138px;
+    width: 111px;
   }
 
   .cube1 {

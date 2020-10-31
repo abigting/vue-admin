@@ -2,7 +2,7 @@
   <div>
     <div class="content" style="padding-bottom: 8px">
       <div class="limitedWidth">
-        <p class="small-title">
+        <p class="title">
           请填写角色信息
         </p>
         <el-form ref="form"
@@ -38,7 +38,7 @@
     </div>
     <div class="content mt8">
       <div class="limitedWidth">
-        <p class="small-title">
+        <p class="title">
           请设置角色对应的功能
         </p>
         <div>
@@ -59,13 +59,14 @@
                 <div v-else>
                   <div class="secondMenu" v-for="child in item.children">
                     <div class="parentNode hasLine">
-                      <div class="nameBox">
+                      <div :class="{'nameBox':true, childrenIsMenu: child.children, childrenIsActions: child.actions}">
                         <el-checkbox class="check"
                                      @change="value=>handleChoose(value, child)"
                                      v-model="child.checked"/>
                         {{child.name}}
                       </div>
                       <div class="thirdMenuBox">
+                        <!--第三级是菜单-->
                         <div v-if="child.children">
                           <div class="thirdMenu" v-for="child1 in child.children">
                             <!--第四级是操作权限-->
@@ -78,13 +79,13 @@
                              {{child1.name}}
                             </span>
                               <div class="actionBox">
-                             <span v-for="action in child1.actions">
-                               <el-checkbox
-                                 class="check"
-                                 @change="value=>handleChoose(value, action)"
-                                 v-model="action.checked"/>
-                             {{action.name}}
-                             </span>
+                               <span v-for="action in child1.actions">
+                                 <el-checkbox
+                                   class="check"
+                                   @change="value=>handleChoose(value, action)"
+                                   v-model="action.checked"/>
+                               {{action.name}}
+                               </span>
                               </div>
                             </div>
                             <!--第四级是菜单权限-->
@@ -115,7 +116,8 @@
                             </div>
                           </div>
                         </div>
-                        <div v-else-if="child.actions">
+                        <!--第三级是操作-->
+                        <div v-else-if="child.actions" class="hasLeftBorder">
                           <div class="firstAction">
                             <div class="actionBox">
                              <span v-for="action in child.actions">
@@ -139,7 +141,7 @@
       </div>
     </div>
     <div class="operation">
-      <el-button type="primary" @click="onSubmit('form')">提交</el-button>
+      <el-button type="primary" @click="onSubmit('form')">保存</el-button>
       <el-button @click="cancel">取消</el-button>
     </div>
   </div>
@@ -838,6 +840,14 @@
 </script>
 
 <style lang="scss" scoped>
+  .title {
+    border-left: 3px solid #358FFF;
+    padding: 0 8px;
+    font-size: 14px;
+    margin-top: 0;
+    font-weight: 600;
+    color: #1F2022;
+  }
 
   .content {
     background-color: #fff;
@@ -889,7 +899,16 @@
   }
 
   .firstAction {
-    padding: 8px 18px;
+    /*padding: 0 18px;*/
+
+    .actionBox{
+      margin: 0;
+
+      > span {
+        width: 126px;
+        display: inline-block;
+      }
+    }
   }
 
   .firstMenu {
@@ -905,7 +924,7 @@
   }
 
   .otherSys {
-    margin: 16px;
+    margin: 12px;
   }
 
   .check {
@@ -926,7 +945,7 @@
     }
 
     .thirdMenu {
-      padding: 8px 4px;
+      /*padding: 8px 4px;*/
 
       .includeAction {
         margin-right: 16px;
@@ -934,9 +953,9 @@
 
         > span {
           width: 140px;
-          padding: 2px;
+          padding: 12px 4px;
           display: inline-block;
-          background: linear-gradient(270deg, rgba(129, 178, 247, 0) 0%, rgba(74, 123, 237, 0.25) 100%);
+          border-right: 1px solid #e8e8e8;
         }
       }
 
@@ -983,15 +1002,30 @@
       display: flex;
 
       .nameBox {
-        width: 140px;
+        width: 146px;
         border-right: 1px solid #E1E5EB;
-        padding: 8px 8px;
+        padding: 12px 12px;
         display: inline-block;
         /*background: linear-gradient(270deg, rgba(129, 178, 247, 0) 0%, rgba(74, 123, 237, 0.25) 100%);*/
+      }
+
+      .childrenIsMenu {
+
+      }
+
+      .childrenIsActions {
+        border-right: 0;
+      }
+
+      .hasLeftBorder {
+        border-left: 1px solid #e8e8e8;
+        padding: 12px 0 12px 54px;
+        margin-left: 151px;
       }
     }
 
   }
+
 
   .operation {
     margin-top: 20px;
