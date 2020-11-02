@@ -9,7 +9,7 @@ const test = {
   redirect: '/system/documents/lawLibrary',
   meta: {
     title: '系统管理',
-    icon: 'icongantanhao'
+    icon: 'iconxitong'
   },
   component: Layout,
   children: [

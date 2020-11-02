@@ -114,15 +114,8 @@
           ...this.queryForm,
           professionCode: code
         });
-        const {
-          success,
-          value
-        } = res;
         if (res) {
-          const {
-            totalRecords,
-            datas
-          } = res;
+          const {totalRecords, datas} = res;
           this.total = totalRecords;
           this.data = datas;
           setTimeout(() => {

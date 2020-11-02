@@ -1,14 +1,5 @@
 import request from '@/utils/request'
 
-// //get
-// export function getList(params) {
-//   return request({
-//     url: '/table/list',
-//     method: 'get',
-//     params
-//   })
-// }
-
 //登录
 export function login(data) {
   return request({

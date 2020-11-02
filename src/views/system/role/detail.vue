@@ -43,13 +43,13 @@
         </p>
         <div>
           <table class="customTable">
-            <tr :key="item.key" v-for="item in roles">
+            <tr :key="item.menuId" v-for="item in permissionList">
               <td style="width:16%; background:#F5F6FA" class="firstMenu">
                 <div>
                   <el-checkbox class="check"
                                @change="value=>handleChoose(value, item)"
                                v-model="item.checked"/>
-                  {{item.name}}
+                  {{item.menuName}}
                 </div>
               </td>
               <td style="width:84%">
@@ -63,7 +63,7 @@
                         <el-checkbox class="check"
                                      @change="value=>handleChoose(value, child)"
                                      v-model="child.checked"/>
-                        {{child.name}}
+                        {{child.menuName}}
                       </div>
                       <div class="thirdMenuBox">
                         <!--第三级是菜单-->
@@ -76,7 +76,7 @@
                                   class="check"
                                   @change="value=>handleChoose(value, child1)"
                                   v-model="child1.checked"/>
-                             {{child1.name}}
+                             {{child1.menuName}}
                             </span>
                               <div class="actionBox">
                                <span v-for="action in child1.actions">
@@ -84,7 +84,7 @@
                                    class="check"
                                    @change="value=>handleChoose(value, action)"
                                    v-model="action.checked"/>
-                               {{action.name}}
+                               {{action.menuName}}
                                </span>
                               </div>
                             </div>
@@ -94,14 +94,14 @@
                            <el-checkbox class="check"
                                         @change="value=>handleChoose(value, child1)"
                                         v-model="child1.checked"/>
-                          {{child1.name}}
+                          {{child1.menuName}}
                         </span>
                               <div class="menuBox">
                                 <div v-for="child2 in child1.children">
                                   <el-checkbox class="check"
                                                @change="value=>handleChoose(value, child2)"
                                                v-model="child2.checked"/>
-                                  {{child2.name}}
+                                  {{child2.menuName}}
                                 </div>
                               </div>
                             </div>
@@ -111,7 +111,7 @@
                                <el-checkbox class="check"
                                             @change="value=>handleChoose(value, child1)"
                                             v-model="child1.checked"/>
-                              {{child1.name}}
+                              {{child1.menuName}}
                             </span>
                             </div>
                           </div>
@@ -125,7 +125,7 @@
                                  class="check"
                                  @change="value=>handleChoose(value, action)"
                                  v-model="action.checked"/>
-                             {{action.name}}
+                             {{action.menuName}}
                              </span>
                             </div>
                           </div>
@@ -166,408 +166,408 @@
             {required: true, message: '请输入角色说明', trigger: 'blur'},
           ],
         },
-        roles: [
+        permissionList: [
           {
-            name: '自查系统',
-            key: 'zcxt',
+            menuName: '自查系统',
+            menuId: 'zcxt',
             children: [
               {
-                name: '首页',
-                key: 'sy',
+                menuName: '首页',
+                menuId: 'sy',
               },
               {
-                name: '企业自查管理',
-                key: 'qyzcgl',
+                menuName: '企业自查管理',
+                menuId: 'qyzcgl',
                 children: [
                   {
-                    name: '企业自查结果',
-                    key: 'qyzcjg',
+                    menuName: '企业自查结果',
+                    menuId: 'qyzcjg',
                   },
                   {
-                    name: '企业自查设置',
-                    key: 'qyzcsz',
+                    menuName: '企业自查设置',
+                    menuId: 'qyzcsz',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'qyzcsz_ck',
+                        menuName: '查看',
+                        menuId: 'qyzcsz_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'qyzcsz_xz',
+                        menuName: '新增',
+                        menuId: 'qyzcsz_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'qyzcsz_xg',
+                        menuName: '修改',
+                        menuId: 'qyzcsz_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'qyzcsz_sc',
+                        menuName: '删除',
+                        menuId: 'qyzcsz_sc',
                       }
                     ]
                   },
                   {
-                    name: '企业自查汇总',
-                    key: 'qyzchz',
+                    menuName: '企业自查汇总',
+                    menuId: 'qyzchz',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'qyzchz_ck',
+                        menuName: '查看',
+                        menuId: 'qyzchz_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'qyzchz_xz',
+                        menuName: '新增',
+                        menuId: 'qyzchz_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'qyzchz_xg',
+                        menuName: '修改',
+                        menuId: 'qyzchz_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'qyzchz_sc',
+                        menuName: '删除',
+                        menuId: 'qyzchz_sc',
                       }
                     ]
                   }
                 ]
               },
               {
-                name: '培训考试管理',
-                key: 'pxksgl',
+                menuName: '培训考试管理',
+                menuId: 'pxksgl',
                 children: [
                   {
-                    name: '培训结果',
-                    key: 'pxjg',
+                    menuName: '培训结果',
+                    menuId: 'pxjg',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'pxjg_ck',
+                        menuName: '查看',
+                        menuId: 'pxjg_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'pxjg_xz',
+                        menuName: '新增',
+                        menuId: 'pxjg_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'pxjg_xg',
+                        menuName: '修改',
+                        menuId: 'pxjg_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'pxjg_sc',
+                        menuName: '删除',
+                        menuId: 'pxjg_sc',
                       }
                     ]
                   },
                   {
-                    name: '考试结果',
-                    key: 'ksjg',
+                    menuName: '考试结果',
+                    menuId: 'ksjg',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'ksjg_ck',
+                        menuName: '查看',
+                        menuId: 'ksjg_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'ksjg_xz',
+                        menuName: '新增',
+                        menuId: 'ksjg_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'ksjg_xg',
+                        menuName: '修改',
+                        menuId: 'ksjg_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'ksjg_sc',
+                        menuName: '删除',
+                        menuId: 'ksjg_sc',
                       }
                     ]
                   },
                   {
-                    name: '考试培训汇总',
-                    key: 'kspxhz',
+                    menuName: '考试培训汇总',
+                    menuId: 'kspxhz',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'kspxhz_ck',
+                        menuName: '查看',
+                        menuId: 'kspxhz_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'kspxhz_xz',
+                        menuName: '新增',
+                        menuId: 'kspxhz_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'kspxhz_xg',
+                        menuName: '修改',
+                        menuId: 'kspxhz_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'kspxhz_sc',
+                        menuName: '删除',
+                        menuId: 'kspxhz_sc',
                       }
                     ]
                   },
                   {
-                    name: '题库管理',
-                    key: 'tkgl',
+                    menuName: '题库管理',
+                    menuId: 'tkgl',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'tkgl_ck',
+                        menuName: '查看',
+                        menuId: 'tkgl_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'tkgl_xz',
+                        menuName: '新增',
+                        menuId: 'tkgl_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'tkgl_xg',
+                        menuName: '修改',
+                        menuId: 'tkgl_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'tkgl_sc',
+                        menuName: '删除',
+                        menuId: 'tkgl_sc',
                       }
                     ]
                   },
                   {
-                    name: '考试规则管理',
-                    key: 'ksgzgl',
+                    menuName: '考试规则管理',
+                    menuId: 'ksgzgl',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'ksgzgl_ck',
+                        menuName: '查看',
+                        menuId: 'ksgzgl_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'ksgzgl_xz',
+                        menuName: '新增',
+                        menuId: 'ksgzgl_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'ksgzgl_xg',
+                        menuName: '修改',
+                        menuId: 'ksgzgl_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'ksgzgl_sc',
+                        menuName: '删除',
+                        menuId: 'ksgzgl_sc',
                       }
                     ]
                   },
                   {
-                    name: '资料管理',
-                    key: 'zlgl',
+                    menuName: '资料管理',
+                    menuId: 'zlgl',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'zlgl_ck',
+                        menuName: '查看',
+                        menuId: 'zlgl_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'zlgl_xz',
+                        menuName: '新增',
+                        menuId: 'zlgl_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'zlgl_xg',
+                        menuName: '修改',
+                        menuId: 'zlgl_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'zlgl_sc',
+                        menuName: '删除',
+                        menuId: 'zlgl_sc',
                       }
                     ]
                   }
                 ]
               },
               {
-                name: '通知公告管理',
-                key: 'tzgggl',
+                menuName: '通知公告管理',
+                menuId: 'tzgggl',
                 actions: [
                   {
-                    name: '查看',
-                    key: 'tzgggl_ck',
+                    menuName: '查看',
+                    menuId: 'tzgggl_ck',
                   },
                   {
-                    name: '新增',
-                    key: 'tzgggl_xz',
+                    menuName: '新增',
+                    menuId: 'tzgggl_xz',
                   },
                   {
-                    name: '修改',
-                    key: 'tzgggl_xg',
+                    menuName: '修改',
+                    menuId: 'tzgggl_xg',
                   },
                   {
-                    name: '删除',
-                    key: 'tzgggl_sc',
+                    menuName: '删除',
+                    menuId: 'tzgggl_sc',
                   }
                 ]
               },
               {
-                name: '自查',
-                key: 'zc',
+                menuName: '自查',
+                menuId: 'zc',
                 actions: [
                   {
-                    name: '查看',
-                    key: 'zc_ck',
+                    menuName: '查看',
+                    menuId: 'zc_ck',
                   },
                   {
-                    name: '新增',
-                    key: 'zc_xz',
+                    menuName: '新增',
+                    menuId: 'zc_xz',
                   },
                   {
-                    name: '修改',
-                    key: 'zc_xg',
+                    menuName: '修改',
+                    menuId: 'zc_xg',
                   },
                   {
-                    name: '删除',
-                    key: 'zc_sc',
+                    menuName: '删除',
+                    menuId: 'zc_sc',
                   }
                 ]
               },
               {
-                name: '培训',
-                key: 'px',
+                menuName: '培训',
+                menuId: 'px',
                 actions: [
                   {
-                    name: '查看',
-                    key: 'px_ck',
+                    menuName: '查看',
+                    menuId: 'px_ck',
                   },
                   {
-                    name: '新增',
-                    key: 'px_xz',
+                    menuName: '新增',
+                    menuId: 'px_xz',
                   },
                   {
-                    name: '修改',
-                    key: 'px_xg',
+                    menuName: '修改',
+                    menuId: 'px_xg',
                   },
                   {
-                    name: '删除',
-                    key: 'px_sc',
+                    menuName: '删除',
+                    menuId: 'px_sc',
                   }
                 ]
               },
             ]
           },
           {
-            name: '效能评价',
-            key: 'xnpj'
+            menuName: '效能评价',
+            menuId: 'xnpj'
           },
           {
-            name: '驾驶舱',
-            key: 'jsc'
+            menuName: '驾驶舱',
+            menuId: 'jsc'
           },
           {
-            name: '智能办案',
-            key: 'znba1',
+            menuName: '智能办案',
+            menuId: 'znba1',
             children: [
               {
-                name: '智能办案配置',
-                key: 'znbapz',
+                menuName: '智能办案配置',
+                menuId: 'znbapz',
                 children: [
                   {
-                    name: '法律库',
-                    key: 'flk',
+                    menuName: '法律库',
+                    menuId: 'flk',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'flk_ck',
+                        menuName: '查看',
+                        menuId: 'flk_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'flk_xz',
+                        menuName: '新增',
+                        menuId: 'flk_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'flk_xg',
+                        menuName: '修改',
+                        menuId: 'flk_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'flk_sc',
+                        menuName: '删除',
+                        menuId: 'flk_sc',
                       }
                     ]
                   },
                   {
-                    name: '权力库',
-                    key: 'qlk',
+                    menuName: '权力库',
+                    menuId: 'qlk',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'qlk_ck',
+                        menuName: '查看',
+                        menuId: 'qlk_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'qlk_xz',
+                        menuName: '新增',
+                        menuId: 'qlk_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'qlk_xg',
+                        menuName: '修改',
+                        menuId: 'qlk_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'qlk_sc',
+                        menuName: '删除',
+                        menuId: 'qlk_sc',
                       }
                     ]
                   },
                   {
-                    name: '自由裁量库',
-                    key: 'zyclk',
+                    menuName: '自由裁量库',
+                    menuId: 'zyclk',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'zyclk_ck',
+                        menuName: '查看',
+                        menuId: 'zyclk_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'zyclk_xz',
+                        menuName: '新增',
+                        menuId: 'zyclk_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'zyclk_xg',
+                        menuName: '修改',
+                        menuId: 'zyclk_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'zyclk_sc',
+                        menuName: '删除',
+                        menuId: 'zyclk_sc',
                       }
                     ]
                   },
                   {
-                    name: '处罚案由管理',
-                    key: 'cfaygl',
+                    menuName: '处罚案由管理',
+                    menuId: 'cfaygl',
                     actions: [
                       {
-                        name: '查看',
-                        key: 'cfaygl_ck',
+                        menuName: '查看',
+                        menuId: 'cfaygl_ck',
                       },
                       {
-                        name: '新增',
-                        key: 'cfaygl_xz',
+                        menuName: '新增',
+                        menuId: 'cfaygl_xz',
                       },
                       {
-                        name: '修改',
-                        key: 'cfaygl_xg',
+                        menuName: '修改',
+                        menuId: 'cfaygl_xg',
                       },
                       {
-                        name: '删除',
-                        key: 'cfaygl_sc',
+                        menuName: '删除',
+                        menuId: 'cfaygl_sc',
                       }
                     ]
                   }
                 ]
               },
               {
-                name: '智能办案',
-                key: 'znba',
+                menuName: '智能办案',
+                menuId: 'znba',
                 actions: [
                   {
-                    name: '查看',
-                    key: 'znba_ck',
+                    menuName: '查看',
+                    menuId: 'znba_ck',
                   },
                   {
-                    name: '新增',
-                    key: 'znba_xz',
+                    menuName: '新增',
+                    menuId: 'znba_xz',
                   },
                   {
-                    name: '修改',
-                    key: 'znba_xg',
+                    menuName: '修改',
+                    menuId: 'znba_xg',
                   },
                   {
-                    name: '删除',
-                    key: 'znba_sc',
+                    menuName: '删除',
+                    menuId: 'znba_sc',
                   }
                 ]
               }
             ]
           },
           {
-            name: '消毒',
-            key: 'xd'
+            menuName: '消毒',
+            menuId: 'xd'
           }
         ],
         auth: [],
@@ -577,7 +577,7 @@
     watch: {
       //auth变化时,处理数据roles
       auth: function (newVal) {
-        this.roles = this.loopRoles(this.roles, newVal);
+        this.permissionList = this.loopRoles(this.permissionList, newVal);
       }
     },
     created() {
@@ -588,7 +588,7 @@
       getPermissionList() {
         roleApi.getPermissionList({}).then(res => {
           if (res) {
-            // this.form = res
+            // this.permissionList = res
           }
         })
       },
@@ -609,7 +609,7 @@
       },
       loopRoles(data, auth) {
         data = data.map(s => {
-          if (auth.includes(s.key)) {
+          if (auth.includes(s.menuId)) {
             return this.dealData(s, auth, true)
           } else {
             return this.dealData(s, auth, false)
@@ -629,6 +629,10 @@
           if (valid) {
             const {id} = this.$route.query;
             const {needCheck} = this.form;
+            if(this.auth.length===0){
+              this.$message.info('请勾选角色对应的功能');
+              return
+            }
             let req = {
               ...this.form,
               needCheck: needCheck ? 1 : 0,
@@ -664,19 +668,17 @@
         this.$router.go(-1);
       },
       handleChoose(value, option) {
-
-
         let auth = this.auth;
         const level = 4;
-        const treeData = this.roles;
-        const key = option.key;
-        const currentItem = this.loopFindItem(key, treeData);
-        const keys = this.loopFindAllKey(currentItem);
-        const parentKeys = this.loopFindParentKey(key, treeData);
+        const treeData = this.permissionList;
+        const menuId = option.menuId;
+        const currentItem = this.loopFindItem(menuId, treeData);
+        const menuIds = this.loopFindAllKey(currentItem);
+        const parentKeys = this.loopFindParentKey(menuId, treeData);
         if (value) {
-          auth = [...auth, ...keys, ...parentKeys];
+          auth = [...auth, ...menuIds, ...parentKeys];
         } else {
-          auth = auth.filter(s => !keys.some(key => key === s));
+          auth = auth.filter(s => !menuIds.some(key => key === s));
         }
         // 父节点下的子节点没有选中就取消父节点的选中
         for (let i = 1; i < level; i++) {
@@ -690,32 +692,31 @@
             const item = this.loopFindItem(s, treeData);
             if (item) {
               if (item.children && item.children.length) {
-                return {key: s, hasChild: item.children.some(child => auth.includes(child.key))};
+                return {menuId: s, hasChild: item.children.some(child => auth.includes(child.menuId))};
               } else if (item.actions && item.actions.length) {
-                return {key: s, hasChild: item.actions.some(child => auth.includes(child.key))};
+                return {menuId: s, hasChild: item.actions.some(child => auth.includes(child.menuId))};
               } else {
-                return {key: s, hasChild: true};
+                return {menuId: s, hasChild: true};
               }
             } else return {};
           },
         );
-        list = list.map(s => s.hasChild ? s.key : -1);
+        list = list.map(s => s.hasChild ? s.menuId : -1);
         list = list.filter(s => s !== -1);
         return list;
       },
-      loopFindItem(key, data) {
-        let item = data.find(s => s.key === key);
+      loopFindItem(menuId, data) {
+        let item = data.find(s => s.menuId === menuId);
         if (item) {
           return item;
         } else {
           for (let s of data) {
             if (s.children) {
-              let res = this.loopFindItem(key, s.children);
+              let res = this.loopFindItem(menuId, s.children);
               if (res)
                 return res;
             } else if (s.actions) {
-              let res = this.loopFindItem(key, s.actions);
-
+              let res = this.loopFindItem(menuId, s.actions);
               if (res)
                 return res;
             }
@@ -725,8 +726,8 @@
       loopFindAllKey(currentItem) {
         const ret = [];
         this.loopChildren(currentItem, function (item) {
-          const key = item.key;
-          ret.push(key);
+          const menuId = item.menuId;
+          ret.push(menuId);
         });
         return ret;
       },
@@ -745,24 +746,24 @@
           }
         }
       },
-      loopFindParentKey(key, data) {
-        let item = data.find(s => s.key === key);
+      loopFindParentKey(menuId, data) {
+        let item = data.find(s => s.menuId === menuId);
         // let parentKeys=[];
         if (item) {
           return [];
         } else {
           for (let s of data) {
             if (s.children) {
-              let res = this.loopFindChildren(key, s.children);
+              let res = this.loopFindChildren(menuId, s.children);
               if (res) {
                 res = this.flatten([s, ...res]);
-                return res.map(s => s.key);
+                return res.map(s => s.menuId);
               }
             } else if (s.actions) {
-              let res = this.loopFindChildren(key, s.actions);
+              let res = this.loopFindChildren(menuId, s.actions);
               if (res) {
                 res = this.flatten([s, ...res]);
-                return res.map(s => s.key);
+                return res.map(s => s.menuId);
               }
             }
           }
@@ -774,18 +775,18 @@
           return pre.concat(Array.isArray(cur) ? this.flatten(cur) : cur);
         }, [])
       },
-      loopFindChildren(key, data) {
-        let item = data.find(s => s.key === key);
+      loopFindChildren(menuId, data) {
+        let item = data.find(s => s.menuId === menuId);
         if (item) {
           return [item];
         } else {
           for (let s of data) {
             if (s.children) {
-              let res = this.loopFindChildren(key, s.children);
+              let res = this.loopFindChildren(menuId, s.children);
               if (res)
                 return [s, res];
             } else if (s.actions) {
-              let res = this.loopFindChildren(key, s.actions);
+              let res = this.loopFindChildren(menuId, s.actions);
               if (res)
                 // return [s, res];
                 return [s, res];

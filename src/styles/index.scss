@@ -226,6 +226,10 @@ a,a:focus,a:hover {
   background: #4985FE;
 }
 
+.el-submenu__title i{
+  color: #ffffff;
+}
+
 //label超出文案的长度自定义
 @each $i in 120, 160, 180 {
   .labelText#{$i} {
