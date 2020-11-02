@@ -21,7 +21,7 @@ export function login(data) {
 // 注销
 export function logout(data) {
   return request({
-    url: '/nbjk-hcvyhzx/api/user/logout',
+    url: '/xnrh-yhzx/api/user/logout',
     method: 'post',
     data
   })

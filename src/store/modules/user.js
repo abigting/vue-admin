@@ -67,17 +67,19 @@ const actions = {
   },
 
   // 注销
-  LogOut({
+  logout({
     commit,
     state
   }) {
     return new Promise((resolve, reject) => {
+      console.log(getUserInfo(), 'Fiona')
       logout({
-        accessToken: state.token
+        access_token: state.token,
+        username:getUserInfo().name
       }).then(res => {
         if (res.success) {
-          commit('SET_TOKEN', '')
-          removeToken()
+          commit('SET_TOKEN', '');
+          removeToken();
           setUserInfo({})
         }
         resolve(res)

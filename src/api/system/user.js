@@ -10,7 +10,7 @@ export function getList(data) {
 }
 
 // 新增用户
-export function addUser(data) {
+export function addItem(data) {
   return request({
     url: '/xnrh-yhzx/api/user/add',
     method: 'post',
@@ -19,7 +19,7 @@ export function addUser(data) {
 }
 
 // 删除用户
-export function delUser(data) {
+export function deleteItem(data) {
   return request({
     url: '/xnrh-yhzx/api/user/delUser',
     method: 'post',
@@ -28,7 +28,7 @@ export function delUser(data) {
 }
 
 // 重置用户
-export function resetUser(data) {
+export function reset(data) {
   return request({
     url: '/xnrh-yhzx/api/user/resetUser',
     method: 'post',
@@ -37,7 +37,7 @@ export function resetUser(data) {
 }
 
 // 查看用户
-export function getUser(data) {
+export function getInfo(data) {
   return request({
     url: '/xnrh-yhzx/api/user/getUser',
     method: 'post',
@@ -45,7 +45,7 @@ export function getUser(data) {
   })
 }
 // 编辑
-export function upUser(data) {
+export function editItem(data) {
   return request({
     url: '/xnrh-yhzx/api/user/upUser',
     method: 'post',

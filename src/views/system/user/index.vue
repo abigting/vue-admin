@@ -20,7 +20,7 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
             <el-form-item label="当前状态：">
-              <el-select v-model="queryForm.status" placeholder="请选择" clearable>
+              <el-select v-model="queryForm.status" placeholder="请选择当前状态" clearable>
                 <el-option label="待审核" :value="0"></el-option>
                 <el-option label="启用" :value="1"></el-option>
                 <el-option label="未启用" :value="2"></el-option>
@@ -31,7 +31,7 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
             <el-form-item label="所属子系统：">
-              <el-select v-model="queryForm.systemId" placeholder="请选择" clearable>
+              <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
                 <el-option label="自查自律" :value="1"></el-option>
                 <el-option label="效能融合" :value="2"></el-option>
               </el-select>
@@ -39,7 +39,7 @@
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
             <el-form-item label="角色：">
-              <el-input v-model="queryForm.roleId" placeholder="请输入角色ID"></el-input>
+              <el-input v-model="queryForm.roleId" placeholder="请输入角色"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
@@ -52,7 +52,7 @@
     </div>
     <div class="table-wrapper">
       <el-table :header-cell-style="{background:'#F5F7FA',color:'#606266'}" :data="data" v-loading="loading"
-                :element-loading-text="loadingText" class="table-block" align="center">
+                :element-loading-text="loadingText" class="table-block">
         <el-table-column prop="userId" label="账号ID" width="80"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="telphone" label="手机号"></el-table-column>
@@ -62,19 +62,24 @@
         <el-table-column prop="roleNames" label="角色"></el-table-column>
         <el-table-column prop="status" label="当前状态">
           <template slot-scope="scope">
+            <span v-if="scope.row.status==='0'" class="dot dot-blue"></span>
+            <span v-else-if="scope.row.status==='1'" class="dot dot-green"></span>
+            <span v-else-if="scope.row.status==='2'" class="dot dot-gray"></span>
+            <span v-else-if="scope.row.status==='3'" class="dot dot-red"></span>
+            <span v-else-if="scope.row.status==='4'" class="dot dot-red"></span>
             <span>{{statusMap[scope.row.status]}}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="280" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="handRead(scope.row,2)">详情</el-button>
-            <el-popconfirm title="确定禁用？" @onConfirm="handDisbale(scope.row)">
+            <el-popconfirm title="确定禁用？" class="disabled-btn" @onConfirm="handDisbale(scope.row)">
               <span class="primary-btn" slot="reference">禁用</span>
             </el-popconfirm>
             <span class="primary-btn" @click="handExamine(scope.row,1)">审核</span>
-            <el-button type="text" size="small" style="color:#35AA47;" @click="handEditor(scope.row,0)">修改</el-button>
+            <el-button type="text" size="small" class="modify-btn" @click="handEditor(scope.row,0)">修改</el-button>
             <el-popconfirm title="确定删除吗？" @onConfirm="handDelete(scope.row,scope.$index)">
-              <span class="delete" slot="reference">删除</span>
+              <span class="delete-btn" slot="reference">删除</span>
             </el-popconfirm>
             <!-- <el-popconfirm title="确定重置吗？" @onConfirm="reset(scope.row)">
               <span class="primary-btn" slot="reference">重置</span>
@@ -342,171 +347,6 @@
   #user-index-pages {
     background: #fff;
     padding: 10px 20px 30px;
-
-    // 弹窗
-    .dialog-cover {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      background: rgba(0, 0, 0, .6);
-      z-index: 99999;
-
-      .dialog-content {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        background: #fff;
-        width: 1100px;
-        min-height: 300px;
-        z-index: 9999;
-        box-shadow: 0px 5px 13px 0px rgba(219, 219, 219, 0.5);
-      }
-
-      .el-form-item__label {
-        font-weight: 600;
-        color: #3A3D49;
-      }
-
-      .drag-title-header {
-        padding: 12px 20px;
-        cursor: move;
-        border-bottom: 1px solid rgba(231, 236, 245, 1);
-        box-shadow: 0px 5px 13px 0px rgba(219, 219, 219, 0.5);
-        border-radius: 6px 6px 0px 0px;
-      }
-
-      //用户信息区域
-      .user-info-block {
-        padding: 0 30px 30px;
-      }
-
-      // 基本信息块
-      .basic-info {
-        padding: 20px 0;
-
-        .block {
-          height: 60px;
-          border-radius: 4px;
-          border: 1px solid #D6DBE2;
-          padding: 9px 14px;
-          box-sizing: border-box;
-          background-size: 100% 100% !important;
-          float: left;
-          margin-right: 20px;
-          background-color: rgba(245, 247, 251, 1);
-
-          span {
-            font-size: 14px;
-            font-weight: 400;
-            color: rgba(58, 61, 73, .5);
-            line-height: 20px;
-          }
-
-          p {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgba(58, 61, 73, 1);
-            line-height: 20px;
-            margin: 0 !important;
-          }
-        }
-
-        .name {
-          width: 130px;
-          background-image: url(../../../assets/imgs/name_bg.png);
-        }
-
-        .id-card {
-          width: 200px;
-          background-image: url(../../../assets/imgs/idcard_bg.png);
-        }
-
-        .phone {
-          width: 200px;
-          background-image: url(../../../assets/imgs/phone_bg.png);
-        }
-      }
-
-      //详细信息-效能/自查块
-      .detailed-info-block {
-        .top-title-block {
-          width: 100%;
-          height: 36px;
-          margin-bottom: 8px;
-
-          .title {
-            height: 36px;
-            background: rgba(196, 211, 242, 1);
-            float: left;
-            line-height: 36px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1C479E;
-            padding: 0 16px;
-          }
-
-          .triangle {
-            width: 1px;
-            border-right: 20px solid transparent;
-            border-top: 36px solid;
-            color: rgba(196, 211, 242, 1);
-            float: left;
-          }
-        }
-      }
-
-      //职位信息块
-      .position-info-block {
-        .title {
-          font-size: 14px;
-          font-weight: 600;
-          color: #3A3D49;
-          margin-bottom: 20px;
-        }
-
-        .info-list {
-          margin-bottom: 20px;
-
-          p {
-            font-size: 14px;
-            font-weight: 400;
-            color: #3A3D49;
-            margin: 0;
-            display: inline-block;
-            margin-right: 40px;
-
-            span {
-              font-size: 14px;
-              font-weight: 400;
-              color: rgba(58, 61, 73, .5);
-              display: inline-block;
-            }
-          }
-        }
-
-        //执业范围
-        .range-block {
-          font-size: 14px;
-          font-weight: 400;
-          color: #3A3D49;
-          float: left;
-          margin: 0;
-          margin-top: 12px;
-
-          span {
-            font-size: 14px;
-            font-weight: 400;
-            color: rgba(58, 61, 73, .5);
-            display: inline-block;
-            text-align: right;
-          }
-        }
-      }
-    }
 
     //自查类型 用户详细信息-自定义布局
     .zicha-custom-info {

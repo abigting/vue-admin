@@ -5,15 +5,16 @@
     <div class="admin-block">
       <el-dropdown class="avatar-container">
         <div class="avatar-wrapper">
-          <!--          <img src="../../../assets/imgs/admin.png" class="admin-avatar" alt="">-->
+          <el-avatar :size="30" style="vertical-align: middle" :src="circleUrl">
+          </el-avatar>
           <span class="admin-name">{{userInfo.accountName}} admin</span>
           <i class="el-icon-caret-bottom el-icon-arrow-down"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="avatar-menu-wrap">
-          <el-dropdown-item><span @click="handleClick('4')">返回首页</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('1')">账号信息</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('2')">修改密码</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('3')">退出登录</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('4')"><i class="iconfont icontuichu blue-text"></i>返回首页</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -124,6 +125,7 @@
         }
       };
       return {
+        circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
         loading: false,
         loginOut: false,
         dialogVisible: false,
@@ -249,6 +251,7 @@
             return;
           case '3':
             this.$router.push('/login');
+            return;
           case '4':
             this.$router.push("/");
             return;
@@ -371,6 +374,7 @@
       color: #333;
       font-size: 16px;
       padding-right: 10px;
+      margin-left: 8px;
     }
 
     .avatar-container {

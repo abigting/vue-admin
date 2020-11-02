@@ -23,7 +23,7 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
               <el-form-item label="当前状态：">
-                <el-select v-model="queryForm.status" placeholder="请选择" clearable>
+                <el-select v-model="queryForm.status" placeholder="请选择当前状态" clearable>
                   <el-option label="待审核" :value="0"></el-option>
                   <el-option label="启用" :value="1"></el-option>
                   <el-option label="未启用" :value="2"></el-option>
@@ -34,7 +34,7 @@
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
               <el-form-item label="所属子系统：">
-                <el-select v-model="queryForm.systemId" placeholder="请选择" clearable>
+                <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
                   <el-option label="自查自律" :value="1"></el-option>
                   <el-option label="效能融合" :value="2"></el-option>
                 </el-select>

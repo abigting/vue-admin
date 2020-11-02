@@ -10,7 +10,7 @@
         <div class="block id-card">
           <span>身份证号</span>
           <p>{{row.idcard}}
-            <i class="el-icon-warning" :class="{'show-history':current==row.idcard}" @click="handHistory(row.idcard)">
+            <i class="el-icon-warning" :class="{'show-history':current===row.idcard}" @click="handHistory(row.idcard)">
               <div class="history-info-wrap">330327196602030214</div>
             </i></p>
         </div>
@@ -144,8 +144,8 @@
       <!-- 按钮组 -->
       <div class="bottom-button">
         <div v-if="operationType===0||operationType===1">
-          <el-button plain @click="handCancle">取消</el-button>
-          <el-button type="primary" @click="handConfirm">保存</el-button>
+          <el-button plain @click="closeModal">取消</el-button>
+          <el-button type="primary" @click="submit">保存</el-button>
         </div>
         <div v-if="operationType===2">
           <el-button type="primary" @click="dialogVisible=false">关闭</el-button>
@@ -170,6 +170,7 @@
         row: {},
         yhlx: 1,
         current: {},
+        info:{},
         rules: {
           system: [
             {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
@@ -204,7 +205,7 @@
       },
       //查看弹窗信息-历史信息
       handHistory(row) {
-        if (this.current == row) {
+        if (this.current === row) {
           this.current = ""
         } else {
           this.current = row;
@@ -213,7 +214,7 @@
       closeModal() {
         this.$emit('handCancel')
       },
-      handCancel() {
+      submit(){
 
       }
     }
@@ -229,40 +230,14 @@
     text-align: center;
   }
 
-  .dialog-content {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    width: 1100px;
-    min-height: 300px;
-    z-index: 9999;
-    box-shadow: 0px 5px 13px 0px rgba(219, 219, 219, 0.5);
-  }
-
-  .el-form-item__label {
-    font-weight: 600;
-    color: #3A3D49;
-  }
-
-  .drag-title-header {
-    padding: 12px 20px;
-    cursor: move;
-    border-bottom: 1px solid rgba(231, 236, 245, 1);
-    box-shadow: 0px 5px 13px 0px rgba(219, 219, 219, 0.5);
-    border-radius: 6px 6px 0px 0px;
-  }
-
   //用户信息区域
   .user-info-block {
-    padding: 0 30px 30px;
     width: 1000px;
   }
 
   // 基本信息块
   .basic-info {
-    padding: 20px 0;
+    padding: 0 0 14px 0;
 
     .block {
       height: 60px;
@@ -580,13 +555,5 @@
     font-size: 14px;
     font-weight: 500;
     color: #4985FE;
-  }
-
-  .show-history {
-    color: rgba(74, 123, 237, .8);
-
-    .history-info-wrap {
-      display: block !important;;
-    }
   }
 </style>

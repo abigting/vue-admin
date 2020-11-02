@@ -29,6 +29,18 @@
     font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   }
 
+.el-form-item__label{
+  color: #1F2022;
+}
+
+.el-table thead{
+  color: #7A8093;
+}
+
+.el-button--mini, .el-button--small{
+  border-radius: 2px;
+}
+
 //表单验证-错误提示
 .el-form-item__error{
   z-index: 9;
@@ -37,6 +49,7 @@
 //全局primary按钮
   .el-button--primary{
     background: rgba(44, 109, 236, .9);
+    //box-shadow: 0 2px 8px 0 #ADC8FF;
   }
 
 //app-main视口超出
@@ -146,6 +159,10 @@ a,a:focus,a:hover {
 //标题左边框
 .t_left_line{
   position: relative;
+  padding: 0 12px;
+  color: rgba(31, 32, 34, 1);
+  font-weight: 600;
+  margin-bottom: 14px;
 }
 .t_left_line::after{
   content: '';
@@ -318,6 +335,42 @@ a,a:focus,a:hover {
   margin-bottom: 8px;
 }
 
+.dot{
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot-red{
+  background: #E76851;
+}
+
+.dot-green{
+  background: #42C959;
+}
+
+.dot-orange{
+  background: #E76851;
+}
+
+.dot-blue{
+  background: #4985FE;
+}
+
+.dot-gray{
+  background:#B7BAC8;;
+}
+
 .blue-text{
   color: #4985FE;
+}
+.delete-btn{
+  color: rgba(231, 104, 81, 1);
+}
+.disabled-btn{
+  color: rgba(221, 140, 46, 1);
+}
+.modify-btn{
+  color: rgba(110, 182, 53, 1);
 }

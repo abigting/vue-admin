@@ -4,12 +4,20 @@
       <img src="@/assets/imgs/loginText.png" alt="" class="logo">
     </div>
     <div class="login-container">
-      <img class="cube0" src="@/assets/imgs/cube.png" alt="">
-      <img class="cube1" src="@/assets/imgs/cube.png" alt="">
-      <img class="cube2" src="@/assets/imgs/cube.png" alt="">
-      <img class="cube3" src="@/assets/imgs/cube.png" alt="">
+      <transition name="pull-up" mode="out-in">
+        <img v-if="imgShow" class="cube0" src="@/assets/imgs/cube.png" alt="">
+      </transition>
+      <transition name="pull-up" mode="out-in">
+        <img v-if="imgShow" class="cube1" src="@/assets/imgs/cube.png" alt="">
+      </transition>
+      <transition name="pull-up" mode="out-in">
+        <img v-if="imgShow" class="cube2" src="@/assets/imgs/cube.png" alt="">
+      </transition>
+      <transition name="pull-up" mode="out-in">
+        <img v-if="imgShow" class="cube3" src="@/assets/imgs/cube.png" alt="">
+      </transition>
       <div>
-        <img class="illustration" src="@/assets/imgs/illustration.png" alt="">
+        <img v-if="imgShow" class="illustration" src="@/assets/imgs/illustration.png" alt="">
       </div>
       <el-form
         ref="loginForm"
@@ -107,7 +115,7 @@
       return {
         imgBase64: '',
         loginForm: {
-          username: "123456789",
+          username: "13012345678",
           password: "123456",
           imageCode: "",
           uuid: "",
@@ -115,8 +123,12 @@
         loginRules: {},
         loading: false,
         pwdType: "password",
-        redirect: undefined
+        redirect: undefined,
+        imgShow: false
       };
+    },
+    mounted() {
+      this.imgShow = true
     },
     watch: {
       $route: {
@@ -136,13 +148,13 @@
       },
       handleLogin() {
         const {username, password, imageCode} = this.loginForm;
-        if(!username){
+        if (!username) {
           this.$message.info('请填写账号');
           return
-        }else if(!password){
+        } else if (!password) {
           this.$message.info('请填写密码');
           return
-        }else if(!imageCode){
+        } else if (!imageCode) {
           this.$message.info('请填写验证码');
           return
         }
@@ -154,7 +166,7 @@
             setCookie('userInfo', {
               name, sex, compName
             });
-            this.$router.push({path: "/navigation"});
+            this.$router.push({path: "/"});
           }
         }).catch(() => {
           console.log("登录失败");
@@ -264,7 +276,7 @@
     /*background: url("../../assets/img/background_2.png") no-repeat;*/
     background-position: center;
     background-size: cover;
-    width: 1440px;
+    /*width: 1440px;*/
     margin: 0 auto;
 
     .login-form {
@@ -344,13 +356,13 @@
   .cube0 {
     position: absolute;
     left: 52px;
-    width: 111px;
+    width: 110px;
   }
 
   .cube1 {
     position: absolute;
-    left: 303px;
-    width: 82px;
+    left: 400px;
+    width: 84px;
     bottom: 0;
   }
 
@@ -364,12 +376,12 @@
 
   .cube3 {
     position: absolute;
-    bottom: 0;
-    right: 100px;
+    bottom: 200px;
+    right: 86px;
     width: 82px;
   }
 
-  .footer{
+  .footer {
     text-align: center;
     color: #ffffff;
   }

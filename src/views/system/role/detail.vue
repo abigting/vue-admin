@@ -2,7 +2,7 @@
   <div>
     <div class="content" style="padding-bottom: 8px">
       <div class="limitedWidth">
-        <p class="title">
+        <p class="t_left_line">
           请填写角色信息
         </p>
         <el-form ref="form"
@@ -10,22 +10,22 @@
                  :rules="rules"
                  label-width="120px">
           <el-row>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="角色所属子系统" prop="name">
                 <el-input v-model="form.system"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="角色名称" prop="name">
                 <el-input v-model="form.name"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item label="角色说明" prop="name">
                 <el-input v-model="form.description"></el-input>
               </el-form-item>
             </el-col>
-            <el-col span="6">
+            <el-col :span="6">
               <el-form-item prop="name">
                 <el-checkbox v-model="form.approve">
                   需要监督员审核
@@ -38,7 +38,7 @@
     </div>
     <div class="content mt8">
       <div class="limitedWidth">
-        <p class="title">
+        <p class="t_left_line">
           请设置角色对应的功能
         </p>
         <div>
@@ -148,7 +148,7 @@
 </template>
 
 <script>
-  import * as roleApi from "@/api/role"
+  import * as roleApi from "@/api/system/role"
 
   export default {
     name: "detail",
@@ -707,6 +707,8 @@
         this.$router.go(-1);
       },
       handleChoose(value, option) {
+
+
         let auth = this.auth;
         const level = 4;
         const treeData = this.roles;
@@ -796,7 +798,6 @@
             if (s.children) {
               let res = this.loopFindChildren(key, s.children);
               if (res) {
-                // res=_.flattenDeep([s, ...res]);
                 res = this.flatten([s, ...res]);
                 return res.map(s => s.key);
               }
@@ -830,7 +831,7 @@
               let res = this.loopFindChildren(key, s.actions);
               if (res)
                 // return [s, res];
-                return s;
+                return [s, res];
             }
           }
         }

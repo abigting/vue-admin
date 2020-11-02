@@ -7,25 +7,46 @@
             <img src="@/assets/imgs/logoText.png" alt="" class="logo">
         </span>
       </div>
+      <i class="iconfont iconbianji settingIcon" :size="30" style="vertical-align: middle" @click="jump({key:'9'})">
+      </i>
       <el-dropdown class="userInfo" @click="handleClick">
           <span class="el-dropdown-link">
-            <el-avatar @click="handleClick" :size="30" style="vertical-align: middle" :src="circleUrl">
-            </el-avatar>
+            <el-avatar @click="handleClick" :size="30" style="vertical-align: middle" :src="circleUrl"></el-avatar>
             <span class="name">用户名<i class="el-icon-arrow-down el-icon--right"></i></span>
           </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span>
+          </el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span>
+          </el-dropdown-item>
+          <el-dropdown-item><span @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <div class="menuBox">
-      <div class="menu" v-for="item in menus" :key="item.key" @click="jump(item)">
+      <div class="menu"
+           v-for="item in menus"
+           :key="item.key"
+           @mouseenter="showAnimation(item.key, true)"
+           @mouseleave="showAnimation(item.key, false)"
+           @click="jump(item)">
         <div class="imgBox">
-          <img :src="item.img" alt="">
+          <img :src="item.img" alt=""
+               :class="{'detectionImg':item.key ==='5'}">
         </div>
-        <div class="textBox">
+        <div class="detection" v-if="item.key ==='5'&&detectionHover">
+          <div class="each" @click="jump({key:'6'})">
+            口腔诊所
+          </div>
+          <div class="each" @click="jump({key:'7'})">
+            消毒保洁
+          </div>
+          <div class="each" @click="jump({key:'8'})">
+            水质监测
+          </div>
+        </div>
+        <div v-else class="textBox">
           {{item.name}}
         </div>
       </div>
@@ -39,7 +60,7 @@
   import ModifyPassword from './components/modifyPassword'
   import AccountInfo from './components/accountInfo'
   import Cookies from 'js-cookie';
-  import avatarSVG from '../../assets/imgs/avatar.svg'
+  import SettingPng from '../../assets/imgs/setting.png'
 
   export default {
     name: "index",
@@ -50,43 +71,45 @@
     data() {
       return {
         circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
+        settingUrl: SettingPng,
         modifyPasswordDialog: false,
         accountInfoVisible: false,
+        detectionHover: false,
         menus: [{
-          name: '领导驾驶舱',
+          name: '驾驶舱',
           key: '0',
           path: '',
           img: require('../../assets/imgs/img_7.png')
         },
           {
-            name: '口腔在线监测系统',
+            name: '智能办案',
             key: '1',
             path: '/caseM/index',
-            img: require('../../assets/imgs/img_2.png')
+            img: require('../../assets/imgs/img_8.png')
           },
           {
-            name: '消毒保洁在线监测系统',
+            name: '自查系统',
             key: '2',
+            path: '',
+            img: require('../../assets/imgs/img_6.png')
+          },
+          {
+            name: '效能评价',
+            key: '3',
             path: '',
             img: require('../../assets/imgs/img_4.png')
           },
           {
-            name: '自查自律系统',
-            key: '3',
-            path: '',
-            img: require('../../assets/imgs/img_3.png')
-          },
-          {
-            name: '智能办案辅助系统',
+            name: '数据交换',
             key: '4',
             path: '',
             img: require('../../assets/imgs/img_5.png')
           },
           {
-            name: '系统管理',
+            name: '在线监测',
             key: '5',
             path: '',
-            img: require('../../assets/imgs/img_1.png')
+            img: require('../../assets/imgs/img_3.png')
           }
         ]
       }
@@ -95,22 +118,41 @@
       jump(item) {
         switch (item.key) {
           case '0':
-            // window.open(
-            //   'http://192.168.22.128:8004/#/login?name=' + this.$store.state.user.userdata.username + '&token=' +
-            //   this.$store.state.user.userdata.token + '&areaCode=' + this.$store.state.user.userdata.areaCode,
-            //   "_blank")
+            //驾驶舱
             window.open(`${window.location.origin}/xnrh-sjdp-web/#/`, "_blank");
             return;
-          case '4':
-            this.$router.push({
-              path: '/caseM/index',
-              redirect: '/caseM/index'
-            });
+          case '1':
+            //智能办案
+            window.open(`${window.location.origin}/xnrh-znws-web/#/login?token=${Cookies.get('token')}`, "_blank");
             return;
-          case '3':
+          case '2':
+            //自查系统
             window.open(`${window.location.origin}/xnrh-zczl-web/#/login?token=${Cookies.get('token')}`, "_blank");
             return;
+          case '3':
+            //效能评价
+
+            return;
+          case '4':
+            //数据交换
+            return;
           case '5':
+            //在线检测
+            return;
+          case '6':
+            //口腔
+            window.open(`https://wj.platform.ilabservice.cloud/index`, "_blank");
+            return;
+          case '7':
+            //消毒
+            window.open(`http://provincedisinfection.terabits.cn/`, "_blank");
+            return;
+          case '8':
+            //水质
+            window.open(`https://zj.waterview.cn/index.php`, "_blank");
+            return;
+          case '9':
+            //设置
             this.$router.push('/system/user');
             return;
         }
@@ -125,17 +167,23 @@
             this.modifyPasswordDialog = true;
             return;
           case '3':
-            this.$router.push('/login');
+            this.$store.dispatch('user/logout').then(res => this.$router.push('/login'));
+            // this.$router.push('/login')
             return;
         }
       },
+      showAnimation(key, value) {
+        if (key === '5') {
+          this.detectionHover = value;
+        }
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
   .navicationBg {
-    /* background: url("../../assets/img/navigation.png"); */
+    background: url("../../assets/imgs/navigation.png");
     height: 100vh;
     background-size: cover;
   }
@@ -148,11 +196,13 @@
     vertical-align: middle;
     position: relative;
     line-height: 90px;
+
     .systemLogoBox {
       width: 1040px;
       margin: 0 auto;
       text-align: center;
-      >img{
+
+      > img {
         width: 44px;
       }
     }
@@ -164,7 +214,8 @@
 
     .sysName {
       vertical-align: middle;
-      >img{
+
+      > img {
         width: 660px;
       }
     }
@@ -175,6 +226,7 @@
       top: 0;
       right: 30px;
       height: 60px;
+
       .name {
         margin-left: 8px;
       }
@@ -205,55 +257,90 @@
       .imgBox {
         vertical-align: middle;
 
-        >img {
+        > img {
+          width: 100%;
 
           &:hover {
             transform: scale(1.5);
+          }
+        }
+
+        .detectionImg {
+          &:hover {
+            transform: scale(1);
           }
         }
       }
 
       .textBox {
         display: inline-block;
-        background-color: rgba(38, 93, 245, 0.5);
+        background-color: rgba(19, 68, 166, 0.8);
         padding: 12px 20px;
         position: absolute;
         left: 0;
         bottom: 0;
-        font-size: 18px;
+        font-size: 24px;
         color: #ffffff;
         width: 100%;
       }
 
-      :hover {}
+      :hover {
+      }
     }
   }
 
-  .userInfo /deep/ .avatar-menu-wrap{
+  .detection {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 168px;
+    background-color: rgba(19, 68, 166, 0.8);
+    display: flex;
+    justify-content: space-between;
+    padding: 52px 48px;
+    animation: enter 0.4s ease-in-out 0s 1 alternate forwards;
 
-    .fixed-menu-item {
-      display: block;
-      font-size: 14px;
-      padding: 4px 0;
-      text-align: center;
-      width: 120px;
-      box-sizing: border-box;
-      overflow: hidden;
-      transition: all .1s linear;
-      white-space: nowrap;
-    }
-
-    .el-dropdown-menu--mini {
-      padding: 0 !important;
-    }
-
-    .fixed-menu-item:hover {
-      font-size: 18px;
+    .each {
+      /*display: inline-block;*/
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 24px;
       font-weight: 600;
-    }
+      width: 48px;
 
-    .login-out-item:hover {
-      color: #F56C6C !important;
+      &:hover {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+  }
+
+  .settingIcon {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    color: #d1d8e6;
+    right: 150px;
+    font-size: 30px;
+  }
+
+  .blue-text {
+    color: #4985FE;
+  }
+
+  .psw {
+    width: 24px;
+    position: relative;
+    top: 6px;
+  }
+
+  @keyframes enter {
+    0% {
+      transform: translateY(100px);
+      opacity: 0
+    }
+    100% {
+      transform: translateY(0%);
+      opacity: 1
     }
   }
 </style>

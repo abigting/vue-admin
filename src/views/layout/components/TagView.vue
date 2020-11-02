@@ -207,12 +207,12 @@
       height: 40px;
       line-height: 40px;
       /*border: 1px solid #d8dce5;*/
-      color: #495060;
-      background: #fff;
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
       margin-top: 10px;
+      color: #666666;
+      background: #E3E7ED;;
       &:first-of-type {
         margin-left: 10px;
       }

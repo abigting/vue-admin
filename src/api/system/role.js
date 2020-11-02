@@ -28,7 +28,7 @@ export function deleteItem(data) {
 }
 
 // 查看用户
-export function getUser(data) {
+export function getInfo(data) {
   return request({
     url: '/xnrh-yhzx/api/user/getUser',
     method: 'post',
@@ -36,7 +36,7 @@ export function getUser(data) {
   })
 }
 // 编辑
-export function upUser(data) {
+export function editItem(data) {
   return request({
     url: '/xnrh-yhzx/api/user/upUser',
     method: 'post',
