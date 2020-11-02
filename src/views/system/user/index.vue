@@ -53,20 +53,20 @@
     <div class="table-wrapper">
       <el-table :header-cell-style="{background:'#F5F7FA',color:'#606266'}" :data="data" v-loading="loading"
                 :element-loading-text="loadingText" class="table-block">
-        <el-table-column prop="userId" label="账号ID" width="80"></el-table-column>
-        <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="telphone" label="手机号"></el-table-column>
-        <el-table-column prop="idcard" label="身份证号" width="150"></el-table-column>
-        <el-table-column prop="orgname" label="所在机构"></el-table-column>
-        <el-table-column prop="systemNames" label="所属子系统" width="140"></el-table-column>
-        <el-table-column prop="roleNames" label="角色"></el-table-column>
-        <el-table-column prop="status" label="当前状态">
+        <el-table-column prop="userId" label="账号ID" width="80" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
+        <el-table-column prop="telphone" label="手机号" align="center"></el-table-column>
+        <el-table-column prop="idcard" label="身份证号" width="150" align="center"></el-table-column>
+        <el-table-column prop="orgname" label="所在机构" align="center"></el-table-column>
+        <el-table-column prop="systemNames" label="所属子系统" width="140" align="center"></el-table-column>
+        <el-table-column prop="roleNames" label="角色" min-width="100"  align="center"></el-table-column>
+        <el-table-column prop="status" label="当前状态" width="100" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.status==='0'" class="dot dot-blue"></span>
-            <span v-else-if="scope.row.status==='1'" class="dot dot-green"></span>
-            <span v-else-if="scope.row.status==='2'" class="dot dot-gray"></span>
-            <span v-else-if="scope.row.status==='3'" class="dot dot-red"></span>
-            <span v-else-if="scope.row.status==='4'" class="dot dot-red"></span>
+            <span v-if="scope.row.status===0" class="dot dot-blue"></span>
+            <span v-else-if="scope.row.status===1" class="dot dot-green"></span>
+            <span v-else-if="scope.row.status===2" class="dot dot-gray"></span>
+            <span v-else-if="scope.row.status===3" class="dot dot-red"></span>
+            <span v-else-if="scope.row.status===4" class="dot dot-red"></span>
             <span>{{statusMap[scope.row.status]}}</span>
           </template>
         </el-table-column>
@@ -76,7 +76,7 @@
             <el-popconfirm title="确定禁用？" class="disabled-btn" @onConfirm="handDisbale(scope.row)">
               <span class="primary-btn" slot="reference">禁用</span>
             </el-popconfirm>
-            <span class="primary-btn" @click="handExamine(scope.row,1)">审核</span>
+            <span class="blue-text" @click="handExamine(scope.row,1)">审核</span>
             <el-button type="text" size="small" class="modify-btn" @click="handEditor(scope.row,0)">修改</el-button>
             <el-popconfirm title="确定删除吗？" @onConfirm="handDelete(scope.row,scope.$index)">
               <span class="delete-btn" slot="reference">删除</span>

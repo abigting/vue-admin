@@ -28,3 +28,7 @@ export function removeUserInfo() {
   return Cookies.remove('userInfo')
 }
 
+export function removeAllcookie() {
+  Cookies.remove(TokenKey);
+  Cookies.remove('userInfo');
+}

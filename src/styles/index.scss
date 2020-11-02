@@ -295,7 +295,7 @@ a,a:focus,a:hover {
     padding-right: #{$i}px;
   }
   .pb#{$i} {
-    padding-bottom: #{$i}px;
+    padding-bottom: #{$i}px !important;
   }
   .pt#{$i} {
     padding-top: #{$i}px;

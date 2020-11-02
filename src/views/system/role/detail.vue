@@ -11,23 +11,23 @@
                  label-width="120px">
           <el-row>
             <el-col :span="6">
-              <el-form-item label="角色所属子系统" prop="name">
-                <el-input v-model="form.system"></el-input>
+              <el-form-item label="角色所属子系统" prop="systemId">
+                <el-input v-model="form.systemId"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="角色名称" prop="name">
-                <el-input v-model="form.name"></el-input>
+              <el-form-item label="角色名称" prop="roleName">
+                <el-input v-model="form.roleName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="角色说明" prop="name">
-                <el-input v-model="form.description"></el-input>
+              <el-form-item label="角色说明" prop="roleDescribe">
+                <el-input v-model="form.roleDescribe"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item prop="name">
-                <el-checkbox v-model="form.approve">
+              <el-form-item>
+                <el-checkbox v-model="form.needCheck">
                   需要监督员审核
                 </el-checkbox>
               </el-form-item>
@@ -156,13 +156,13 @@
       return {
         form: {},
         rules: {
-          system: [
+          systemId: [
             {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
           ],
-          name: [
+          roleName: [
             {required: true, message: '请输入角色名称', trigger: 'blur'},
           ],
-          description: [
+          roleDescribe: [
             {required: true, message: '请输入角色说明', trigger: 'blur'},
           ],
         },
@@ -178,7 +178,6 @@
               {
                 name: '企业自查管理',
                 key: 'qyzcgl',
-                parentKey: 'zcxt',
                 children: [
                   {
                     name: '企业自查结果',
@@ -233,7 +232,6 @@
               {
                 name: '培训考试管理',
                 key: 'pxksgl',
-                parentKey: 'zcxt',
                 children: [
                   {
                     name: '培训结果',
@@ -242,22 +240,18 @@
                       {
                         name: '查看',
                         key: 'pxjg_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'pxjg_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'pxjg_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'pxjg_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
@@ -286,108 +280,88 @@
                   {
                     name: '考试培训汇总',
                     key: 'kspxhz',
-                    parentKey: 'xtsz',
                     actions: [
                       {
                         name: '查看',
                         key: 'kspxhz_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'kspxhz_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'kspxhz_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'kspxhz_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
                   {
                     name: '题库管理',
                     key: 'tkgl',
-                    parentKey: 'xtsz',
                     actions: [
                       {
                         name: '查看',
                         key: 'tkgl_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'tkgl_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'tkgl_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'tkgl_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
                   {
                     name: '考试规则管理',
                     key: 'ksgzgl',
-                    parentKey: 'xtsz',
                     actions: [
                       {
                         name: '查看',
                         key: 'ksgzgl_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'ksgzgl_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'ksgzgl_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'ksgzgl_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
                   {
                     name: '资料管理',
                     key: 'zlgl',
-                    parentKey: 'xtsz',
                     actions: [
                       {
                         name: '查看',
                         key: 'zlgl_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'zlgl_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'zlgl_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'zlgl_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   }
@@ -400,22 +374,18 @@
                   {
                     name: '查看',
                     key: 'tzgggl_ck',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '新增',
                     key: 'tzgggl_xz',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '修改',
                     key: 'tzgggl_xg',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '删除',
                     key: 'tzgggl_sc',
-                    parentKey: 'pxcl',
                   }
                 ]
               },
@@ -426,22 +396,18 @@
                   {
                     name: '查看',
                     key: 'zc_ck',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '新增',
                     key: 'zc_xz',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '修改',
                     key: 'zc_xg',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '删除',
                     key: 'zc_sc',
-                    parentKey: 'pxcl',
                   }
                 ]
               },
@@ -452,22 +418,18 @@
                   {
                     name: '查看',
                     key: 'px_ck',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '新增',
                     key: 'px_xz',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '修改',
                     key: 'px_xg',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '删除',
                     key: 'px_sc',
-                    parentKey: 'pxcl',
                   }
                 ]
               },
@@ -496,22 +458,18 @@
                       {
                         name: '查看',
                         key: 'flk_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'flk_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'flk_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'flk_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
@@ -522,22 +480,18 @@
                       {
                         name: '查看',
                         key: 'qlk_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'qlk_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'qlk_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'qlk_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
@@ -548,22 +502,18 @@
                       {
                         name: '查看',
                         key: 'zyclk_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'zyclk_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'zyclk_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'zyclk_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   },
@@ -574,22 +524,18 @@
                       {
                         name: '查看',
                         key: 'cfaygl_ck',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '新增',
                         key: 'cfaygl_xz',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '修改',
                         key: 'cfaygl_xg',
-                        parentKey: 'pxcl',
                       },
                       {
                         name: '删除',
                         key: 'cfaygl_sc',
-                        parentKey: 'pxcl',
                       }
                     ]
                   }
@@ -602,22 +548,18 @@
                   {
                     name: '查看',
                     key: 'znba_ck',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '新增',
                     key: 'znba_xz',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '修改',
                     key: 'znba_xg',
-                    parentKey: 'pxcl',
                   },
                   {
                     name: '删除',
                     key: 'znba_sc',
-                    parentKey: 'pxcl',
                   }
                 ]
               }
@@ -639,21 +581,32 @@
       }
     },
     created() {
-      // this.getInfo();
+      this.getInfo();
+      this.getPermissionList()
     },
     methods: {
-      // getInfo() {
-      //   const {id} = this.$route.query;
-      //   if (id) {
-      //     roleApi.getInfo({id}).then(res => {
-      //       const {success, value} = res;
-      //       if (success) {
-      //         //数据处理
-      //         this.form = value
-      //       }
-      //     })
-      //   }
-      // },
+      getPermissionList() {
+        roleApi.getPermissionList({}).then(res => {
+          if (res) {
+            // this.form = res
+          }
+        })
+      },
+      getInfo() {
+        const {id} = this.$route.query;
+        if (id) {
+          roleApi.getInfo({roleId: id}).then(res => {
+            if (res) {
+              //数据处理
+              this.form = {
+                ...res,
+                needCheck: res.needCheck ===1,
+              };
+              this.auth = res.permissionList || []
+            }
+          })
+        }
+      },
       loopRoles(data, auth) {
         data = data.map(s => {
           if (auth.includes(s.key)) {
@@ -673,31 +626,35 @@
       },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
-          if (!valid) {
+          if (valid) {
             const {id} = this.$route.query;
+            const {needCheck} = this.form;
             let req = {
               ...this.form,
-              auth: this.auth
+              needCheck: needCheck ? 1 : 0,
+              permissionList: this.auth
             };
-            // if(id){
-            //   registerApi.register({...req, id}).then((res) => {
-            //     if(res){
-            //       this.$message({
-            //         message: "注册成功",
-            //         type: "success",
-            //       });
-            //     }
-            //   });
-            // }else{
-            //   registerApi.register(req).then((res) => {
-            //     if(res){
-            //       this.$message({
-            //         message: "注册成功",
-            //         type: "success",
-            //       });
-            //     }
-            //   });
-            // }
+            if (id) {
+              roleApi.editItem({...req, roleId: id}).then((res) => {
+                if (res) {
+                  this.$message({
+                    message: "保存成功",
+                    type: "success",
+                  });
+                  this.$router.go(-1)
+                }
+              });
+            } else {
+              roleApi.addItem(req).then((res) => {
+                if (res) {
+                  this.$message({
+                    message: "保存成功",
+                    type: "success",
+                  });
+                  this.$router.go(-1)
+                }
+              });
+            }
           } else {
             return false;
           }
@@ -902,7 +859,7 @@
   .firstAction {
     /*padding: 0 18px;*/
 
-    .actionBox{
+    .actionBox {
       margin: 0;
 
       > span {

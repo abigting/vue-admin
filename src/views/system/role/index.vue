@@ -3,46 +3,20 @@
     <!-- 共二级嵌套 -->
     <router-view v-if="$route.meta.level===2"></router-view>
     <div v-else-if="$route.meta.level===1">
-      <div class="search-bar">
+      <div class="search-bar pb16">
         <el-form label-width="100px">
           <el-row :gutter="10">
             <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-              <el-form-item label="手机号码：">
-                <el-input v-model="queryForm.telphone" placeholder="请输入手机号码"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-              <el-form-item label="姓名：">
-                <el-input v-model="queryForm.name" placeholder="请输入姓名"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-              <el-form-item label="账号ID：">
-                <el-input v-model="queryForm.userId" placeholder="请输入账号ID"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-              <el-form-item label="当前状态：">
-                <el-select v-model="queryForm.status" placeholder="请选择当前状态" clearable>
-                  <el-option label="待审核" :value="0"></el-option>
-                  <el-option label="启用" :value="1"></el-option>
-                  <el-option label="未启用" :value="2"></el-option>
-                  <el-option label="审核未通过" :value="3"></el-option>
-                  <el-option label="已删除" :value="4"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
               <el-form-item label="所属子系统：">
                 <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
-                  <el-option label="自查自律" :value="1"></el-option>
-                  <el-option label="效能融合" :value="2"></el-option>
+                  <el-option label="33000000000" :value="33000000000"></el-option>
+                  <el-option label="33000000001" :value="33000000001"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
-              <el-form-item label="角色：">
-                <el-input v-model="queryForm.roleId" placeholder="请输入角色"></el-input>
+              <el-form-item label="角色名称：">
+                <el-input v-model="queryForm.roleName" placeholder="请输入角色名称"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="4">
@@ -61,10 +35,10 @@
                   :element-loading-spinner="loadingType"
                   :element-loading-background="loadingBg"
                   :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-          <el-table-column prop="title" label="角色名称" min-width="100" align="center"></el-table-column>
-          <el-table-column prop="professionCode" label="所属子系统" min-width="100" align="center"></el-table-column>
-          <el-table-column prop="userType" label="是否需要监督员审核" min-width="100" align="center"></el-table-column>
-          <el-table-column prop="messageUserType" label="说明" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="roleName" label="角色名称" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="systemId" label="所属子系统" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="needCheck" label="是否需要监督员审核" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="roleDescribe" label="说明" min-width="100" align="center"></el-table-column>
           <el-table-column prop="operation" label="操作" min-width="120" align="center" fixed="right">
             <template slot-scope="scope">
               <span class="action" @click="showDetail(ACTION.REVIEW, scope.row)">查看</span>
@@ -115,6 +89,14 @@
     },
     created() {
       this.getList();
+    },
+    watch: {
+      $route(to, from) {
+        const {name} = from;
+        if (name === 'role/detail') {
+          this.getList();
+        }
+      }
     },
     methods: {
       async getList() {
@@ -176,11 +158,11 @@
         this.$router.push(`/system/role/detail?action=${action}`)
       },
       showDetail(action, item) {
-        this.$router.push(`/system/role/detail?action=${action}&id=${item.id}`)
+        this.$router.push(`/system/role/detail?action=${action}&id=${item.roleId}`)
       },
       deleteItem(item) {
         roleApi.deleteItem({
-          id: item.id
+          roleId: item.roleId
         }).then(res => {
           if (res) {
             this.getList();

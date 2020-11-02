@@ -1,7 +1,6 @@
 import axios from "axios";
-import {getUserInfo} from '@/utils/common';
-import * as common from '@/utils/common';
-import { Message } from 'element-ui';
+import {getToken, removeAllcookie} from '@/utils/common';
+import {Message} from 'element-ui';
 // import storage from '~/utils/localStorage';
 
 let request = axios.create({
@@ -9,7 +8,7 @@ let request = axios.create({
   // timeout: 5000,     //超时时间，5000毫秒,
 });
 
-request.defaults.headers.common["access_token"] = getUserInfo().token;
+request.defaults.headers.common["access_token"] = getToken();
 
 request.interceptors.request.use(function (config) {
   // const {url} =config;
@@ -22,11 +21,11 @@ request.interceptors.request.use(function (config) {
   return Promise.reject(err);
 });
 
-request.interceptors.response.use(async(res) =>{
+request.interceptors.response.use(async (res) => {
   try {
     const {data} = res;
 
-    const {success, exceptionContent, value, errorCode} =data;
+    const {success, exceptionContent, value, errorCode} = data;
     if (success) {
       return value || {};
     } else {
@@ -42,25 +41,24 @@ request.interceptors.response.use(async(res) =>{
         // 防止连续弹出多个message
         Message.closeAll();
         Message.error(exceptionContent);
-        setTimeout(()=>
-          {
+        setTimeout(() => {
             // window.location.href = `/`;
-            common.removeAllcookie();
+          removeAllcookie();
             // storage.clear();
-          },500
+          }, 500
         )
-      } else if(errorCode === 'CORE.E0001'){
+      } else if (errorCode === 'CORE.E0001') {
         // 上一次操作正在处理中，请稍后再试---无需提示
-      } else if(res.request.responseURL.indexOf('http://iva.terabits.cn:9090')!==-1){
+      } else if (res.request.responseURL.indexOf('http://iva.terabits.cn:9090') !== -1) {
         const {headers} = res;
         window.open(`http://provincedisinfection.terabits.cn/SignIns?Authorization=${headers.authorization}`)
-      }else {
+      } else {
         // 防止连续弹出多个message
         Message.closeAll();
         Message.error(exceptionContent || '接口未知错误');
       }
     }
-  }catch(e){
+  } catch (e) {
     Message.error('连接超时');
   }
 }, function (err) {

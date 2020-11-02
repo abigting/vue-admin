@@ -487,10 +487,7 @@
     }
   }
 
-  .primary-btn {
-    color: #409EFF;
-    cursor: pointer;
-  }
+
 
   .el-icon-close {
     float: right;

@@ -7,7 +7,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/xnrh-yhzx': {
-        target: "http://223.4.78.37",
+        target: "http://192.168.22.104:9002/",
         // secure: true,
         // changeOrigin: true,
         // pathRewrite: {
@@ -17,8 +17,8 @@ module.exports = {
     },
     // Various Dev Server settings
     // host: internalIp.v4.sync(),//http://192.168.22.24 YJ  备注IE不兼容internalIp方法
-    host: "localhost",
-    port: 8091,
+    host: "192.168.22.128",
+    port: 8093,
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: false,
