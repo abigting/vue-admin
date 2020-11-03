@@ -6,21 +6,21 @@
       <div class="search-bar pb16">
         <el-form label-width="100px">
           <el-row :gutter="10">
-            <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
               <el-form-item label="所属子系统：">
                 <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
-                  <el-option label="33000000000" :value="33000000000"></el-option>
-                  <el-option label="33000000001" :value="33000000001"></el-option>
+                  <el-option :label="item.value" :value="item.code" v-for="item in systemTypeList"
+                             :key="item.code"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+            <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
               <el-form-item label="角色名称：">
                 <el-input v-model="queryForm.roleName" placeholder="请输入角色名称"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="4">
-              <el-button type="primary" @click="toQuery">查询</el-button>
+            <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
+              <el-button type="primary" class="ml24" @click="toQuery">查询</el-button>
               <el-button type="success" class="ml24 add-btn" @click="addItem(ACTION.ADD)">新增</el-button>
               <!--              <el-button type="primary" plain @click="exportExecl">导出</el-button>-->
 
@@ -35,9 +35,18 @@
                   :element-loading-spinner="loadingType"
                   :element-loading-background="loadingBg"
                   :header-cell-style="{background:'#eef1f6',color:'#606266'}">
-          <el-table-column prop="roleName" label="角色名称" min-width="100" align="center"></el-table-column>
-          <el-table-column prop="systemId" label="所属子系统" min-width="100" align="center"></el-table-column>
-          <el-table-column prop="needCheck" label="是否需要监督员审核" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="roleName" label="角色名称" min-width="100" align="center">
+            <template slot-scope="scope">
+              {{scope.row.systemName}}-{{scope.row.roleName}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="systemName" label="所属子系统" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="needCheck" label="是否需要监督员审核" min-width="100" align="center">
+            <template slot-scope="scope">
+              <span v-if="scope.row.needCheck===1">是</span>
+              <span v-else>否</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="roleDescribe" label="说明" min-width="100" align="center"></el-table-column>
           <el-table-column prop="operation" label="操作" min-width="120" align="center" fixed="right">
             <template slot-scope="scope">
@@ -64,7 +73,7 @@
 
 <script>
   import initData from "@/mixins/initData"
-
+  import common from "@/mixins/common"
   import * as roleApi from "@/api/system/role";
   import {
     ACTION
@@ -74,7 +83,7 @@
   } from "element-ui";
 
   export default {
-    mixins: [initData],
+    mixins: [initData, common],
     data() {
       return {
         data: [],
@@ -89,6 +98,7 @@
     },
     created() {
       this.getList();
+      this.getSystemType();
     },
     watch: {
       $route(to, from) {
@@ -124,6 +134,10 @@
         }
       },
       toQuery() {
+        this.queryForm = {
+          ...this.queryForm,
+          page: 1
+        };
         this.getList()
       },
       toRest() {

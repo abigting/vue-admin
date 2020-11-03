@@ -11,11 +11,6 @@ let request = axios.create({
 request.defaults.headers.common["access_token"] = getToken();
 
 request.interceptors.request.use(function (config) {
-  // const {url} =config;
-  // //高德接口无需传token
-  // if (url.indexOf('restapi.amap.com')===-1){
-  //   request.defaults.headers.common["access_token"] = getCookie('token');
-  // }
   return config;
 }, function (err) {
   return Promise.reject(err);

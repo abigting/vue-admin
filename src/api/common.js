@@ -52,3 +52,12 @@ export function getAreaInfo(data) {
     data
   })
 }
+
+// 查询系统类型
+export function getSystemType(data) {
+  return request({
+    url: '/xnrh-yhzx/api/role/systemType',
+    method: 'post',
+    data
+  })
+}

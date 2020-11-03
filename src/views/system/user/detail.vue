@@ -5,22 +5,22 @@
       <div class="basic-info clear-float">
         <div class="block name">
           <span>姓名</span>
-          <p>{{row.name}}</p>
+          <p>{{currentItem.name}}</p>
         </div>
         <div class="block id-card">
           <span>身份证号</span>
-          <p>{{row.idcard}}
-            <i class="el-icon-warning" :class="{'show-history':current===row.idcard}" @click="handHistory(row.idcard)">
-              <div class="history-info-wrap">330327196602030214</div>
+          <p>{{currentItem.idcard}}
+            <i class="el-icon-warning" :class="{'show-history':current===currentItem.idcard}" @click="handHistory(row.idcard)">
+              <div class="history-info-wrap">{{currentItem.idcard}}</div>
             </i></p>
         </div>
         <div class="block phone">
           <span>手机号</span>
           <div class="allow-edit" v-if="operationType===0">
-            <el-input v-model="row.telephone" placeholder="请输入"></el-input>
+            <el-input v-model="currentItem.telphone" placeholder="请输入"></el-input>
             <i class="el-icon-edit"></i>
           </div>
-          <p v-else>{{row.telphone}}</p>
+          <p v-else>{{currentItem.telphone}}</p>
         </div>
       </div>
       <!-- 编辑修改情况 -->
@@ -49,51 +49,51 @@
           <div class="custom-info-list" v-if="yhlx===1">
             <el-row>
               <el-col :span="12">
-                <p><span>所在机构：</span>浙江省湖州市吴兴区吴兴区监督所</p>
+                <p><span>所在机构：</span>{{currentItem.orgname}}</p>
               </el-col>
               <el-col :span="12">
-                <p><span>所在科室：</span></p>
+                <p><span>所在科室：{{currentItem.department}}</span></p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>名族：</span>汉族</p>
+                <p><span>民族：</span>{{currentItem.mz}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>出生日期：</span>1987-08-05</p>
+                <p><span>出生日期：</span>{{currentItem.birthday}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>政治面貌：</span>党员</p>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6">
-                <p><span>学历：</span>本科</p>
-              </el-col>
-              <el-col :span="6">
-                <p><span>学位：</span>学士</p>
-              </el-col>
-              <el-col :span="6">
-                <p><span>毕业院校：</span>杭州师范大学</p>
-              </el-col>
-              <el-col :span="6">
-                <p><span>参加工作日期：</span>2001.02.03</p>
+                <p><span>政治面貌：</span>{{currentItem.zzmm}}</p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>所学专业：</span>土木工程</p>
+                <p><span>学历：</span>{{currentItem.xl}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>职务：</span>教授</p>
+                <p><span>学位：</span>{{currentItem.xw}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>职称：</span>教授</p>
+                <p><span>毕业院校：</span>{{currentItem.university}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>参加工作日期：</span>{{currentItem.workDate}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <p><span>所学专业：</span>{{currentItem.discipline}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>职务：</span>{{currentItem.zw}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>职称：</span>{{currentItem.zc}}</p>
               </el-col>
             </el-row>
           </div>
           <div class="zicha-custom-info" v-else>
-            <p><span>所在企业：</span>浙江省湖州市吴兴区吴兴区监督所</p>
+            <p><span>所在企业：</span>{{currentItem.Fiona}}</p>
           </div>
         </div>
         <!-- 职位信息 -->
@@ -160,7 +160,7 @@
 
   export default {
     name: "index",
-    props: ['dialogVisible', 'operationType'],
+    props: ['dialogVisible', 'operationType', 'currentItem'],
     components: {
       CustomModal
     },

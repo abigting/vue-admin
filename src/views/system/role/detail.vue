@@ -12,7 +12,12 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="角色所属子系统" prop="systemId">
-                <el-input v-model="form.systemId"></el-input>
+                <el-select v-model="form.systemId" placeholder="" clearable @change="changeSystem">
+                  <el-option :label="item.value"
+                             :value="item.code"
+                             v-for="item in systemTypeList"
+                             :key="item.code"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -44,7 +49,7 @@
         <div>
           <table class="customTable">
             <tr :key="item.menuId" v-for="item in permissionList">
-              <td style="width:16%; background:#F5F6FA" class="firstMenu">
+              <td style="width:12%; background:#F5F6FA" class="firstMenu">
                 <div>
                   <el-checkbox class="check"
                                @change="value=>handleChoose(value, item)"
@@ -52,14 +57,15 @@
                   {{item.menuName}}
                 </div>
               </td>
-              <td style="width:84%">
-                <div v-if="!item.children" class="otherSys">
+              <td style="width:88%">
+                <!--第三方系统-->
+                <div v-if="!item.children||item.children.length===0" class="otherSys">
                   第三方系统，不支持功能选择
                 </div>
                 <div v-else>
                   <div class="secondMenu" v-for="child in item.children">
                     <div class="parentNode hasLine">
-                      <div :class="{'nameBox':true, childrenIsMenu: child.children, childrenIsActions: child.actions}">
+                      <div :class="{'nameBox':true, childrenIsMenu: child.flag===0, childrenIsActions: child.flag===1}">
                         <el-checkbox class="check"
                                      @change="value=>handleChoose(value, child)"
                                      v-model="child.checked"/>
@@ -67,10 +73,10 @@
                       </div>
                       <div class="thirdMenuBox">
                         <!--第三级是菜单-->
-                        <div v-if="child.children">
+                        <div v-if="child.flag===0">
                           <div class="thirdMenu" v-for="child1 in child.children">
                             <!--第四级是操作权限-->
-                            <div v-if="child1.actions" class="includeAction">
+                            <div v-if="child1.flag===1" class="includeAction">
                             <span>
                                 <el-checkbox
                                   class="check"
@@ -79,7 +85,7 @@
                              {{child1.menuName}}
                             </span>
                               <div class="actionBox">
-                               <span v-for="action in child1.actions">
+                               <span v-for="action in child1.children">
                                  <el-checkbox
                                    class="check"
                                    @change="value=>handleChoose(value, action)"
@@ -117,10 +123,10 @@
                           </div>
                         </div>
                         <!--第三级是操作-->
-                        <div v-else-if="child.actions" class="hasLeftBorder">
+                        <div v-else-if="child.flag===1" class="hasLeftBorder">
                           <div class="firstAction">
                             <div class="actionBox">
-                             <span v-for="action in child.actions">
+                             <span v-for="action in child.children">
                                <el-checkbox
                                  class="check"
                                  @change="value=>handleChoose(value, action)"
@@ -149,12 +155,16 @@
 
 <script>
   import * as roleApi from "@/api/system/role"
+  import common from "@/mixins/common"
 
   export default {
     name: "detail",
+    mixins: [common],
     data() {
       return {
-        form: {},
+        form: {
+          systemId: 33000000000
+        },
         rules: {
           systemId: [
             {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
@@ -167,408 +177,408 @@
           ],
         },
         permissionList: [
-          {
-            menuName: '自查系统',
-            menuId: 'zcxt',
-            children: [
-              {
-                menuName: '首页',
-                menuId: 'sy',
-              },
-              {
-                menuName: '企业自查管理',
-                menuId: 'qyzcgl',
-                children: [
-                  {
-                    menuName: '企业自查结果',
-                    menuId: 'qyzcjg',
-                  },
-                  {
-                    menuName: '企业自查设置',
-                    menuId: 'qyzcsz',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'qyzcsz_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'qyzcsz_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'qyzcsz_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'qyzcsz_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '企业自查汇总',
-                    menuId: 'qyzchz',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'qyzchz_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'qyzchz_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'qyzchz_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'qyzchz_sc',
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                menuName: '培训考试管理',
-                menuId: 'pxksgl',
-                children: [
-                  {
-                    menuName: '培训结果',
-                    menuId: 'pxjg',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'pxjg_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'pxjg_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'pxjg_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'pxjg_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '考试结果',
-                    menuId: 'ksjg',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'ksjg_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'ksjg_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'ksjg_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'ksjg_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '考试培训汇总',
-                    menuId: 'kspxhz',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'kspxhz_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'kspxhz_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'kspxhz_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'kspxhz_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '题库管理',
-                    menuId: 'tkgl',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'tkgl_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'tkgl_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'tkgl_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'tkgl_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '考试规则管理',
-                    menuId: 'ksgzgl',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'ksgzgl_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'ksgzgl_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'ksgzgl_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'ksgzgl_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '资料管理',
-                    menuId: 'zlgl',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'zlgl_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'zlgl_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'zlgl_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'zlgl_sc',
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                menuName: '通知公告管理',
-                menuId: 'tzgggl',
-                actions: [
-                  {
-                    menuName: '查看',
-                    menuId: 'tzgggl_ck',
-                  },
-                  {
-                    menuName: '新增',
-                    menuId: 'tzgggl_xz',
-                  },
-                  {
-                    menuName: '修改',
-                    menuId: 'tzgggl_xg',
-                  },
-                  {
-                    menuName: '删除',
-                    menuId: 'tzgggl_sc',
-                  }
-                ]
-              },
-              {
-                menuName: '自查',
-                menuId: 'zc',
-                actions: [
-                  {
-                    menuName: '查看',
-                    menuId: 'zc_ck',
-                  },
-                  {
-                    menuName: '新增',
-                    menuId: 'zc_xz',
-                  },
-                  {
-                    menuName: '修改',
-                    menuId: 'zc_xg',
-                  },
-                  {
-                    menuName: '删除',
-                    menuId: 'zc_sc',
-                  }
-                ]
-              },
-              {
-                menuName: '培训',
-                menuId: 'px',
-                actions: [
-                  {
-                    menuName: '查看',
-                    menuId: 'px_ck',
-                  },
-                  {
-                    menuName: '新增',
-                    menuId: 'px_xz',
-                  },
-                  {
-                    menuName: '修改',
-                    menuId: 'px_xg',
-                  },
-                  {
-                    menuName: '删除',
-                    menuId: 'px_sc',
-                  }
-                ]
-              },
-            ]
-          },
-          {
-            menuName: '效能评价',
-            menuId: 'xnpj'
-          },
-          {
-            menuName: '驾驶舱',
-            menuId: 'jsc'
-          },
-          {
-            menuName: '智能办案',
-            menuId: 'znba1',
-            children: [
-              {
-                menuName: '智能办案配置',
-                menuId: 'znbapz',
-                children: [
-                  {
-                    menuName: '法律库',
-                    menuId: 'flk',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'flk_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'flk_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'flk_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'flk_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '权力库',
-                    menuId: 'qlk',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'qlk_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'qlk_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'qlk_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'qlk_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '自由裁量库',
-                    menuId: 'zyclk',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'zyclk_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'zyclk_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'zyclk_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'zyclk_sc',
-                      }
-                    ]
-                  },
-                  {
-                    menuName: '处罚案由管理',
-                    menuId: 'cfaygl',
-                    actions: [
-                      {
-                        menuName: '查看',
-                        menuId: 'cfaygl_ck',
-                      },
-                      {
-                        menuName: '新增',
-                        menuId: 'cfaygl_xz',
-                      },
-                      {
-                        menuName: '修改',
-                        menuId: 'cfaygl_xg',
-                      },
-                      {
-                        menuName: '删除',
-                        menuId: 'cfaygl_sc',
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                menuName: '智能办案',
-                menuId: 'znba',
-                actions: [
-                  {
-                    menuName: '查看',
-                    menuId: 'znba_ck',
-                  },
-                  {
-                    menuName: '新增',
-                    menuId: 'znba_xz',
-                  },
-                  {
-                    menuName: '修改',
-                    menuId: 'znba_xg',
-                  },
-                  {
-                    menuName: '删除',
-                    menuId: 'znba_sc',
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            menuName: '消毒',
-            menuId: 'xd'
-          }
+          // {
+          //   menuName: '自查系统',
+          //   menuId: 'zcxt',
+          //   children: [
+          //     {
+          //       menuName: '首页',
+          //       menuId: 'sy',
+          //     },
+          //     {
+          //       menuName: '企业自查管理',
+          //       menuId: 'qyzcgl',
+          //       children: [
+          //         {
+          //           menuName: '企业自查结果',
+          //           menuId: 'qyzcjg',
+          //         },
+          //         {
+          //           menuName: '企业自查设置',
+          //           menuId: 'qyzcsz',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'qyzcsz_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'qyzcsz_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'qyzcsz_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'qyzcsz_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '企业自查汇总',
+          //           menuId: 'qyzchz',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'qyzchz_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'qyzchz_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'qyzchz_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'qyzchz_sc',
+          //             }
+          //           ]
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       menuName: '培训考试管理',
+          //       menuId: 'pxksgl',
+          //       children: [
+          //         {
+          //           menuName: '培训结果',
+          //           menuId: 'pxjg',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'pxjg_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'pxjg_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'pxjg_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'pxjg_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '考试结果',
+          //           menuId: 'ksjg',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'ksjg_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'ksjg_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'ksjg_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'ksjg_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '考试培训汇总',
+          //           menuId: 'kspxhz',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'kspxhz_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'kspxhz_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'kspxhz_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'kspxhz_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '题库管理',
+          //           menuId: 'tkgl',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'tkgl_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'tkgl_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'tkgl_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'tkgl_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '考试规则管理',
+          //           menuId: 'ksgzgl',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'ksgzgl_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'ksgzgl_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'ksgzgl_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'ksgzgl_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '资料管理',
+          //           menuId: 'zlgl',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'zlgl_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'zlgl_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'zlgl_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'zlgl_sc',
+          //             }
+          //           ]
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       menuName: '通知公告管理',
+          //       menuId: 'tzgggl',
+          //       actions: [
+          //         {
+          //           menuName: '查看',
+          //           menuId: 'tzgggl_ck',
+          //         },
+          //         {
+          //           menuName: '新增',
+          //           menuId: 'tzgggl_xz',
+          //         },
+          //         {
+          //           menuName: '修改',
+          //           menuId: 'tzgggl_xg',
+          //         },
+          //         {
+          //           menuName: '删除',
+          //           menuId: 'tzgggl_sc',
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       menuName: '自查',
+          //       menuId: 'zc',
+          //       actions: [
+          //         {
+          //           menuName: '查看',
+          //           menuId: 'zc_ck',
+          //         },
+          //         {
+          //           menuName: '新增',
+          //           menuId: 'zc_xz',
+          //         },
+          //         {
+          //           menuName: '修改',
+          //           menuId: 'zc_xg',
+          //         },
+          //         {
+          //           menuName: '删除',
+          //           menuId: 'zc_sc',
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       menuName: '培训',
+          //       menuId: 'px',
+          //       actions: [
+          //         {
+          //           menuName: '查看',
+          //           menuId: 'px_ck',
+          //         },
+          //         {
+          //           menuName: '新增',
+          //           menuId: 'px_xz',
+          //         },
+          //         {
+          //           menuName: '修改',
+          //           menuId: 'px_xg',
+          //         },
+          //         {
+          //           menuName: '删除',
+          //           menuId: 'px_sc',
+          //         }
+          //       ]
+          //     },
+          //   ]
+          // },
+          // {
+          //   menuName: '效能评价',
+          //   menuId: 'xnpj'
+          // },
+          // {
+          //   menuName: '驾驶舱',
+          //   menuId: 'jsc'
+          // },
+          // {
+          //   menuName: '智能办案',
+          //   menuId: 'znba1',
+          //   children: [
+          //     {
+          //       menuName: '智能办案配置',
+          //       menuId: 'znbapz',
+          //       children: [
+          //         {
+          //           menuName: '法律库',
+          //           menuId: 'flk',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'flk_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'flk_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'flk_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'flk_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '权力库',
+          //           menuId: 'qlk',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'qlk_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'qlk_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'qlk_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'qlk_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '自由裁量库',
+          //           menuId: 'zyclk',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'zyclk_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'zyclk_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'zyclk_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'zyclk_sc',
+          //             }
+          //           ]
+          //         },
+          //         {
+          //           menuName: '处罚案由管理',
+          //           menuId: 'cfaygl',
+          //           actions: [
+          //             {
+          //               menuName: '查看',
+          //               menuId: 'cfaygl_ck',
+          //             },
+          //             {
+          //               menuName: '新增',
+          //               menuId: 'cfaygl_xz',
+          //             },
+          //             {
+          //               menuName: '修改',
+          //               menuId: 'cfaygl_xg',
+          //             },
+          //             {
+          //               menuName: '删除',
+          //               menuId: 'cfaygl_sc',
+          //             }
+          //           ]
+          //         }
+          //       ]
+          //     },
+          //     {
+          //       menuName: '智能办案',
+          //       menuId: 'znba',
+          //       actions: [
+          //         {
+          //           menuName: '查看',
+          //           menuId: 'znba_ck',
+          //         },
+          //         {
+          //           menuName: '新增',
+          //           menuId: 'znba_xz',
+          //         },
+          //         {
+          //           menuName: '修改',
+          //           menuId: 'znba_xg',
+          //         },
+          //         {
+          //           menuName: '删除',
+          //           menuId: 'znba_sc',
+          //         }
+          //       ]
+          //     }
+          //   ]
+          // },
+          // {
+          //   menuName: '消毒',
+          //   menuId: 'xd'
+          // }
         ],
         auth: [],
       }
@@ -578,19 +588,26 @@
       //auth变化时,处理数据roles
       auth: function (newVal) {
         this.permissionList = this.loopRoles(this.permissionList, newVal);
-      }
+      },
     },
     created() {
       this.getInfo();
-      this.getPermissionList()
+      this.getSystemType();
     },
     methods: {
-      getPermissionList() {
-        roleApi.getPermissionList({}).then(res => {
+      getPermissionList(data) {
+        roleApi.getPermissionList(data).then(res => {
           if (res) {
-            // this.permissionList = res
+            this.auth = [...this.auth];
+            this.permissionList = res
           }
         })
+      },
+      changeSystem(value) {
+        if (value !== 33000000000) {
+          this.auth = []
+        }
+        this.getPermissionList({code: value});
       },
       getInfo() {
         const {id} = this.$route.query;
@@ -600,11 +617,14 @@
               //数据处理
               this.form = {
                 ...res,
-                needCheck: res.needCheck ===1,
+                needCheck: res.needCheck === 1,
               };
-              this.auth = res.permissionList || []
+              this.auth = res.permissionList || [];
+              this.getPermissionList({code: res.systemId});
             }
           })
+        } else {
+          this.getPermissionList({code: this.form.systemId});
         }
       },
       loopRoles(data, auth) {
@@ -629,7 +649,7 @@
           if (valid) {
             const {id} = this.$route.query;
             const {needCheck} = this.form;
-            if(this.auth.length===0){
+            if (this.auth.length === 0) {
               this.$message.info('请勾选角色对应的功能');
               return
             }
@@ -686,7 +706,6 @@
         }
         this.auth = auth;
       },
-
       judgeParentNode(treeData, auth) {
         let list = auth.map(s => {
             const item = this.loopFindItem(s, treeData);
@@ -769,7 +788,6 @@
           }
         }
       },
-
       flatten(arr) {
         return arr.reduce((pre, cur) => {
           return pre.concat(Array.isArray(cur) ? this.flatten(cur) : cur);
@@ -813,7 +831,7 @@
     padding: 20px 12px;
 
     .limitedWidth {
-      width: 1100px;
+      width: 1200px;
     }
   }
 
@@ -864,7 +882,7 @@
       margin: 0;
 
       > span {
-        width: 126px;
+        width: 100px;
         display: inline-block;
       }
     }
@@ -930,12 +948,12 @@
       }
 
       .actionBox {
-        padding-left: 50px;
+        padding-left: 12px;
         display: inline-block;
         margin: 0;
 
         > span {
-          width: 126px;
+          width: 100px;
           display: inline-block;
         }
       }
@@ -978,7 +996,7 @@
 
       .hasLeftBorder {
         border-left: 1px solid #e8e8e8;
-        padding: 12px 0 12px 54px;
+        padding: 12px 0 12px 16px;
         margin-left: 151px;
       }
     }

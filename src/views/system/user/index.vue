@@ -1,24 +1,24 @@
 <template>
   <div>
     <div class="search-bar">
-      <el-form label-width="100px" class="search-block">
+      <el-form label-width="100px">
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
             <el-form-item label="手机号码：">
               <el-input v-model="queryForm.telphone" placeholder="请输入手机号码"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="姓名：">
               <el-input v-model="queryForm.name" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="账号ID：">
               <el-input v-model="queryForm.userId" placeholder="请输入账号ID"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="当前状态：">
               <el-select v-model="queryForm.status" placeholder="请选择当前状态" clearable>
                 <el-option label="待审核" :value="0"></el-option>
@@ -29,7 +29,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="所属子系统：">
               <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
                 <el-option label="自查自律" :value="1"></el-option>
@@ -37,22 +37,23 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="角色：">
               <el-input v-model="queryForm.roleId" placeholder="请输入角色"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
 <!--            <el-button type="primary" plain @click="addItem">新增</el-button>-->
-            <el-button type="primary ml24" plain @click="exportExecl">导出</el-button>
+            <el-button type="primary" class="ml24" plain @click="exportExecl">导出</el-button>
             <el-button type="primary" @click="toQuery">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
     </div>
     <div class="table-wrapper">
-      <el-table :header-cell-style="{background:'#F5F7FA',color:'#606266'}" :data="data" v-loading="loading"
-                :element-loading-text="loadingText" class="table-block">
+      <el-table :data="data"
+                v-loading="loading"
+                :element-loading-text="loadingText">
         <el-table-column prop="userId" label="账号ID" width="80" align="center"></el-table-column>
         <el-table-column prop="name" label="姓名" align="center"></el-table-column>
         <el-table-column prop="telphone" label="手机号" align="center"></el-table-column>
@@ -72,13 +73,13 @@
         </el-table-column>
         <el-table-column label="操作" width="280" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handRead(scope.row,2)">详情</el-button>
+            <el-button type="text" size="small" @click="showDetail(scope.row,2)">详情</el-button>
             <el-popconfirm title="确定禁用？" class="disabled-btn" @onConfirm="handDisbale(scope.row)">
               <span class="primary-btn" slot="reference">禁用</span>
             </el-popconfirm>
-            <span class="blue-text" @click="handExamine(scope.row,1)">审核</span>
-            <el-button type="text" size="small" class="modify-btn" @click="handEditor(scope.row,0)">修改</el-button>
-            <el-popconfirm title="确定删除吗？" @onConfirm="handDelete(scope.row,scope.$index)">
+            <span class="blue-text" @click="showDetail(scope.row,1)">审核</span>
+            <el-button type="text" size="small" class="modify-btn" @click="showDetail(scope.row,0)">修改</el-button>
+            <el-popconfirm title="确定删除吗？" @onConfirm="showDetail(scope.row,scope.$index)">
               <span class="delete-btn" slot="reference">删除</span>
             </el-popconfirm>
             <!-- <el-popconfirm title="确定重置吗？" @onConfirm="reset(scope.row)">
@@ -88,11 +89,19 @@
         </el-table-column>
       </el-table>
       <!--分页组件-->
-      <el-pagination style="margin-top: 15px;text-align: right;" :total="total" background
-                     :current-page="queryForm.page+1" layout="total, prev, pager, next, sizes"
-                     @size-change="sizeChange" @current-change="pageChange" :page-size="queryForm.size"/>
+      <el-pagination style="margin-top: 15px;text-align: right;"
+                     :total="total"
+                     background
+                     :current-page="queryForm.page"
+                     layout="total, prev, pager, next, sizes"
+                     @size-change="sizeChange"
+                     @current-change="pageChange"
+                     :page-size="queryForm.size"/>
     </div>
-    <Detail :dialogVisible="dialogVisible" :operationType="operationType" @handCancel="dialogVisible = false"/>
+    <Detail :dialogVisible="dialogVisible"
+            :currentItem="currentItem"
+            :operationType="operationType"
+            @handCancel="dialogVisible = false"/>
   </div>
 </template>
 
@@ -109,7 +118,7 @@
         statusMap: ['待审核', '启用', '未启用', '审核未通过', '已删除'],
         operationType: null, //0编辑 1审核 2详情查看
         yhlx: 2, //测试用户类型 效能/自查
-        row: {}, //当前查看/审核/编辑用户
+        currentItem: {}, //当前查看/审核/编辑用户
         current: '', //当前点击的历史信息
         xzqhCode: [], //行政区划
         type: "", //查看/编辑/新增
@@ -184,32 +193,13 @@
         };
         this.getList();
       },
-      // 审核
-      handExamine(row, type) {
-        this.row = row;
+      //1-审核;2-详情
+      showDetail(row, type){
+        this.currentItem = row;
         this.operationType = type;
         this.dialogVisible = true;
       },
-      // 编辑
-      handEditor(row, type) {
-        this.row = row;
-        this.operationType = type;
-        this.dialogVisible = true;
-      },
-      //查看
-      handRead(row, type) {
-        this.row = row;
-        this.operationType = type;
-        this.dialogVisible = true;
-      },
-      //查看弹窗信息-历史信息
-      handHistory(row) {
-        if (this.current == row) {
-          this.current = ""
-        } else {
-          this.current = row;
-        }
-      },
+
       //新增
       addItem() {
         this.dialogVisible = true;

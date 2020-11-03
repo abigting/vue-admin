@@ -18,8 +18,9 @@ export default {
         mz:[]
       },
       dicRoleList:[],
-      address:[],
-      cityAddress:[]
+      address:[],  /*行政区划*/
+      cityAddress:[],
+      systemTypeList:[] /*系统类型*/
     }
   },
   created() {
@@ -101,6 +102,20 @@ export default {
           this.cityAddress = cityAddress
         }
       });
+    },
+
+    /**
+     * @parameter
+     * @description 查询系统类型
+     * @author Feng.xiuting
+     * @date 2020-11-3
+     */
+    getSystemType() {
+      commonApi.getSystemType({}).then(res => {
+        if(res){
+          this.systemTypeList = res.systemType
+        }
+      })
     },
   }
 }
