@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="search-bar">
+    <div class="search-bar pb16">
       <el-form label-width="100px">
         <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="6">
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="手机号码：">
               <el-input v-model="queryForm.telphone" placeholder="请输入手机号码"></el-input>
             </el-form-item>

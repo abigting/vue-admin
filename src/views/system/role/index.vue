@@ -47,7 +47,7 @@
               <span v-else>否</span>
             </template>
           </el-table-column>
-          <el-table-column prop="roleDescribe" label="说明" min-width="100" align="center"></el-table-column>
+          <el-table-column prop="roleDescribe" label="说明" min-width="100"   show-overflow-tooltip align="center"></el-table-column>
           <el-table-column prop="operation" label="操作" min-width="120" align="center" fixed="right">
             <template slot-scope="scope">
               <span class="action" @click="showDetail(ACTION.REVIEW, scope.row)">查看</span>
