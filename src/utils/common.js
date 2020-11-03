@@ -6,32 +6,32 @@
 import Cookies from 'js-cookie';
 import request from './request';
 import qs from 'qs';
-export function setCookie(name, val) {
-  Cookies.set(name, val, { expires: 7, path: '/' });
-}
+// export function setCookie(name, val) {
+//   Cookies.set(name, val, { expires: 7, path: '/' });
+// }
 
-export function getCookie(name) {
-  return Cookies.get(name);
-}
+// export function getCookie(name) {
+//   return Cookies.get(name);
+// }
+//
+// export function removeCookie(name) {
+//   Cookies.remove(name);
+// }
 
-export function removeCookie(name) {
-  Cookies.remove(name);
-}
+// export function removeAllcookie() {
+//   Cookies.remove('userInfo');
+//   Cookies.remove('__authority');
+// }
 
-export function removeAllcookie() {
-  Cookies.remove('userInfo');
-  Cookies.remove('__authority');
-}
+// export function getUserInfo() {
+//   // return Cookies.getJSON('bigScreenInfo') || {};
+//   return {areaCode:getUrlVars().areaCode||'330000000'};
+// }
 
-export function getUserInfo() {
-  // return Cookies.getJSON('bigScreenInfo') || {};
-  return {areaCode:getUrlVars().areaCode||'330000000'};
-}
-
-export function getToken() {
-  // return Cookies.getJSON('bigScreenInfo') || {};
-  return Cookies.get('token');
-}
+// export function getToken() {
+//   // return Cookies.getJSON('bigScreenInfo') || {};
+//   return Cookies.get('token');
+// }
 
 function getUrlVars() {
   const vars = {};

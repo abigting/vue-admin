@@ -92,8 +92,8 @@
 </template>
 
 <script>
-  import * as loginApi from "@/api/login";
-  import {setCookie, getToken} from '@/utils/common';
+  import * as userApi from "@/api/user";
+  import {setCookie, getToken} from '@/utils/auth';
 
   export default {
     name: "Login",
@@ -115,10 +115,8 @@
       return {
         imgBase64: '',
         loginForm: {
-          username: "13012345678",
+          username: "123456789",
           password: "123456",
-          imageCode: "",
-          uuid: "",
         },
         loginRules: {},
         loading: false,
@@ -158,7 +156,7 @@
           this.$message.info('请填写验证码');
           return
         }
-        loginApi.login(this.loginForm).then(res => {
+        userApi.login(this.loginForm).then(res => {
           if (res) {
             const {token, userZcVo} = res;
             const {name, sex, compName} = userZcVo;
@@ -185,7 +183,7 @@
         let uuid = s.join("");
         this.loginForm.uuid = uuid;
 
-        const res = await loginApi.createImageCode({uuid: this.loginForm.uuid});
+        const res = await userApi.createImageCode({uuid: this.loginForm.uuid});
         if (res) {
           const {imageBase64} = res;
           this.imgBase64 = imageBase64;
@@ -200,7 +198,7 @@
       let lett = this;
       document.onkeydown = function (e) {
         let key = window.event.keyCode;
-        if (key == 13) {
+        if (key === 13) {
           lett.handleLogin();
         }
       }

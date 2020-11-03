@@ -8,13 +8,13 @@ module.exports = {
     proxyTable: {
       '/xnrh-yhzx': {
         // target: "http://192.168.22.104:9002/", /*林忠宇*/
-        target: "http://192.168.22.201:2020/", /*林忠宇*/
+        target: "http://192.168.22.201:2020/", /*测试*/
         // target: "http://192.168.22.110:9002/", /*侯哥*/
-        // secure: true,
-        // changeOrigin: true,
-        // pathRewrite: {
-        //   '^/api': ""
-        // }
+      },
+      '/xnrh-common': {
+        // target: "http://192.168.22.104:9002/", /*林忠宇*/
+        // target: "http://192.168.22.201:2020/", /*测试*/
+        target: "http://192.168.22.110:8001/", /*侯哥*/
       }
     },
     // Various Dev Server settings

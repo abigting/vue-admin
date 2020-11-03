@@ -11,8 +11,13 @@
       </i>
       <el-dropdown class="userInfo" @click="handleClick">
           <span class="el-dropdown-link">
-            <el-avatar @click="handleClick" :size="30" style="vertical-align: middle" :src="circleUrl"></el-avatar>
-            <span class="name">用户名<i class="el-icon-arrow-down el-icon--right"></i></span>
+            <el-avatar :size="30" style="vertical-align: middle">
+                 {{userInfo.name?userInfo.name[0]:'无'}}
+            </el-avatar>
+            <span class="name">
+                  {{userInfo.name?userInfo.name:'无名氏'}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
           </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span>
@@ -61,6 +66,8 @@
   import AccountInfo from './components/accountInfo'
   import Cookies from 'js-cookie';
   import SettingPng from '../../assets/imgs/setting.png'
+  import {removeAllcookie} from '../../utils/auth'
+  import {getUserInfo} from '@/utils/auth'
 
   export default {
     name: "index",
@@ -75,6 +82,7 @@
         modifyPasswordDialog: false,
         accountInfoVisible: false,
         detectionHover: false,
+        userInfo: getUserInfo(),
         menus: [{
           name: '驾驶舱',
           key: '0',
@@ -168,7 +176,6 @@
             return;
           case '3':
             this.$store.dispatch('user/logout').then(res => this.$router.push('/login'));
-            // this.$router.push('/login')
             return;
         }
       },

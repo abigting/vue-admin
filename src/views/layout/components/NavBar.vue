@@ -5,9 +5,12 @@
     <div class="admin-block">
       <el-dropdown class="avatar-container">
         <div class="avatar-wrapper">
-          <el-avatar :size="30" style="vertical-align: middle" :src="circleUrl">
+          <el-avatar :size="30" style="vertical-align: middle">
+            {{userInfo.name?userInfo.name[0]:'无'}}
           </el-avatar>
-          <span class="admin-name">{{userInfo.accountName}} admin</span>
+          <span class="admin-name">
+            {{userInfo.name?userInfo.name:'无名氏'}}
+          </span>
           <i class="el-icon-caret-bottom el-icon-arrow-down"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="avatar-menu-wrap">
@@ -74,6 +77,8 @@
   import AccountInfo from '../../index/components/accountInfo'
   import Breadcrumb from '@/components/Breadcrumb'
   import Hamburger from '@/components/Hamburger'
+  import {getUserInfo} from '@/utils/auth'
+
   export default {
     name: "index",
     components: {
@@ -130,16 +135,7 @@
         loginOut: false,
         dialogVisible: false,
         isFirstLogin: "0", //是否首次登陆(未更改过密码)  1是 0否
-        userInfo: {
-          accountName: "",
-          userName: "",
-          phone: "",
-          userCardNo: "",
-          oldpassword: "",
-          password: "",
-          repassword: "",
-          flag: "1", //1为是[需要当前密码]，0为否[不需要当前密码]
-        },
+        userInfo: getUserInfo(),
         rules: {
           accountName: [{
             required: true,
@@ -178,13 +174,7 @@
       };
     },
     created() {
-      // const userInfo = getUserInfo()||{};
-      // this.isFirstLogin = userInfo.isFirstLogin || "0";
-      // if(userInfo.isFirstLogin==='1'){
-      //   this.dialogVisible = true;
-      //   this.userInfo.flag = "0"
-      // }
-      // Object.assign(this.userInfo, userInfo);
+
     },
     computed: {
       ...mapGetters([
@@ -250,7 +240,7 @@
             this.modifyPasswordDialog = true;
             return;
           case '3':
-            this.$router.push('/login');
+            this.$store.dispatch('user/logout').then(res => this.$router.push('/login'));
             return;
           case '4':
             this.$router.push("/");

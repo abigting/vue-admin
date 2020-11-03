@@ -47,7 +47,7 @@ export function queryDicRoleList(data) {
 // 行政区划
 export function getAreaInfo(data) {
   return request({
-    url: '/xnrh-yhzx/api/dic/queryAreaInfo',
+    url: '/xnrh-common/api/dic/queryAreaInfo',
     method: 'post',
     data
   })

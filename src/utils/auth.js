@@ -1,7 +1,7 @@
 // cookie
 import Cookies from 'js-cookie'
 
-const TokenKey = 'token'
+const TokenKey = 'token';
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -31,4 +31,16 @@ export function removeUserInfo() {
 export function removeAllcookie() {
   Cookies.remove(TokenKey);
   Cookies.remove('userInfo');
+}
+
+export function getCookie(name) {
+  return Cookies.get(name);
+}
+
+export function removeCookie(name) {
+  Cookies.remove(name);
+}
+
+export function setCookie(name, val) {
+  Cookies.set(name, val, { expires: 7, path: '/' });
 }

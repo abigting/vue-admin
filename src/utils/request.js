@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getToken, removeAllcookie} from '@/utils/common';
+import {getToken, removeAllcookie} from '@/utils/auth';
 import {Message} from 'element-ui';
 // import storage from '~/utils/localStorage';
 

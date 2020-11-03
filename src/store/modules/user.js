@@ -2,13 +2,14 @@ import {
   login,
   logout,
   // getInfo
-} from '@/api/login';
+} from '@/api/user';
 import {
   getToken,
   setToken,
   removeToken,
   setUserInfo,
   getUserInfo,
+  removeAllcookie
 } from '@/utils/auth';
 
 const state = {
@@ -36,8 +37,8 @@ const mutations = {
 const actions = {
   // 登录
   Login({
-    commit
-  }, userInfo) {
+          commit
+        }, userInfo) {
     return new Promise((resolve, reject) => {
       login(userInfo).then(res => {
         const data = res.value
@@ -55,9 +56,9 @@ const actions = {
 
   //登录过期或无权限访问
   loginExpired({
-    commit,
-    state
-  }){
+                 commit,
+                 state
+               }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       removeToken()
@@ -67,22 +68,16 @@ const actions = {
   },
 
   // 注销
-  logout({
-    commit,
-    state
-  }) {
+  logout({commit, state}) {
     return new Promise((resolve, reject) => {
-      console.log(getUserInfo(), 'Fiona')
       logout({
-        access_token: state.token,
-        username:getUserInfo().name
+        access_token: getToken(),
+        username: getUserInfo().name
       }).then(res => {
-        if (res.success) {
-          commit('SET_TOKEN', '');
-          removeToken();
-          setUserInfo({})
+        if (res) {
+          removeAllcookie();
+          resolve(res)
         }
-        resolve(res)
       }).catch(error => {
         reject(error)
       })
@@ -91,33 +86,33 @@ const actions = {
 
   // 获取用户信息
   getInfo({
-    commit,
-    state
-  }) {
+            commit,
+            state
+          }) {
     return new Promise((resolve, reject) => {
-        getInfo({accessToken:state.token}).then(response => {
-          var data = {
-            roles:response.value
-          }
-          if (!data) {
-            reject('访问权限验证失败或频繁,请重试！')
-          }
-          const {roles} = data;
-          if (!roles || roles.length <= 0) {
-            reject('访问权限返回异常,请联系管理员处理！')
-          }
-          commit('SET_ROLES',roles)
-          resolve(data)
-        }).catch(error => {
-          reject(error)
-        })
+      getInfo({accessToken: state.token}).then(response => {
+        var data = {
+          roles: response.value
+        }
+        if (!data) {
+          reject('访问权限验证失败或频繁,请重试！')
+        }
+        const {roles} = data;
+        if (!roles || roles.length <= 0) {
+          reject('访问权限返回异常,请联系管理员处理！')
+        }
+        commit('SET_ROLES', roles)
+        resolve(data)
+      }).catch(error => {
+        reject(error)
+      })
     })
   },
 
   // 移除token
   resetToken({
-    commit
-  }) {
+               commit
+             }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
@@ -128,9 +123,9 @@ const actions = {
 
   // 异步路由表
   async changeRoles({
-    commit,
-    dispatch
-  }, role) {
+                      commit,
+                      dispatch
+                    }, role) {
     const token = role + '-token'
     commit('SET_TOKEN', token)
     setToken(token)
