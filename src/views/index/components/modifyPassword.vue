@@ -1,5 +1,5 @@
 <template>
-  <CustomModal :visible="modifyPasswordDialog" title="修改账号信息" @handCancel="closeModal">
+  <CustomModal :visible="modifyPasswordDialog" bigTitle="修改密码" @handCancel="closeModal">
     <div class="content">
       <el-form ref="form"
                :model="form"
@@ -11,20 +11,23 @@
               13526985466
             </el-form-item>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="24" class="relative-div">
             <el-form-item prop="name">
               <el-input v-model="form.name" :show-password="true"></el-input>
             </el-form-item>
+            <i class="iconfont iconshurumima prefix-icon"></i>
           </el-col>
-          <el-col :span="24">
+          <el-col :span="24" class="relative-div">
             <el-form-item prop="name">
               <el-input v-model="form.description" :show-password="true"></el-input>
             </el-form-item>
+            <i class="iconfont iconshurumima prefix-icon"></i>
           </el-col>
-          <el-col :span="16">
+          <el-col :span="16" class="relative-div">
             <el-form-item prop="name">
-              <el-input v-model="form.description" ></el-input>
+              <el-input v-model="form.description" style="width: 96%"></el-input>
             </el-form-item>
+            <i class="iconfont iconyanzhengma prefix-icon"></i>
           </el-col>
           <el-col :span="8">
             <el-button>获取验证码</el-button>
@@ -41,6 +44,8 @@
 
 <script>
   import CustomModal from '@/components/customModal'
+  import {getUserInfo} from '@/utils/auth';
+
   export default {
     name: "modifyPassword",
     props: ['modifyPasswordDialog'],
@@ -48,7 +53,7 @@
       CustomModal
     },
     methods: {
-      closeModal(){
+      closeModal() {
         this.$emit('handCancel')
       },
       onSubmit(formName) {
@@ -94,5 +99,26 @@
 
   .bottom-button {
     text-align: center;
+  }
+
+  .relative-div {
+    position: relative;
+  }
+
+  .prefix-icon {
+    position: absolute;
+    color: #4A7BED;
+    left: 10px;
+    top: 10px;
+  }
+
+  .content /deep/ .el-input--mini .el-input__inner {
+    height: 40px;
+    padding-left: 32px;
+  }
+
+  .content /deep/ .el-button--mini {
+    height: 40px;
+    width: 100%;
   }
 </style>

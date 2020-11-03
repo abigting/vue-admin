@@ -61,3 +61,12 @@ export function getSystemType(data) {
     data
   })
 }
+
+// 机构列表查询接口
+export function queryDicJgList(data) {
+  return request({
+    url: '/xnrh-yhzx/api/common/queryDicJgList',
+    method: 'post',
+    data
+  })
+}

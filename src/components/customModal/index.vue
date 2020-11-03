@@ -4,8 +4,9 @@
     <div class="dialog-cover" v-show="visible" @click.self="handCancel">
       <div class="dialog-content" v-drag>
         <div class="drag-title-header">
-          <div class="has-left-border">{{title}}</div>
-          <i class="el-icon-close" @click="handCancel"></i>
+          <div v-if="title" class="has-left-border">{{title}}</div>
+          <div v-if="bigTitle" class="big-title">{{bigTitle}}</div>
+          <i v-if="!closeIcon" class="el-icon-close" @click="handCancel"></i>
         </div>
         <div class="content">
           <slot></slot>
@@ -18,7 +19,7 @@
 <script>
   export default {
     name: "index",
-    props: ['visible', 'title'],
+    props: ['visible', 'title', 'bigTitle', 'closeIcon'],
     methods: {
       handCancel() {
         this.$emit('handCancel')
@@ -87,7 +88,7 @@
     bottom: 0;
     right: 0;
     background: rgba(0,0,0,.6);
-    z-index: 99999;
+    z-index: 999;
     .dialog-content{
 
       border-radius: 6px;
@@ -221,6 +222,11 @@
       padding-left: 20px;
       color: #4e5472;
       font-size: 20px;
+    }
+    .big-title{
+      font-size: 20px;
+      position: relative;
+      display: inline-block;
     }
     //带有蓝色左边框的标题
     .has-left-border {

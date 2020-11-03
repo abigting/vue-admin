@@ -100,21 +100,26 @@
             <el-col :span="6">
               <el-form-item label="所在机构：" prop="areacode">
                 <el-cascader
-                  :options="address"
+                  :options="cityAddress"
                   v-model="form.areacode"
                   :props="{
                   expandTrigger: 'hover',
                   value: 'code',
                   label: 'name'
                 }"
-                  clearable
+                  @change="changeAreaCode"
                   placeholder="请选择地区"
                 ></el-cascader>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="" prop="orgname" label-width="0">
-                <el-input v-model="form.orgname"></el-input>
+                <el-select v-model="form.orgcode" placeholder="">
+                  <el-option v-for="item in dicJgList"
+                             :label="item.orgname"
+                             :value="item.orgcode"
+                             :key="item.orgcode"></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -135,17 +140,17 @@
                 <el-checkbox label="卫生监督员" v-model="form.isWsjdy"></el-checkbox>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="6" v-if="form.isWsjdy">
               <el-form-item label-width="78px" label="胸牌号：" prop="xph">
                 <el-input v-model="form.xph" style="width: 155px"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="7">
+            <el-col :span="7" v-if="form.isWsjdy">
               <el-form-item label-width="136px" label="行政执法证号：" prop="zfzh">
                 <el-input v-model="form.zfzh" style="width: 155px"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="8" v-if="form.isWsjdy">
               <el-form-item label-width="200px" label="参加卫生监督工作日期：">
                 <el-date-picker type="date" v-model="form.jdWorkDate"
                                 style="width: 100%;" value-format="yyyy-MM-dd"></el-date-picker>
@@ -173,7 +178,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-form-item label-width="0">
+              <el-form-item label-width="0" v-if="form.isSsjjdy">
                 <el-checkbox label="双随机在岗" v-model="form.isSsjzg"></el-checkbox>
               </el-form-item>
             </el-col>
@@ -348,50 +353,16 @@
             {required: true, message: '请输入电子邮箱', trigger: 'blur'},
             {validator: emailValidator, trigger: 'blur'},
           ],
+          areacode: [
+            {required: true, message: '请输入所在机构', trigger: 'blur'},
+          ],
+          orgcode: [
+            {required: true, message: '请输入所在机构', trigger: 'blur'},
+          ],
           // checkCode: [
           //   {required: true, message: '请输入手机验证码', trigger: 'blur'},
           // ]
         },
-        professionList: [{
-          label: '生活饮用水卫生专业',
-          value: '0'
-        }, {
-          label: '职业卫生专业',
-          value: '1'
-        }, {
-          label: '公共场所卫生专业',
-          value: '2'
-        }, {
-          label: '放射卫生专业',
-          value: '3'
-        }, {
-          label: '传染病管理专业',
-          value: '4'
-        }, {
-          label: '医疗服务监督专业',
-          value: '5'
-        }, {
-          label: '采供血监督专业',
-          value: '6'
-        }, {
-          label: '学校卫生专业',
-          value: '7'
-        }, {
-          label: '计划生育专业',
-          value: '8'
-        }, {
-          label: '消毒产品专业',
-          value: '9'
-        }, {
-          label: '餐饮具消毒专业',
-          value: '10'
-        }, {
-          label: '病媒生物预防控制专业',
-          value: '11'
-        }, {
-          label: '其他专业',
-          value: '12'
-        }],
       };
     },
     created() {
@@ -423,7 +394,6 @@
                 isSsjzg: isSsjzg ? 1 : 0,
                 ssjzyfw: ssjzyfw ? ssjzyfw : [],
                 areacode: '330000000',
-                orgcode: '123'
               }
             };
             userApi.register(req).then((res) => {
@@ -432,6 +402,7 @@
                   message: "注册成功",
                   type: "success",
                 });
+                this.$router.push('/login')
               }
             });
           } else {
@@ -441,6 +412,16 @@
       },
       cancel() {
         this.$router.go(-1)
+      },
+      changeAreaCode(value) {
+        if (value) {
+          this.queryDicJgList({
+            areaCode: value[value.length - 1],
+            type: 2
+          });
+        } else {
+
+        }
       }
     }
   }
@@ -522,7 +503,6 @@
 
   .registerForm {
     width: 1200px;
-    height: 800px;
     display: inline-block;
     margin-top: 122px;
     text-align: left;
@@ -533,14 +513,14 @@
   }
 
   .content {
-    padding: 30px 70px 30px 70px;
+    padding: 30px 70px 8px 70px;
     max-height: 660px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   .operation {
     text-align: center;
-    margin-top: 8px;
+    margin: 8px 0 16px 0;
   }
 
   .hint {
@@ -586,6 +566,12 @@
   @media screen and (max-width: 1600px) {
     .registerForm {
       margin-bottom: 40px;
+    }
+  }
+
+  @media screen and (max-width: 1400px) {
+    .content {
+      max-height: 500px;
     }
   }
 </style>

@@ -24,12 +24,11 @@ request.interceptors.response.use(async (res) => {
     if (success) {
       return value || {};
     } else {
-
       //检验类提示
       if (errorCode === 'validator') {
         let messageData = '';
-        if (res.attachments.errors && res.attachments.errors.length) {
-          res.attachments.errors.forEach(s => messageData = messageData.concat(`${s.name}${s.message}`, ';'));
+        if (data.attachments.errors && data.attachments.errors.length) {
+          data.attachments.errors.forEach(s => messageData = messageData.concat(`${s.name}${s.message}`, ';'));
           Message.error(messageData);
         }
       } else if (errorCode === 'AUTH.RESOURCE.E0002' || errorCode === 'AUTH.RESOURCE.E0001') {

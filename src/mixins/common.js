@@ -19,8 +19,9 @@ export default {
       },
       dicRoleList:[],
       address:[],  /*行政区划*/
-      cityAddress:[],
-      systemTypeList:[] /*系统类型*/
+      cityAddress:[],  /*行政区划，到市*/
+      systemTypeList:[], /*系统类型*/
+      dicJgList:[]
     }
   },
   created() {
@@ -114,6 +115,19 @@ export default {
       commonApi.getSystemType({}).then(res => {
         if(res){
           this.systemTypeList = res.systemType
+        }
+      })
+    },
+    /**
+     * @parameter areaCode,type
+     * @description 机构列表查询
+     * @author Feng.xiuting
+     * @date 2020-11-3
+     */
+    queryDicJgList(data) {
+      commonApi.queryDicJgList(data).then(res => {
+        if(res){
+          this.dicJgList = res
         }
       })
     },

@@ -1,4 +1,3 @@
-
 //时间选择器
 export const pickerOptions = {
   shortcuts: [{
@@ -101,9 +100,9 @@ export const trainContent = [
 
 // 月份
 export const monthMap = [{
-    name: "1月",
-    code: 1
-  },
+  name: "1月",
+  code: 1
+},
   {
     name: "2月",
     code: 2
@@ -148,4 +147,28 @@ export const monthMap = [{
     name: "12月",
     code: 12
   }
-]
+];
+
+//用户状态
+export const userStatus = [
+  {
+    label: '待审核',
+    value: '0',
+  },
+  {
+    label: '启用',
+    value: '1',
+  },
+  {
+    label: '未启用',
+    value: '2',
+  },
+  {
+    label: '审核未通过',
+    value: '3',
+  },
+  {
+    label: '已删除',
+    value: '4',
+  },
+];

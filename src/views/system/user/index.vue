@@ -21,19 +21,20 @@
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="当前状态：">
               <el-select v-model="queryForm.status" placeholder="请选择当前状态" clearable>
-                <el-option label="待审核" :value="0"></el-option>
-                <el-option label="启用" :value="1"></el-option>
-                <el-option label="未启用" :value="2"></el-option>
-                <el-option label="审核未通过" :value="3"></el-option>
-                <el-option label="已删除" :value="4"></el-option>
+                <el-option v-for="item in userStatus"
+                           :label="item.label"
+                           :value="item.value"
+                           :key="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="所属子系统：">
               <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
-                <el-option label="自查自律" :value="1"></el-option>
-                <el-option label="效能融合" :value="2"></el-option>
+                <el-option :label="item.value"
+                           :value="item.code"
+                           v-for="item in systemTypeList"
+                           :key="item.code"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -43,7 +44,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
-<!--            <el-button type="primary" plain @click="addItem">新增</el-button>-->
+            <!--            <el-button type="primary" plain @click="addItem">新增</el-button>-->
             <el-button type="primary" class="ml24" plain @click="exportExecl">导出</el-button>
             <el-button type="primary" @click="toQuery">查询</el-button>
           </el-col>
@@ -60,7 +61,7 @@
         <el-table-column prop="idcard" label="身份证号" width="150" align="center"></el-table-column>
         <el-table-column prop="orgname" label="所在机构" align="center"></el-table-column>
         <el-table-column prop="systemNames" label="所属子系统" width="140" align="center"></el-table-column>
-        <el-table-column prop="roleNames" label="角色" min-width="100"  align="center"></el-table-column>
+        <el-table-column prop="roleNames" label="角色" min-width="100" align="center"></el-table-column>
         <el-table-column prop="status" label="当前状态" width="100" align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.status===0" class="dot dot-blue"></span>
@@ -71,7 +72,7 @@
             <span>{{statusMap[scope.row.status]}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="280" align="center">
+        <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="showDetail(scope.row,2)">详情</el-button>
             <el-popconfirm title="确定禁用？" class="disabled-btn" @onConfirm="handDisbale(scope.row)">
@@ -79,7 +80,7 @@
             </el-popconfirm>
             <span class="blue-text" @click="showDetail(scope.row,1)">审核</span>
             <el-button type="text" size="small" class="modify-btn" @click="showDetail(scope.row,0)">修改</el-button>
-            <el-popconfirm title="确定删除吗？" @onConfirm="showDetail(scope.row,scope.$index)">
+            <el-popconfirm title="确定删除吗？" @onConfirm="deleteItem(scope.row,scope.$index)">
               <span class="delete-btn" slot="reference">删除</span>
             </el-popconfirm>
             <!-- <el-popconfirm title="确定重置吗？" @onConfirm="reset(scope.row)">
@@ -106,15 +107,20 @@
 </template>
 
 <script>
-  import initData from "@/mixins/initData";
-  import * as userApi from "@/api/system/user";
+  import initData from "@/mixins/initData"
+  import common from "@/mixins/common"
+  import {userStatus} from "@/mixins/dictionary"
+  import * as userApi from "@/api/system/user"
   import Detail from './detail'
+  import {Message} from "element-ui"
+
   export default {
     name: "index",
     components: {Detail},
-    mixins: [initData],
+    mixins: [initData, common],
     data() {
       return {
+        userStatus: userStatus,
         statusMap: ['待审核', '启用', '未启用', '审核未通过', '已删除'],
         operationType: null, //0编辑 1审核 2详情查看
         yhlx: 2, //测试用户类型 效能/自查
@@ -154,6 +160,7 @@
     },
     created() {
       this.getList();
+      this.getSystemType();
     },
     methods: {
       async getList() {
@@ -194,12 +201,24 @@
         this.getList();
       },
       //1-审核;2-详情
-      showDetail(row, type){
+      showDetail(row, type) {
         this.currentItem = row;
         this.operationType = type;
         this.dialogVisible = true;
       },
-
+      deleteItem(item) {
+        userApi.deleteItem({
+          userId: item.userId
+        }).then(res => {
+          if (res) {
+            this.getList();
+            Message({
+              message: '删除成功',
+              type: 'success'
+            });
+          }
+        })
+      },
       //新增
       addItem() {
         this.dialogVisible = true;
