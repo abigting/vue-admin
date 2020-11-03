@@ -242,8 +242,8 @@
 </template>
 
 <script>
-  import * as userApi from "@/api/user";
-  import common from "@/mixins/common";
+  import * as userApi from "@/api/user"
+  import common from "@/mixins/common"
 
   export default {
     mixins: [common],

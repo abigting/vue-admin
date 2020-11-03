@@ -29,7 +29,7 @@
           <el-form-item label="目前角色：">
             <div class="current-role">超级管理员</div>
           </el-form-item>
-          <el-form-item label="重新分配角色：" prop="checkList">
+          <el-form-item label="重新分配角色：" prop="checkList" class="mb0">
             <el-checkbox-group v-model="info.checkList">
               <el-checkbox label="1">卫生监督员</el-checkbox>
               <el-checkbox label="2">档案管理员</el-checkbox>
@@ -131,25 +131,24 @@
               </el-input>
             </div>
           </el-form-item>
-          <el-form-item label="分配角色：" prop="checkList" v-if="yhlx===1">
-            <el-checkbox-group v-model="info.checkList">
-              <el-checkbox label="1">卫生监督员</el-checkbox>
-              <el-checkbox label="2">档案管理员</el-checkbox>
-              <el-checkbox label="3">投诉举报员</el-checkbox>
-              <el-checkbox label="4">双随机监督员</el-checkbox>
+          <el-form-item label="分配角色：" prop="checkList" class="mb0" v-if="yhlx===1">
+            <el-checkbox-group v-model="roles">
+              <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-form>
       </div>
-      <!-- 按钮组 -->
-      <div class="bottom-button">
-        <div v-if="operationType===0||operationType===1">
-          <el-button plain @click="closeModal">取消</el-button>
-          <el-button type="primary" @click="submit">保存</el-button>
-        </div>
-        <div v-if="operationType===2">
-          <el-button type="primary" @click="dialogVisible=false">关闭</el-button>
-        </div>
+    </div>
+    <!-- 按钮组 -->
+    <el-divider class="mb20 mt0"></el-divider>
+    <div class="operation">
+      <div v-if="operationType===0||operationType===1">
+        <el-button plain @click="closeModal">取消</el-button>
+        <el-button type="primary" @click="submit">保存</el-button>
+      </div>
+      <div v-if="operationType===2">
+        <el-button type="primary" @click="dialogVisible=false">关闭</el-button>
       </div>
     </div>
   </CustomModal>
@@ -157,16 +156,21 @@
 
 <script>
   import CustomModal from '@/components/customModal'
-
+  import common from "@/mixins/common"
   export default {
     name: "index",
+    mixins: [common],
     props: ['dialogVisible', 'operationType', 'currentItem'],
     components: {
       CustomModal
     },
+    created() {
+      this.queryDicRoleList();
+    },
     data() {
       return {
         form: {},
+        roles:[],
         row: {},
         yhlx: 1,
         current: {},
@@ -226,13 +230,17 @@
     width: 340px;
   }
 
-  .bottom-button {
+  .operation {
     text-align: center;
+    margin: 8px 0 16px 0;
   }
 
   //用户信息区域
   .user-info-block {
     width: 1000px;
+    height: 600px;
+    overflow-y: auto;
+    padding: 30px 40px;
   }
 
   // 基本信息块

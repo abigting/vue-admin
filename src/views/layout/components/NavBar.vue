@@ -284,15 +284,15 @@
 <style lang="scss">
   .navbar-pages {
     height: 54px;
-    line-height: 54px;
+    /*line-height: 54px;*/
     background: #fff;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     position: relative;
 
-    .el-input__inner {
-      height: 34px !important;
-      line-height: 34px !important;
-    }
+    /*.el-input__inner {*/
+    /*  height: 34px !important;*/
+    /*  line-height: 34px !important;*/
+    /*}*/
 
     .loginout-cover {
       position: fixed;

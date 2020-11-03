@@ -78,7 +78,7 @@
 
 <style scoped lang="scss">
   .content{
-    padding: 30px 40px;
+    /*padding: 30px 40px;*/
   }
   // 弹窗
   .dialog-cover{
@@ -112,7 +112,7 @@
       background: #FFFFFF;
       box-shadow: 0px 5px 13px 0px rgba(219, 219, 219, 0.5);
       border-radius: 6px 6px 0px 0px;
-
+      line-height: 24px;
       font-weight: 600;
       color: #4A7BED;
     }

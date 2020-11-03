@@ -449,34 +449,17 @@
     color: #606266;
   }
 
-  .registerWrapper {
-    /*background: url("../../assets/img/bg.png") bottom;*/
-    width: 100%;
-    background-size: cover;
-    text-align: center;
-    min-height: 100vh;
-
-    .header {
-      width: 100%;
-      height: 74px;
-      position: fixed;
-      z-index: 2;
-      background-size: cover;
-      box-shadow: 0 5px 13px 0px rgba(219, 219, 219, 0.5);
-      background-position: center;
-    }
-  }
-
   .registerForm {
     width: 1120px;
     max-height: 660px;
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 30px 40px;
   }
 
   .operation {
     text-align: center;
-    margin: 8px 0 0 0;
+    margin: 8px 0 24px 0;
   }
 
 

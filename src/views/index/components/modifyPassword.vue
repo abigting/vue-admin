@@ -34,10 +34,10 @@
           </el-col>
         </el-row>
       </el-form>
-    </div>
-    <!-- 按钮组 -->
-    <div class="bottom-button">
-      <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+      <!-- 按钮组 -->
+      <div class="bottom-button">
+        <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+      </div>
     </div>
   </CustomModal>
 </template>
@@ -94,11 +94,14 @@
 
 <style scoped lang="scss">
   .content {
-    width: 340px;
+    width: 420px;
+    padding: 30px 40px;
   }
 
   .bottom-button {
     text-align: center;
+    width: 120px;
+    margin: 12px auto 0 auto;
   }
 
   .relative-div {
