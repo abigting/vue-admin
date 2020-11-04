@@ -16,20 +16,21 @@
         </div>
         <div class="block phone">
           <span>手机号</span>
-          <div class="allow-edit" v-if="operationType===0">
-            <el-input v-model="currentItem.telphone" placeholder="请输入"></el-input>
-            <i class="el-icon-edit"></i>
+          <div class="allow-edit" v-if="editPhone">
+            <el-input v-model="currentItem.telphone" class="edit-phone" placeholder="请输入"></el-input>
+
           </div>
           <p v-else>{{currentItem.telphone}}</p>
+          <i class="el-icon-edit" @click="editPhone=true"></i>
         </div>
       </div>
       <!-- 编辑修改情况 -->
       <div v-if="operationType===0" class="edit-role-block">
-        <el-form :model="info" :rules="rules" ref="infoForm" label-width="140px" label-position="left">
+        <el-form :model="info" :rules="rules" ref="infoForm" label-width="100px" label-position="left">
           <el-form-item label="目前角色：">
             <div class="current-role">超级管理员</div>
           </el-form-item>
-          <el-form-item label="重新分配角色：" prop="checkList" class="mb0">
+          <el-form-item label="重新分配角色：" label-width="120px" prop="checkList">
             <el-checkbox-group v-model="info.checkList">
               <el-checkbox label="1">卫生监督员</el-checkbox>
               <el-checkbox label="2">档案管理员</el-checkbox>
@@ -115,33 +116,34 @@
           </p>
         </div>
       </div>
-      <!-- 审核操作 -->
-      <div class="operation-block has-top-line clear-float" v-if="operationType===1">
-        <el-form :model="info" :rules="rules" ref="infoForm" label-width="140px" label-position="left">
-          <el-form-item label="是否同意：" prop="radio">
-            <el-radio-group v-model="info.radio">
-              <el-radio :label="0">是</el-radio>
-              <el-radio :label="1">否</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="驳回原因：" prop="reson" v-if="info.radio==1">
-            <div style="width: 60%;">
-              <el-input type="textarea" :rows="4" maxlength="200" show-word-limit placeholder="请输入原因"
-                        v-model="info.reson">
-              </el-input>
-            </div>
-          </el-form-item>
-          <el-form-item label="分配角色：" prop="checkList" class="mb0" v-if="yhlx===1">
-            <el-checkbox-group v-model="roles">
-              <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-        </el-form>
-      </div>
+
     </div>
     <!-- 按钮组 -->
     <el-divider class="mb20 mt0"></el-divider>
+    <!-- 审核操作 -->
+    <div class="audit"  v-if="operationType===1">
+      <el-form :model="info" :rules="rules" ref="infoForm" label-width="84px" label-position="left">
+        <el-form-item label="是否同意：" prop="radio">
+          <el-radio-group v-model="info.radio">
+            <el-radio :label="0">是</el-radio>
+            <el-radio :label="1">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="驳回原因：" prop="reson" v-if="info.radio===1">
+          <div style="width: 60%;">
+            <el-input type="textarea" :rows="4" label-width="84px" show-word-limit placeholder="请输入原因"
+                      v-model="info.reson">
+            </el-input>
+          </div>
+        </el-form-item>
+        <el-form-item label="分配角色：" prop="checkList" label-width="84px" class="mb0" v-if="yhlx===1">
+          <el-checkbox-group v-model="roles">
+            <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+    </div>
     <div class="operation">
       <div v-if="operationType===0||operationType===1">
         <el-button plain @click="closeModal">取消</el-button>
@@ -175,6 +177,7 @@
         yhlx: 1,
         current: {},
         info:{},
+        editPhone: false,
         rules: {
           system: [
             {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
@@ -240,7 +243,7 @@
     width: 1000px;
     height: 600px;
     overflow-y: auto;
-    padding: 30px 40px;
+    padding: 30px 40px 0 30px;
   }
 
   // 基本信息块
@@ -261,7 +264,7 @@
       span {
         font-size: 14px;
         font-weight: 400;
-        color: rgba(58, 61, 73, .5);
+        color: rgba(58, 61, 73, 0.8);
         line-height: 20px;
       }
 
@@ -560,5 +563,15 @@
     font-size: 14px;
     font-weight: 500;
     color: #4985FE;
+  }
+
+  .audit{
+    padding: 0 30px;
+  }
+
+  .edit-phone /deep/ .el-input__inner{
+    border: 0;
+    height: 28px;
+    padding: 0;
   }
 </style>

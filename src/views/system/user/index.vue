@@ -205,6 +205,12 @@
         this.currentItem = row;
         this.operationType = type;
         this.dialogVisible = true;
+
+        userApi.getInfo({id: 1}).then(res => {
+          if (res) {
+            this.currentItem = row;
+          }
+        })
       },
       deleteItem(item) {
         userApi.deleteItem({
