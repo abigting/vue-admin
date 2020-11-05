@@ -100,7 +100,7 @@
                      :page-size="queryForm.size"/>
     </div>
     <Detail :dialogVisible="dialogVisible"
-            :currentItem="currentItem"
+            :item="currentItem"
             :operationType="operationType"
             @handCancel="dialogVisible = false"/>
   </div>
@@ -206,9 +206,9 @@
         this.operationType = type;
         this.dialogVisible = true;
 
-        userApi.getInfo({id: 1}).then(res => {
+        userApi.getInfo({userId: row.userId}).then(res => {
           if (res) {
-            this.currentItem = row;
+            this.currentItem = res;
           }
         })
       },

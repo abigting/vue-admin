@@ -35,3 +35,13 @@ export function createImageCode(data) {
     data
   })
 }
+
+
+// 通过ID查询用户详细基本信息接口
+export function queryUserBaseInfoByUserId(data) {
+  return request({
+    url: '/xnrh-yhzx/api/user/queryUserBaseInfoByUserId',
+    method: 'post',
+    data
+  })
+}

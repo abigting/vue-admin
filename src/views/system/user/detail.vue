@@ -5,23 +5,22 @@
       <div class="basic-info clear-float">
         <div class="block name">
           <span>姓名</span>
-          <p>{{currentItem.name}}</p>
+          <p>{{userBaseInfoVo.name}}</p>
         </div>
         <div class="block id-card">
           <span>身份证号</span>
-          <p>{{currentItem.idcard}}
+          <p>{{userBaseInfoVo.idcard}}
             <i class="el-icon-warning" :class="{'show-history':current===currentItem.idcard}" @click="handHistory(row.idcard)">
-              <div class="history-info-wrap">{{currentItem.idcard}}</div>
+              <div class="history-info-wrap">{{userBaseInfoVo.idcard}}</div>
             </i></p>
         </div>
         <div class="block phone">
           <span>手机号</span>
-          <div class="allow-edit" v-if="editPhone">
-            <el-input v-model="currentItem.telphone" class="edit-phone" placeholder="请输入"></el-input>
-
+          <div class="allow-edit" v-show="editPhone">
+            <el-input ref="editPhone" v-model="userBaseInfoVo.telphone" class="edit-phone" placeholder="请输入"></el-input>
           </div>
-          <p v-else>{{currentItem.telphone}}</p>
-          <i class="el-icon-edit" @click="editPhone=true"></i>
+          <p v-if="!editPhone">{{userBaseInfoVo.telphone}}</p>
+          <i v-if="operationType===0" class="iconfont iconbianjishoujihao icon-edit" @click="handleEdit"></i>
         </div>
       </div>
       <!-- 编辑修改情况 -->
@@ -31,11 +30,9 @@
             <div class="current-role">超级管理员</div>
           </el-form-item>
           <el-form-item label="重新分配角色：" label-width="120px" prop="checkList">
-            <el-checkbox-group v-model="info.checkList">
-              <el-checkbox label="1">卫生监督员</el-checkbox>
-              <el-checkbox label="2">档案管理员</el-checkbox>
-              <el-checkbox label="3">投诉举报员</el-checkbox>
-              <el-checkbox label="4">双随机监督员</el-checkbox>
+            <el-checkbox-group v-model="roles">
+              <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
+              </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-form>
@@ -50,66 +47,68 @@
           <div class="custom-info-list" v-if="yhlx===1">
             <el-row>
               <el-col :span="12">
-                <p><span>所在机构：</span>{{currentItem.orgname}}</p>
+                <p><span>所在机构：</span>{{userBaseInfoVo.orgname}}</p>
               </el-col>
               <el-col :span="12">
-                <p><span>所在科室：{{currentItem.department}}</span></p>
+                <p><span>所在科室：</span>{{userBaseInfoVo.department}}</p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>民族：</span>{{currentItem.mz}}</p>
+                <p><span>民族：</span>{{userBaseInfoVo.mz}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>出生日期：</span>{{currentItem.birthday}}</p>
+                <p><span>出生日期：</span>{{userBaseInfoVo.birthday}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>政治面貌：</span>{{currentItem.zzmm}}</p>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6">
-                <p><span>学历：</span>{{currentItem.xl}}</p>
-              </el-col>
-              <el-col :span="6">
-                <p><span>学位：</span>{{currentItem.xw}}</p>
-              </el-col>
-              <el-col :span="6">
-                <p><span>毕业院校：</span>{{currentItem.university}}</p>
-              </el-col>
-              <el-col :span="6">
-                <p><span>参加工作日期：</span>{{currentItem.workDate}}</p>
+                <p><span>政治面貌：</span>{{userBaseInfoVo.zzmm}}</p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>所学专业：</span>{{currentItem.discipline}}</p>
+                <p><span>学历：</span>{{userBaseInfoVo.xl}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>职务：</span>{{currentItem.zw}}</p>
+                <p><span>学位：</span>{{userBaseInfoVo.xw}}</p>
               </el-col>
               <el-col :span="6">
-                <p><span>职称：</span>{{currentItem.zc}}</p>
+                <p><span>毕业院校：</span>{{userBaseInfoVo.university}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>参加工作日期：</span>{{userBaseInfoVo.workDate}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <p><span>所学专业：</span>{{userBaseInfoVo.discipline}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>职务：</span>{{userBaseInfoVo.zw}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>职称：</span>{{userBaseInfoVo.zc}}</p>
               </el-col>
             </el-row>
           </div>
           <div class="zicha-custom-info" v-else>
-            <p><span>所在企业：</span>{{currentItem.Fiona}}</p>
+            <p><span>所在企业：</span>{{zcUserExtraInfoVo.zcCompName}}</p>
           </div>
         </div>
         <!-- 职位信息 -->
         <div class="position-info-block has-top-line clear-float" v-if="yhlx===1">
-          <div class="title title-1">卫生监督员</div>
-          <div class="info-list">
-            <p><span>胸牌号：</span>1245844444</p>
-            <p><span>行政执法号：</span>123456789</p>
-            <p><span class="long-title-wrap">参加监督工作日期：</span>2001-01-01</p>
+          <div v-if="userBaseInfoVo.isWsjdy===1">
+            <div class="title title-1">卫生监督员</div>
+            <div class="info-list">
+              <p><span>胸牌号：</span>{{userBaseInfoVo.xph}}</p>
+              <p><span>行政执法号：</span>{{userBaseInfoVo.zfzh}}</p>
+              <p><span class="long-title-wrap">参加监督工作日期：</span>{{userBaseInfoVo.jdWorkDate}}</p>
+            </div>
           </div>
-          <div class="title">档案管理员</div>
-          <div class="title">投诉举报专员</div>
-          <div class="title">双随机监督员</div>
-          <div class="title">双随机在岗</div>
-          <p class="range-block"><span>执业范围：</span>生活饮用水，职业卫生，放射卫生，传染病管理
+          <div v-if="userBaseInfoVo.isDagly===1" class="title">档案管理员</div>
+          <div v-if="userBaseInfoVo.isTsjbzy===1" class="title">投诉举报专员</div>
+          <div v-if="userBaseInfoVo.isSsjjdy===1" class="title">双随机监督员</div>
+          <div v-if="userBaseInfoVo.isSsjzg===1" class="title">双随机在岗</div>
+          <p class="range-block"><span>执业范围：</span>{{userBaseInfoVo.ssjzyfwText}}
             <i class="el-icon-warning" :class="{'show-history':current=='我是历史信息。。。'}" @click="handHistory('我是历史信息。。。')">
               <div class="history-info-wrap">生活饮用水</div>
             </i></p>
@@ -150,7 +149,7 @@
         <el-button type="primary" @click="submit">保存</el-button>
       </div>
       <div v-if="operationType===2">
-        <el-button type="primary" @click="dialogVisible=false">关闭</el-button>
+        <el-button type="primary" @click="closeModal">关闭</el-button>
       </div>
     </div>
   </CustomModal>
@@ -162,12 +161,19 @@
   export default {
     name: "index",
     mixins: [common],
-    props: ['dialogVisible', 'operationType', 'currentItem'],
+    props: ['dialogVisible', 'operationType', 'item'],
     components: {
       CustomModal
     },
     created() {
       this.queryDicRoleList();
+    },
+    watch:{
+      item(newVal){
+        const {userBaseInfoVo, zcUserExtraInfoVo} =newVal;
+        this.userBaseInfoVo = userBaseInfoVo||{};
+        this.zcUserExtraInfoVo = zcUserExtraInfoVo||{};
+      }
     },
     data() {
       return {
@@ -178,6 +184,9 @@
         current: {},
         info:{},
         editPhone: false,
+        currentItem:{},
+        userBaseInfoVo:{},
+        zcUserExtraInfoVo:{},
         rules: {
           system: [
             {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
@@ -192,23 +201,11 @@
       }
     },
     methods: {
-      // 审核
-      handExamine(row, type) {
-        this.row = row;
-        this.operationType = type;
-        this.dialogVisible = true;
-      },
-      // 编辑
-      handEditor(row, type) {
-        this.row = row;
-        this.operationType = type;
-        this.dialogVisible = true;
-      },
-      //查看
-      handRead(row, type) {
-        this.row = row;
-        this.operationType = type;
-        this.dialogVisible = true;
+      handleEdit(){
+        this.editPhone=!this.editPhone;
+        if(this.editPhone){
+          this.$refs.editPhone.focus();
+        }
       },
       //查看弹窗信息-历史信息
       handHistory(row) {
@@ -243,7 +240,7 @@
     width: 1000px;
     height: 600px;
     overflow-y: auto;
-    padding: 30px 40px 0 30px;
+    padding: 16px 30px 0 30px;
   }
 
   // 基本信息块
@@ -479,7 +476,7 @@
 
   //手机号可编辑情况
   .allow-edit {
-    width: 80%;
+    width: 68%;
     display: flex;
     align-items: center;
 
@@ -573,5 +570,19 @@
     border: 0;
     height: 28px;
     padding: 0;
+    font-weight: 600;
+    color: #3a3d49;
+    font-size: 14px;
+  }
+
+  .phone{
+    position: relative;
+  }
+
+  .icon-edit{
+    position: absolute;
+    right: 34%;
+    bottom: 6px;
+    color: #4985FE;
   }
 </style>
