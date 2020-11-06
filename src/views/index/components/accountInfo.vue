@@ -245,6 +245,8 @@
   import CustomModal from '@/components/customModal'
   import * as userApi from "@/api/user";
   import common from "@/mixins/common";
+  import {getUserInfo} from "@/utils/auth";
+  import {splitAddrCodeWithStreet} from "@/utils/common";
 
   export default {
     name: "accountInfo",
@@ -280,22 +282,22 @@
       };
       return {
         form: {
-          roles: [],
-          ssjzyfw: [],
-          telphone: "17859865320",
-          idcard: '330721199006077122',
-          name: 'Fiona',
-          sex: '1',
-          mz: '01',
-          birthday: "2020-11-11",
-          zzmm: "zzmm01",
-          xl: "jbxl01",
-          xw: 'xw',
-          university: '1',
-          discipline: '2',
-          zw: '3',
-          zc: '4',
-          email: '115468520@qq.com'
+          // roles: [],
+          // ssjzyfw: [],
+          // telphone: "17859865320",
+          // idcard: '330721199006077122',
+          // name: 'Fiona',
+          // sex: '1',
+          // mz: '01',
+          // birthday: "2020-11-11",
+          // zzmm: "zzmm01",
+          // xl: "jbxl01",
+          // xw: 'xw',
+          // university: '1',
+          // discipline: '2',
+          // zw: '3',
+          // zc: '4',
+          // email: '115468520@qq.com'
         },
         disabled: true,
         rules: {
@@ -377,16 +379,41 @@
         },
       };
     },
+    watch:{
+      accountInfoVisible(newVal){
+        if(newVal){
+          this.getDictionary("xl");
+          this.getDictionary("xw");
+          this.getDictionary("ssjzyfw");
+          this.getDictionary("zzmm");
+          this.getDictionary("mz");
+          this.getAreaInfo();
+          this.queryDicRoleList();
+          this.getInfo();
+        }
+      }
+    },
     created() {
-      this.getDictionary("xl");
-      this.getDictionary("xw");
-      this.getDictionary("ssjzyfw");
-      this.getDictionary("zzmm");
-      this.getDictionary("mz");
-      this.getAreaInfo();
-      this.queryDicRoleList();
+
     },
     methods: {
+      getInfo() {
+        userApi.queryUserBaseInfoByUserId({userId: getUserInfo().userId}).then((res) => {
+          if (res) {
+            const {isWsjdy, isDagly, isTsjbzy, isSsjzg, isSsjjdy, areacode} = res;
+            this.form = {
+              ...res,
+              isWsjdy: isWsjdy === 1,
+              isDagly: isDagly === 1,
+              isTsjbzy: isTsjbzy === 1,
+              isSsjjdy: isSsjjdy === 1,
+              isSsjzg: isSsjzg === 1,
+              areacode:splitAddrCodeWithStreet(areacode)
+            };
+            this.changeAreaCode(splitAddrCodeWithStreet(areacode))
+          }
+        });
+      },
       closeModal() {
         this.disabled = true;
         this.$emit('handCancel')
@@ -404,7 +431,7 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            const {roles, checkCode, telphone, idcard, isWsjdy, isDagly, isTsjbzy, isSsjjdy, isSsjzg, ssjzyfw, ...rest} = this.form;
+            const {roles, checkCode, areacode, telphone, idcard, isWsjdy, isDagly, isTsjbzy, isSsjjdy, isSsjzg, ssjzyfw, ...rest} = this.form;
             const req = {
               systemId: 33000000000,
               roles: roles,
@@ -419,7 +446,7 @@
                 isSsjjdy: isSsjjdy ? 1 : 0,
                 isSsjzg: isSsjzg ? 1 : 0,
                 ssjzyfw: ssjzyfw ? ssjzyfw : [],
-                areacode: '330000000',
+                areacode: areacode[areacode.length-1],
               }
             };
             userApi.register(req).then((res) => {

@@ -7,25 +7,25 @@
                label-width="0">
         <el-row>
           <el-col :span="24">
-            <el-form-item label-width="64px" label="手机号" prop="name">
-              13526985466
+            <el-form-item label-width="64px" label="手机号">
+              {{form.telphone}}
             </el-form-item>
           </el-col>
           <el-col :span="24" class="relative-div">
-            <el-form-item prop="name">
-              <el-input v-model="form.name" :show-password="true"></el-input>
+            <el-form-item prop="oldPassword">
+              <el-input v-model="form.oldPassword" :show-password="true" placeholder="请输入新密码"></el-input>
             </el-form-item>
             <i class="iconfont iconshurumima prefix-icon"></i>
           </el-col>
           <el-col :span="24" class="relative-div">
-            <el-form-item prop="name">
-              <el-input v-model="form.description" :show-password="true"></el-input>
+            <el-form-item prop="password">
+              <el-input v-model="form.password" :show-password="true" placeholder="请确认新密码"></el-input>
             </el-form-item>
             <i class="iconfont iconshurumima prefix-icon"></i>
           </el-col>
           <el-col :span="16" class="relative-div">
-            <el-form-item prop="name">
-              <el-input v-model="form.description" style="width: 96%"></el-input>
+            <el-form-item prop="checkCode">
+              <el-input v-model="form.checkCode" placeholder="请确认验证码" style="width: 96%"></el-input>
             </el-form-item>
             <i class="iconfont iconyanzhengma prefix-icon"></i>
           </el-col>
@@ -44,7 +44,8 @@
 
 <script>
   import CustomModal from '@/components/customModal'
-  import {getUserInfo} from '@/utils/auth';
+  import {getUserInfo} from '@/utils/auth'
+  import * as userApi from "@/api/user";
 
   export default {
     name: "modifyPassword",
@@ -52,30 +53,11 @@
     components: {
       CustomModal
     },
-    methods: {
-      closeModal() {
-        this.$emit('handCancel')
-      },
-      onSubmit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (!valid) {
-            // registerApi.register(this.form).then((res) => {
-            //   if(res){
-            //     this.$message({
-            //       message: "注册成功",
-            //       type: "success",
-            //     });
-            //   }
-            // });
-          } else {
-            return false;
-          }
-        });
-      },
-    },
     data() {
       return {
-        form: {},
+        form: {
+          telphone: getUserInfo().telphone
+        },
         rules: {
           system: [
             {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
@@ -88,6 +70,34 @@
           ],
         },
       }
+    },
+    methods: {
+      closeModal() {
+        this.form = {
+          telphone: getUserInfo().telphone
+        };
+        this.$emit('handCancel')
+      },
+      onSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            const {password, oldPassword} = this.form;
+            if (password !== oldPassword) {
+              this.$message.info('两次密码输入不同')
+            }
+            userApi.updatePassWord(this.form).then((res) => {
+              if (res) {
+                this.$message({
+                  message: "注册成功",
+                  type: "success",
+                });
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+      },
     },
   }
 </script>

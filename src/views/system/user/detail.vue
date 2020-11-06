@@ -41,10 +41,12 @@
       <div :class="{'is-edit-status':operationType===0}">
         <div class="detailed-info-block has-top-line clear-float">
           <div class="top-title-block" v-if="operationType!==0">
-            <div class="title">{{yhlx===1?'效能 / 办事人员':'自查 / 监督员'}}</div>
+            <div class="title" v-if="systemIds.includes('33000000000')">效能/ {{systemRoles}}</div>
+<!--            <div class="title" v-if="systemIds.includes('33000000001')">-->
+            <div class="title" v-else>自查/ {{systemRoles}}</div>
             <div class="triangle"></div>
           </div>
-          <div class="custom-info-list" v-if="yhlx===1">
+          <div class="custom-info-list" v-if="systemIds.includes('33000000000')">
             <el-row>
               <el-col :span="12">
                 <p><span>所在机构：</span>{{userBaseInfoVo.orgname}}</p>
@@ -90,12 +92,41 @@
               </el-col>
             </el-row>
           </div>
-          <div class="zicha-custom-info" v-else>
-            <p><span>所在企业：</span>{{zcUserExtraInfoVo.zcCompName}}</p>
+          <div class="custom-info-list" v-if="systemIds.includes('33000000001')">
+            <el-row>
+              <el-col :span="12">
+                <p><span>所属单位地址：</span>{{zcUserExtraInfoVo.zcAddr}}</p>
+              </el-col>
+              <el-col :span="12">
+                <p><span>所属单位名称：</span>{{zcUserExtraInfoVo.zcCompName}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>专业编码：</span>{{zcUserExtraInfoVo.zcCompSpec}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>人员类型：</span>{{zcUserExtraInfoVo.zcPersonType}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <p><span>健康证编码：</span>{{zcUserExtraInfoVo.zcHealthCertificate}}</p>
+              </el-col>
+              <el-col :span="12">
+                <p><span>健康证期限：</span>{{zcUserExtraInfoVo.zcStartDate}}至{{zcUserExtraInfoVo.zcEndDate}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <p><span>QQ号：</span>{{zcUserExtraInfoVo.zcQq}}</p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>工作年限：</span>{{zcUserExtraInfoVo.zcWorkYear}}年</p>
+              </el-col>
+            </el-row>
           </div>
         </div>
         <!-- 职位信息 -->
-        <div class="position-info-block has-top-line clear-float" v-if="yhlx===1">
+        <div class="position-info-block has-top-line clear-float" v-if="systemIds.includes('33000000000')">
           <div v-if="userBaseInfoVo.isWsjdy===1">
             <div class="title title-1">卫生监督员</div>
             <div class="info-list">
@@ -165,16 +196,6 @@
     components: {
       CustomModal
     },
-    created() {
-      this.queryDicRoleList();
-    },
-    watch:{
-      item(newVal){
-        const {userBaseInfoVo, zcUserExtraInfoVo} =newVal;
-        this.userBaseInfoVo = userBaseInfoVo||{};
-        this.zcUserExtraInfoVo = zcUserExtraInfoVo||{};
-      }
-    },
     data() {
       return {
         form: {},
@@ -198,6 +219,20 @@
             {required: true, message: '请输入角色说明', trigger: 'blur'},
           ],
         },
+        systemIds:[],
+        systemRoles:''
+      }
+    },
+    created() {
+      this.queryDicRoleList();
+    },
+    watch:{
+      item(newVal){
+        const {userBaseInfoVo, zcUserExtraInfoVo, systemIds, systemRoles} =newVal;
+        this.userBaseInfoVo = userBaseInfoVo||{};
+        this.zcUserExtraInfoVo = zcUserExtraInfoVo||{};
+        this.systemIds=systemIds||[];
+        this.systemRoles=systemRoles?systemRoles.join(','):'';
       }
     },
     methods: {

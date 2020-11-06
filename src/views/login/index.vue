@@ -159,10 +159,10 @@
         userApi.login(this.loginForm).then(res => {
           if (res) {
             const {token, userZcVo} = res;
-            const {name, sex, compName} = userZcVo;
+            const {name, sex, compName, telphone} = userZcVo;
             setCookie('token', token);
             setCookie('userInfo', {
-              name, sex, compName
+              name, sex, compName, telphone
             });
             this.$router.push({path: "/"});
           }

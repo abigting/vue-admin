@@ -45,3 +45,12 @@ export function queryUserBaseInfoByUserId(data) {
     data
   })
 }
+
+// 用户修改密码接口
+export function updatePassWord(data) {
+  return request({
+    url: '/xnrh-yhzx/api/user/updatePassWord',
+    method: 'post',
+    data
+  })
+}
