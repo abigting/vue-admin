@@ -12,14 +12,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="24" class="relative-div">
-            <el-form-item prop="oldPassword">
-              <el-input v-model="form.oldPassword" :show-password="true" placeholder="请输入新密码"></el-input>
+            <el-form-item prop="password">
+              <el-input v-model="form.password" :show-password="true" placeholder="请输入新密码"></el-input>
             </el-form-item>
             <i class="iconfont iconshurumima prefix-icon"></i>
           </el-col>
           <el-col :span="24" class="relative-div">
-            <el-form-item prop="password">
-              <el-input v-model="form.password" :show-password="true" placeholder="请确认新密码"></el-input>
+            <el-form-item prop="password2">
+              <el-input v-model="form.password2" :show-password="true" placeholder="请确认新密码"></el-input>
             </el-form-item>
             <i class="iconfont iconshurumima prefix-icon"></i>
           </el-col>
@@ -30,7 +30,7 @@
             <i class="iconfont iconyanzhengma prefix-icon"></i>
           </el-col>
           <el-col :span="8">
-            <el-button>获取验证码</el-button>
+            <el-button @click="getVerificationCode">获取验证码</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -59,14 +59,14 @@
           telphone: getUserInfo().telphone
         },
         rules: {
-          system: [
-            {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
+          password: [
+            {required: true, message: '请输入密码', trigger: 'blur'},
           ],
-          name: [
-            {required: true, message: '请输入角色名称', trigger: 'blur'},
+          password2: [
+            {required: true, message: '请确认密码', trigger: 'blur'},
           ],
-          description: [
-            {required: true, message: '请输入角色说明', trigger: 'blur'},
+          checkCode: [
+            {required: true, message: '请输入验证码', trigger: 'blur'},
           ],
         },
       }
@@ -78,19 +78,30 @@
         };
         this.$emit('handCancel')
       },
+      getVerificationCode() {
+        userApi.createTelphonCode({
+          checkType: 2,
+          telphone: this.form.telphone
+        }).then((res) => {
+          if (res) {
+            this.form.checkCode = res;
+          }
+        });
+      },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            const {password, oldPassword} = this.form;
-            if (password !== oldPassword) {
+            const {password, password2} = this.form;
+            if (password !== password2) {
               this.$message.info('两次密码输入不同')
             }
             userApi.updatePassWord(this.form).then((res) => {
               if (res) {
                 this.$message({
-                  message: "注册成功",
+                  message: "修改成功",
                   type: "success",
                 });
+                this.closeModal()
               }
             });
           } else {

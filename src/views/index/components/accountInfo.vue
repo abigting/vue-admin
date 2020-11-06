@@ -299,7 +299,8 @@
           // zc: '4',
           // email: '115468520@qq.com'
         },
-        disabled: true,
+        // disabled: true,
+        disabled: false,
         rules: {
           name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
@@ -361,7 +362,7 @@
           ],
           telphone: [
             {required: true, message: '请输入手机号', trigger: 'blur'},
-            {validator: phoneValidator, trigger: 'blur'},
+            // {validator: phoneValidator, trigger: 'blur'},
           ],
           email: [
             {required: true, message: '请输入电子邮箱', trigger: 'blur'},
@@ -415,7 +416,7 @@
         });
       },
       closeModal() {
-        this.disabled = true;
+        // this.disabled = true;
         this.$emit('handCancel')
       },
       changeAreaCode(value) {
@@ -433,6 +434,7 @@
           if (valid) {
             const {roles, checkCode, areacode, telphone, idcard, isWsjdy, isDagly, isTsjbzy, isSsjjdy, isSsjzg, ssjzyfw, ...rest} = this.form;
             const req = {
+              userId: getUserInfo().userId,
               systemId: 33000000000,
               roles: roles,
               checkCode: 123456,
@@ -449,7 +451,7 @@
                 areacode: areacode[areacode.length-1],
               }
             };
-            userApi.register(req).then((res) => {
+            userApi.updateUserInfo(req).then((res) => {
               if (res) {
                 this.$message({
                   message: "保存成功",

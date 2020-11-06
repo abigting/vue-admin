@@ -54,3 +54,31 @@ export function updatePassWord(data) {
     data
   })
 }
+
+
+// 根据token获取用户信息
+export function getUserEntity(data) {
+  return request({
+    url: '/xnrh-yhzx/api/user/getUserEntity',
+    method: 'post',
+    data
+  })
+}
+
+// 右上角用户信息修改接口
+export function updateUserInfo(data) {
+  return request({
+    url: '/xnrh-yhzx/api/user/updateUserInfo',
+    method: 'post',
+    data
+  })
+}
+
+// 生成手机验证码接口
+export function createTelphonCode(data) {
+  return request({
+    url: '/xnrh-yhzx/api/common/createTelphonCode',
+    method: 'post',
+    data
+  })
+}
