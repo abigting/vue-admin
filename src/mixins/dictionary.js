@@ -153,22 +153,14 @@ export const monthMap = [{
 export const userStatus = [
   {
     label: '待审核',
-    value: '0',
+    value: 1,
   },
   {
-    label: '启用',
-    value: '1',
+    label: '审核通过',
+    value: 2,
   },
   {
-    label: '未启用',
-    value: '2',
-  },
-  {
-    label: '审核未通过',
-    value: '3',
-  },
-  {
-    label: '已删除',
-    value: '4',
+    label: '审核不通过',
+    value: 3,
   },
 ];

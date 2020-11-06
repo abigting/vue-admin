@@ -68,8 +68,8 @@ export default {
      * @author Feng.xiuting
      * @date 2020-11-2
      */
-    queryDicRoleList() {
-      commonApi.queryDicRoleList({systemId:33000000000}).then(res => {
+    queryDicRoleList(systemId) {
+      commonApi.queryDicRoleList({systemId:systemId?systemId:33000000000}).then(res => {
         if(res){
           this.dicRoleList = res
         }

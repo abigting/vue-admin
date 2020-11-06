@@ -29,6 +29,28 @@
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
+            <el-form-item label="是否启用：">
+              <el-select v-model="queryForm.enable" placeholder="请选择当前启用状态" clearable>
+                <el-option label="是"
+                           :value="0"></el-option>
+                <el-option label="否"
+                           :value="1"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
+            <el-form-item label="是否删除：">
+              <el-select v-model="queryForm.isDelete" placeholder="请选择删除状态" clearable>
+                <el-option label="是"
+                           :value="1"></el-option>
+                <el-option label="否"
+                           :value="0"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="所属子系统：">
               <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
                 <el-option :label="item.value"
@@ -45,8 +67,8 @@
           </el-col>
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <!--            <el-button type="primary" plain @click="addItem">新增</el-button>-->
-            <el-button type="primary" class="ml24" plain @click="exportExecl">导出</el-button>
-            <el-button type="primary" @click="toQuery">查询</el-button>
+            <!--            <el-button type="primary" class="ml24" plain @click="exportExecl">导出</el-button>-->
+            <el-button type="primary" class="ml24" @click="toQuery">查询</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -62,30 +84,49 @@
         <el-table-column prop="orgname" label="所在机构" align="center"></el-table-column>
         <el-table-column prop="systemNames" label="所属子系统" width="140" align="center"></el-table-column>
         <el-table-column prop="roleNames" label="角色" min-width="100" align="center"></el-table-column>
-        <el-table-column prop="status" label="当前状态" width="100" align="center">
+        <el-table-column prop="status" label="当前状态" width="120" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.status===0" class="dot dot-blue"></span>
-            <span v-else-if="scope.row.status===1" class="dot dot-green"></span>
-            <span v-else-if="scope.row.status===2" class="dot dot-gray"></span>
+            <!--0-注册待审核 1-修改待审核 2-审核通过 3-审核不通过-->
+            <span v-if="scope.row.status===0" class="dot dot-gray"></span>
+            <span v-else-if="scope.row.status===1" class="dot dot-gray"></span>
+            <span v-else-if="scope.row.status===2" class="dot dot-green"></span>
             <span v-else-if="scope.row.status===3" class="dot dot-red"></span>
-            <span v-else-if="scope.row.status===4" class="dot dot-red"></span>
             <span>{{statusMap[scope.row.status]}}</span>
           </template>
         </el-table-column>
+
+        <el-table-column prop="isDelete" label="删除状态" min-width="64" align="center">
+          <template slot-scope="scope">
+            {{scope.row.isDelete?'是':'否'}}
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="enable" label="使用状态" min-width="64" align="center">
+          <template slot-scope="scope">
+            {{scope.row.enable?'禁用':'使用'}}
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="showDetail(scope.row,2)">详情</el-button>
-            <el-popconfirm title="确定禁用？" class="disabled-btn" @onConfirm="handDisbale(scope.row)">
+            <el-button type="text" size="small" @click="showDetail(scope.row,2)">查看</el-button>
+            <span v-if="scope.row.status===0||scope.row.status===1" class="blue-text" @click="showDetail(scope.row,1)">审核</span>
+            <el-popconfirm v-if="scope.row.enable===0" title="确定禁用？" class="disabled-btn"
+                           @onConfirm="handDisbale(scope.row, 1)">
               <span class="primary-btn" slot="reference">禁用</span>
             </el-popconfirm>
-            <span class="blue-text" @click="showDetail(scope.row,1)">审核</span>
-            <el-button type="text" size="small" class="modify-btn" @click="showDetail(scope.row,0)">修改</el-button>
-            <el-popconfirm title="确定删除吗？" @onConfirm="deleteItem(scope.row,scope.$index)">
+
+            <el-popconfirm v-if="scope.row.enable===1" title="确定启用？" class="disabled-btn"
+                           @onConfirm="handDisbale(scope.row, 0)">
+              <span class="primary-btn" slot="reference">启用</span>
+            </el-popconfirm>
+
+            <el-button type="text" v-if="scope.row.enable===0" size="small" class="modify-btn" @click="showDetail(scope.row,0)">修改</el-button>
+
+            <el-popconfirm v-if="scope.row.isDelete===0" title="确定删除吗？" @onConfirm="deleteItem(scope.row,scope.$index)">
               <span class="delete-btn" slot="reference">删除</span>
             </el-popconfirm>
-            <!-- <el-popconfirm title="确定重置吗？" @onConfirm="reset(scope.row)">
-              <span class="primary-btn" slot="reference">重置</span>
-            </el-popconfirm> -->
+
           </template>
         </el-table-column>
       </el-table>
@@ -102,7 +143,7 @@
     <Detail :dialogVisible="dialogVisible"
             :item="currentItem"
             :operationType="operationType"
-            @handCancel="dialogVisible = false"/>
+            @handCancel="closeModal"/>
   </div>
 </template>
 
@@ -121,7 +162,7 @@
     data() {
       return {
         userStatus: userStatus,
-        statusMap: ['待审核', '启用', '未启用', '审核未通过', '已删除'],
+        statusMap: ['待审核', '待审核', '审核通过', '审核不通过'],
         operationType: null, //0编辑 1审核 2详情查看
         yhlx: 2, //测试用户类型 效能/自查
         currentItem: {}, //当前查看/审核/编辑用户
@@ -163,6 +204,10 @@
       this.getSystemType();
     },
     methods: {
+      closeModal() {
+        this.dialogVisible = false;
+        this.getList()
+      },
       async getList() {
         this.loading = true;
         const {
@@ -176,7 +221,7 @@
         }
         const res = await userApi.getList({
           ...this.queryForm,
-          professionCode: code
+          // professionCode: code
         });
         if (res) {
           const {
@@ -274,11 +319,15 @@
         // this.$refs.infoForm.resetFields();
       },
       //禁止
-      handDisbale(row) {
-        this.$message({
-          message: "禁用成功",
-          type: "success"
-        });
+      handDisbale(item, enable) {
+        userApi.enable({
+          userId: item.userId,
+          enable
+        }).then(res => {
+          if (res) {
+            this.getList();
+          }
+        })
       },
       // 重置
       reset(scope) {

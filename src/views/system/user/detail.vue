@@ -10,7 +10,8 @@
         <div class="block id-card">
           <span>身份证号</span>
           <p>{{userBaseInfoVo.idcard}}
-            <i class="el-icon-warning" :class="{'show-history':current===currentItem.idcard}" @click="handHistory(row.idcard)">
+            <i class="el-icon-warning" :class="{'show-history':current===currentItem.idcard}"
+               @click="handHistory(row.idcard)">
               <div class="history-info-wrap">{{userBaseInfoVo.idcard}}</div>
             </i></p>
         </div>
@@ -25,12 +26,12 @@
       </div>
       <!-- 编辑修改情况 -->
       <div v-if="operationType===0" class="edit-role-block">
-        <el-form :model="info" :rules="rules" ref="infoForm" label-width="100px" label-position="left">
+        <el-form :model="info" :rules="modifyRules" ref="infoForm" label-width="100px" label-position="left">
           <el-form-item label="目前角色：">
-            <div class="current-role">超级管理员</div>
+            <div class="current-role">{{systemRoles}}</div>
           </el-form-item>
           <el-form-item label="重新分配角色：" label-width="120px" prop="checkList">
-            <el-checkbox-group v-model="roles">
+            <el-checkbox-group v-model="approvalInfo.roleIdList">
               <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
               </el-checkbox>
             </el-checkbox-group>
@@ -42,7 +43,7 @@
         <div class="detailed-info-block has-top-line clear-float">
           <div class="top-title-block" v-if="operationType!==0">
             <div class="title" v-if="systemIds.includes('33000000000')">效能/ {{systemRoles}}</div>
-<!--            <div class="title" v-if="systemIds.includes('33000000001')">-->
+            <!--            <div class="title" v-if="systemIds.includes('33000000001')">-->
             <div class="title" v-else>自查/ {{systemRoles}}</div>
             <div class="triangle"></div>
           </div>
@@ -151,23 +152,24 @@
     <!-- 按钮组 -->
     <el-divider class="mb20 mt0"></el-divider>
     <!-- 审核操作 -->
-    <div class="audit"  v-if="operationType===1">
-      <el-form :model="info" :rules="rules" ref="infoForm" label-width="84px" label-position="left">
-        <el-form-item label="是否同意：" prop="radio">
-          <el-radio-group v-model="info.radio">
-            <el-radio :label="0">是</el-radio>
-            <el-radio :label="1">否</el-radio>
+    <div class="audit" v-if="operationType===1">
+      <el-form :model="approvalInfo" :rules="approvalInfoRules" ref="approvalInfo" label-width="100px"
+               label-position="left">
+        <el-form-item label="是否同意：" prop="status">
+          <el-radio-group v-model="approvalInfo.status" @change="linkFn">
+            <el-radio :label="2">是</el-radio>
+            <el-radio :label="3">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="驳回原因：" prop="reson" v-if="info.radio===1">
+        <el-form-item label="驳回原因：" prop="rejectReason" v-if="approvalInfo.status===3">
           <div style="width: 60%;">
             <el-input type="textarea" :rows="4" label-width="84px" show-word-limit placeholder="请输入原因"
-                      v-model="info.reson">
+                      v-model="approvalInfo.rejectReason">
             </el-input>
           </div>
         </el-form-item>
-        <el-form-item label="分配角色：" prop="checkList" label-width="84px" class="mb0" v-if="yhlx===1">
-          <el-checkbox-group v-model="roles">
+        <el-form-item label="分配角色：" prop="roleIdList" label-width="100px" class="mb0" v-else>
+          <el-checkbox-group v-model="approvalInfo.roleIdList">
             <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
             </el-checkbox>
           </el-checkbox-group>
@@ -177,7 +179,7 @@
     <div class="operation">
       <div v-if="operationType===0||operationType===1">
         <el-button plain @click="closeModal">取消</el-button>
-        <el-button type="primary" @click="submit">保存</el-button>
+        <el-button type="primary" @click="submit('approvalInfo')">保存</el-button>
       </div>
       <div v-if="operationType===2">
         <el-button type="primary" @click="closeModal">关闭</el-button>
@@ -189,6 +191,8 @@
 <script>
   import CustomModal from '@/components/customModal'
   import common from "@/mixins/common"
+  import * as userApi from "@/api/system/user"
+
   export default {
     name: "index",
     mixins: [common],
@@ -199,46 +203,73 @@
     data() {
       return {
         form: {},
-        roles:[],
+        roles: [],
         row: {},
         yhlx: 1,
         current: {},
-        info:{},
+        info: {},
         editPhone: false,
-        currentItem:{},
-        userBaseInfoVo:{},
-        zcUserExtraInfoVo:{},
-        rules: {
-          system: [
-            {required: true, message: '请选择角色所属子系统', trigger: 'blur'},
+        currentItem: {},
+        userBaseInfoVo: {},
+        zcUserExtraInfoVo: {},
+        approvalInfo: {
+          roleIdList: []
+        },
+        approvalInfoRules: {
+          status: [
+            {required: true, message: '请选择是否同意', trigger: 'blur'},
           ],
-          name: [
-            {required: true, message: '请输入角色名称', trigger: 'blur'},
+          rejectReason: [
+            {required: true, message: '请输入驳回原因', trigger: 'blur'},
           ],
-          description: [
-            {required: true, message: '请输入角色说明', trigger: 'blur'},
+          roleIdList: [
+            {required: true, message: '请选择分配角色', trigger: 'blur'},
           ],
         },
-        systemIds:[],
-        systemRoles:''
+        modifyRules: {},
+        systemIds: [],
+        systemRoles: '',
+        userId: ''
       }
     },
     created() {
-      this.queryDicRoleList();
+
     },
-    watch:{
-      item(newVal){
-        const {userBaseInfoVo, zcUserExtraInfoVo, systemIds, systemRoles} =newVal;
-        this.userBaseInfoVo = userBaseInfoVo||{};
-        this.zcUserExtraInfoVo = zcUserExtraInfoVo||{};
-        this.systemIds=systemIds||[];
-        this.systemRoles=systemRoles?systemRoles.join(','):'';
+    watch: {
+      item(newVal) {
+        const {userId, userBaseInfoVo, zcUserExtraInfoVo, systemIds, systemRoles, roles} = newVal;
+        if (this.$props.operationType === 0 || this.$props.operationType === 1) {
+          if (systemIds && systemIds.length > 0) this.queryDicRoleList(systemIds[0]);
+        }
+        this.userBaseInfoVo = userBaseInfoVo || {};
+        this.zcUserExtraInfoVo = zcUserExtraInfoVo || {};
+        this.systemIds = systemIds || [];
+        this.systemRoles = systemRoles ? systemRoles.join(',') : '';
+        this.userId = userId;
+        this.approvalInfo = {
+          ...this.approvalInfo,
+          roleIdList: roles
+        }
+      },
+      dialogVisible(newVal) {
+        if (newVal) {
+
+        } else {
+          this.userBaseInfoVo = {};
+          this.zcUserExtraInfoVo = {};
+          this.systemIds = [];
+          this.systemRoles = '';
+          this.userId = '';
+          this.approvalInfo = {
+            roleIdList: []
+          }
+        }
       }
     },
     methods: {
-      handleEdit(){
-        this.editPhone=!this.editPhone;
-        if(this.editPhone){
+      handleEdit() {
+        this.editPhone = !this.editPhone;
+        if (this.editPhone) {
           this.$refs.editPhone.focus();
         }
       },
@@ -253,8 +284,56 @@
       closeModal() {
         this.$emit('handCancel')
       },
-      submit(){
-
+      linkFn(s) {
+        if (s === 2) {
+          delete this.approvalInfo.rejectReason
+        } else {
+          this.approvalInfo.roleIdList = []
+        }
+      },
+      submit() {
+        //修改
+        if (this.$props.operationType === 0) {
+          const {telphone} = this.userBaseInfoVo;
+          const {roleIdList} = this.approvalInfo;
+          if(!telphone){
+            this.$message.info('请填写手机号');
+            return
+          }
+          if(!roleIdList||roleIdList.length===0){
+            this.$message.info('请选择重新分配的角色');
+            return;
+          }
+          const req = {
+            userId: this.userId,
+            systemId: this.systemIds,
+            phone: telphone,
+            roleIdList: roleIdList
+          };
+          //审核
+          userApi.editItem(req).then(res => {
+            if (res) {
+              this.closeModal()
+            }
+          })
+        } else if (this.$props.operationType === 1) {
+          //审核
+          this.$refs['approvalInfo'].validate((valid) => {
+            if (valid) {
+              const req = {
+                userId: this.userId,
+                systemId: this.systemIds,
+                ...this.approvalInfo
+              };
+              //审核
+              userApi.approval(req).then(res => {
+                if (res) {
+                  this.closeModal()
+                }
+              })
+            }
+          });
+        }
       }
     }
   }
@@ -273,7 +352,7 @@
   //用户信息区域
   .user-info-block {
     width: 1000px;
-    height: 600px;
+    /*height: 600px;*/
     overflow-y: auto;
     padding: 16px 30px 0 30px;
   }
@@ -531,7 +610,6 @@
   }
 
 
-
   .el-icon-close {
     float: right;
     cursor: pointer;
@@ -597,11 +675,11 @@
     color: #4985FE;
   }
 
-  .audit{
+  .audit {
     padding: 0 30px;
   }
 
-  .edit-phone /deep/ .el-input__inner{
+  .edit-phone /deep/ .el-input__inner {
     border: 0;
     height: 28px;
     padding: 0;
@@ -610,11 +688,11 @@
     font-size: 14px;
   }
 
-  .phone{
+  .phone {
     position: relative;
   }
 
-  .icon-edit{
+  .icon-edit {
     position: absolute;
     right: 34%;
     bottom: 6px;
