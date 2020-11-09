@@ -248,7 +248,7 @@
         this.userId = userId;
         this.approvalInfo = {
           ...this.approvalInfo,
-          roleIdList: roles
+          roleIdList: roles||[]
         }
       },
       dialogVisible(newVal) {
@@ -310,7 +310,6 @@
             phone: telphone,
             roleIdList: roleIdList
           };
-          //审核
           userApi.editItem(req).then(res => {
             if (res) {
               this.closeModal()
@@ -325,7 +324,6 @@
                 systemId: this.systemIds,
                 ...this.approvalInfo
               };
-              //审核
               userApi.approval(req).then(res => {
                 if (res) {
                   this.closeModal()

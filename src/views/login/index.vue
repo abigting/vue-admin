@@ -381,7 +381,14 @@
 
   .footer {
     text-align: center;
-    color: #ffffff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #fff;
   }
 
   @media screen and (max-width: 1400px) {

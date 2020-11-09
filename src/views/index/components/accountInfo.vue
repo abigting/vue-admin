@@ -182,7 +182,7 @@
               <el-checkbox label="双随机在岗" :disabled="disabled" v-model="form.isSsjzg"></el-checkbox>
             </el-form-item>
           </el-col>
-          <el-col :span="17" v-if="form.isSsjzg">
+          <el-col :span="17" v-if="form.isSsjjdy">
             <span class="subtitle">双随机执业范围</span>
             <el-form-item label-width="0" class="mb0">
               <el-checkbox-group v-model="form.ssjzyfw" :disabled="disabled">
