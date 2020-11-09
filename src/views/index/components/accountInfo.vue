@@ -103,7 +103,8 @@
                 :props="{
                   expandTrigger: 'hover',
                   value: 'code',
-                  label: 'name'
+                  label: 'name',
+                  checkStrictly: true
                 }"
                 @change="changeAreaCode"
                 placeholder="请选择地区"
@@ -282,22 +283,8 @@
       };
       return {
         form: {
-          // roles: [],
-          // ssjzyfw: [],
-          // telphone: "17859865320",
-          // idcard: '330721199006077122',
-          // name: 'Fiona',
-          // sex: '1',
-          // mz: '01',
-          // birthday: "2020-11-11",
-          // zzmm: "zzmm01",
-          // xl: "jbxl01",
-          // xw: 'xw',
-          // university: '1',
-          // discipline: '2',
-          // zw: '3',
-          // zc: '4',
-          // email: '115468520@qq.com'
+          roles: [],
+          areacode: []
         },
         // disabled: true,
         disabled: false,
@@ -380,9 +367,9 @@
         },
       };
     },
-    watch:{
-      accountInfoVisible(newVal){
-        if(newVal){
+    watch: {
+      accountInfoVisible(newVal) {
+        if (newVal) {
           this.getDictionary("xl");
           this.getDictionary("xw");
           this.getDictionary("ssjzyfw");
@@ -409,8 +396,10 @@
               isTsjbzy: isTsjbzy === 1,
               isSsjjdy: isSsjjdy === 1,
               isSsjzg: isSsjzg === 1,
-              areacode:splitAddrCodeWithStreet(areacode)
+              // areacode:splitAddrCodeWithStreet(areacode)
+              areacode: ["330000000"]
             };
+
             this.changeAreaCode(splitAddrCodeWithStreet(areacode))
           }
         });
@@ -448,7 +437,7 @@
                 isSsjjdy: isSsjjdy ? 1 : 0,
                 isSsjzg: isSsjzg ? 1 : 0,
                 ssjzyfw: ssjzyfw ? ssjzyfw : [],
-                areacode: areacode[areacode.length-1],
+                areacode: areacode[areacode.length - 1],
               }
             };
             userApi.updateUserInfo(req).then((res) => {

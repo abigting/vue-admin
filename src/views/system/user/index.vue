@@ -82,7 +82,7 @@
         <el-table-column prop="telphone" label="手机号" align="center"></el-table-column>
         <el-table-column prop="idcard" label="身份证号" width="150" align="center"></el-table-column>
         <el-table-column prop="orgname" label="所在机构" align="center"></el-table-column>
-        <el-table-column prop="systemNames" label="所属子系统" width="140" align="center"></el-table-column>
+        <el-table-column prop="systemName" label="所属子系统" width="140" align="center"></el-table-column>
         <el-table-column prop="roleNames" label="角色" min-width="100" align="center"></el-table-column>
         <el-table-column prop="status" label="当前状态" width="120" align="center">
           <template slot-scope="scope">
@@ -251,11 +251,20 @@
       },
       //1-审核;2-详情
       showDetail(row, type) {
+        const {status} = row;
+        // 注册以后审核：0  修改以后审核：1
         this.currentItem = row;
-        this.operationType = type;
+        if(status===0){
+          this.operationType = 1;
+        }else if(status===1){
+          this.operationType = 3;
+        }else{
+          this.operationType = type;
+        }
+
         this.dialogVisible = true;
 
-        userApi.getInfo({userId: row.userId}).then(res => {
+        userApi.getInfo({userId: row.userId, systemId: row.systemId}).then(res => {
           if (res) {
             this.currentItem = res;
           }

@@ -127,7 +127,7 @@
         switch (item.key) {
           case '0':
             //驾驶舱
-            window.open(`${window.location.origin}/xnrh-sjdp-web/#/`, "_blank");
+            window.open(`${window.location.origin}/xnrh-sjdp-web/#/login?token=${Cookies.get('token')}`, "_blank");
             return;
           case '1':
             //智能办案

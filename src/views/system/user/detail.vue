@@ -5,22 +5,34 @@
       <div class="basic-info clear-float">
         <div class="block name">
           <span>姓名</span>
-          <p>{{userBaseInfoVo.name}}</p>
+          <p>{{userBaseInfoVo.name}}
+            <Hint :operationType="operationType" :last="userBaseInfoEditVo.name" :now="userBaseInfoVo.name"/>
+<!--            <i class="el-icon-warning" v-if="userBaseInfoVo.name!==userBaseInfoEditVo.name">-->
+<!--              <div class="history-info-wrap">{{userBaseInfoEditVo.name}}</div>-->
+<!--            </i>-->
+          </p>
         </div>
         <div class="block id-card">
           <span>身份证号</span>
           <p>{{userBaseInfoVo.idcard}}
-            <i class="el-icon-warning" :class="{'show-history':current===currentItem.idcard}"
-               @click="handHistory(row.idcard)">
-              <div class="history-info-wrap">{{userBaseInfoVo.idcard}}</div>
-            </i></p>
+            <Hint :operationType="operationType" :last="userBaseInfoEditVo.idcard" :now="userBaseInfoVo.idcard"/>
+<!--            <i v-if="userBaseInfoVo.idcard!==userBaseInfoEditVo.idcard" class="el-icon-warning">-->
+<!--              <div class="history-info-wrap">{{userBaseInfoEditVo.idcard}}</div>-->
+<!--            </i>-->
+          </p>
         </div>
         <div class="block phone">
           <span>手机号</span>
           <div class="allow-edit" v-show="editPhone">
             <el-input ref="editPhone" v-model="userBaseInfoVo.telphone" class="edit-phone" placeholder="请输入"></el-input>
           </div>
-          <p v-if="!editPhone">{{userBaseInfoVo.telphone}}</p>
+          <p v-if="!editPhone">
+            {{userBaseInfoVo.telphone}}
+            <Hint :operationType="operationType" :last="userBaseInfoEditVo.telphone" :now="userBaseInfoVo.telphone"/>
+<!--            <i v-if="userBaseInfoVo.idcard!==userBaseInfoEditVo.idcard" class="el-icon-warning">-->
+<!--              <div class="history-info-wrap">{{userBaseInfoEditVo.idcard}}</div>-->
+<!--            </i>-->
+          </p>
           <i v-if="operationType===0" class="iconfont iconbianjishoujihao icon-edit" @click="handleEdit"></i>
         </div>
       </div>
@@ -42,96 +54,174 @@
       <div :class="{'is-edit-status':operationType===0}">
         <div class="detailed-info-block has-top-line clear-float">
           <div class="top-title-block" v-if="operationType!==0">
-            <div class="title" v-if="systemIds.includes('33000000000')">效能/ {{systemRoles}}</div>
+            <div class="title" v-if="systemId.includes('33000000000')">效能/ {{systemRoles}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles" :now="userBaseInfoVo.systemRoles"/>
+<!--              <i class="el-icon-warning" v-if="systemRoles!==systemEditRoles">-->
+<!--                <div class="history-info-wrap">{{systemEditRoles}}</div>-->
+<!--              </i>-->
+            </div>
             <!--            <div class="title" v-if="systemIds.includes('33000000001')">-->
-            <div class="title" v-else>自查/ {{systemRoles}}</div>
+            <div class="title" v-else>自查/ {{systemRoles}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles" :now="userBaseInfoVo.systemRoles"/>
+            </div>
             <div class="triangle"></div>
           </div>
-          <div class="custom-info-list" v-if="systemIds.includes('33000000000')">
+          <div class="custom-info-list" v-if="systemId.includes('33000000000')">
             <el-row>
               <el-col :span="12">
-                <p><span>所在机构：</span>{{userBaseInfoVo.orgname}}</p>
+                <p><span>所在机构：</span>{{userBaseInfoVo.orgname}}
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.orgname!==userBaseInfoEditVo.orgname">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.orgname}}</div>-->
+<!--                  </i>-->
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.orgname" :now="userBaseInfoVo.orgname"/>
+                </p>
               </el-col>
               <el-col :span="12">
-                <p><span>所在科室：</span>{{userBaseInfoVo.department}}</p>
+                <p><span>所在科室：</span>{{userBaseInfoVo.department}}
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.department!==userBaseInfoEditVo.department">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.department}}</div>-->
+<!--                  </i>-->
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.department" :now="userBaseInfoVo.department"/>
+                </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>民族：</span>{{userBaseInfoVo.mz}}</p>
+                <p><span>民族：</span>{{userBaseInfoVo.mz}}
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.mz!==userBaseInfoEditVo.mz">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.mz}}</div>-->
+<!--                  </i>-->
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.mz" :now="userBaseInfoVo.mz"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>出生日期：</span>{{userBaseInfoVo.birthday}}</p>
+                <p><span>出生日期：</span>{{userBaseInfoVo.birthday}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.birthday" :now="userBaseInfoVo.birthday"/>
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.birthday!==userBaseInfoEditVo.birthday">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.birthday}}</div>-->
+<!--                  </i>-->
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>政治面貌：</span>{{userBaseInfoVo.zzmm}}</p>
+                <p><span>政治面貌：</span>{{userBaseInfoVo.zzmm}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zzmm" :now="userBaseInfoVo.zzmm"/>
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.zzmm!==userBaseInfoEditVo.zzmm">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.zzmm}}</div>-->
+<!--                  </i>-->
+                </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>学历：</span>{{userBaseInfoVo.xl}}</p>
+                <p><span>学历：</span>{{userBaseInfoVo.xl}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.xl" :now="userBaseInfoVo.xl"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>学位：</span>{{userBaseInfoVo.xw}}</p>
+                <p><span>学位：</span>{{userBaseInfoVo.xw}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.xw" :now="userBaseInfoVo.xw"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>毕业院校：</span>{{userBaseInfoVo.university}}</p>
+                <p><span>毕业院校：</span>{{userBaseInfoVo.university}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.university" :now="userBaseInfoVo.university"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>参加工作日期：</span>{{userBaseInfoVo.workDate}}</p>
+                <p><span>参加工作日期：</span>{{userBaseInfoVo.workDate}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.workDate" :now="userBaseInfoVo.workDate"/>
+                </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>所学专业：</span>{{userBaseInfoVo.discipline}}</p>
+                <p><span>所学专业：</span>{{userBaseInfoVo.discipline}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.discipline" :now="userBaseInfoVo.discipline"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>职务：</span>{{userBaseInfoVo.zw}}</p>
+                <p><span>职务：</span>{{userBaseInfoVo.zw}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zw" :now="userBaseInfoVo.zw"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>职称：</span>{{userBaseInfoVo.zc}}</p>
+                <p><span>职称：</span>{{userBaseInfoVo.zc}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zc" :now="userBaseInfoVo.zc"/>
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.zc!==userBaseInfoEditVo.zc">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.zc}}</div>-->
+<!--                  </i>-->
+                </p>
+              </el-col>
+              <el-col :span="6">
+                <p><span>电子邮箱：</span>{{userBaseInfoVo.email}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.email" :now="userBaseInfoVo.email"/>
+<!--                  <i class="el-icon-warning" v-if="userBaseInfoVo.email!==userBaseInfoEditVo.email">-->
+<!--                    <div class="history-info-wrap">{{userBaseInfoEditVo.email}}</div>-->
+<!--                  </i>-->
+                </p>
               </el-col>
             </el-row>
           </div>
-          <div class="custom-info-list" v-if="systemIds.includes('33000000001')">
+          <div class="custom-info-list" v-if="systemId.includes('33000000001')">
             <el-row>
               <el-col :span="12">
-                <p><span>所属单位地址：</span>{{zcUserExtraInfoVo.zcAddr}}</p>
+                <p><span>所属单位地址：</span>{{zcUserExtraInfoVo.zcAddr}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcAddr" :now="userBaseInfoVo.zcAddr"/>
+                </p>
               </el-col>
               <el-col :span="12">
-                <p><span>所属单位名称：</span>{{zcUserExtraInfoVo.zcCompName}}</p>
+                <p><span>所属单位名称：</span>{{zcUserExtraInfoVo.zcCompName}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcCompName" :now="userBaseInfoVo.zcCompName"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>专业编码：</span>{{zcUserExtraInfoVo.zcCompSpec}}</p>
+                <p><span>专业编码：</span>{{zcUserExtraInfoVo.zcCompSpec}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcCompSpec" :now="userBaseInfoVo.zcCompSpec"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>人员类型：</span>{{zcUserExtraInfoVo.zcPersonType}}</p>
+                <p><span>人员类型：</span>{{zcUserExtraInfoVo.zcPersonType}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcPersonType" :now="userBaseInfoVo.zcPersonType"/>
+                </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>健康证编码：</span>{{zcUserExtraInfoVo.zcHealthCertificate}}</p>
+                <p><span>健康证编码：</span>{{zcUserExtraInfoVo.zcHealthCertificate}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcHealthCertificate" :now="userBaseInfoVo.zcHealthCertificate"/>
+                </p>
               </el-col>
               <el-col :span="12">
-                <p><span>健康证期限：</span>{{zcUserExtraInfoVo.zcStartDate}}至{{zcUserExtraInfoVo.zcEndDate}}</p>
+                <p><span>健康证期限：</span>{{zcUserExtraInfoVo.zcStartDate}}至{{zcUserExtraInfoVo.zcEndDate}}
+                  <i class="el-icon-warning" v-if="zcUserExtraInfoVo.zcStartDate!==zcUserExtraInfoEditVo.zcStartDate||zcUserExtraInfoVo.zcEndDate!==zcUserExtraInfoEditVo.zcEndDate">
+                    <div class="history-info-wrap">{{zcUserExtraInfoVo.zcStartDate}}至{{zcUserExtraInfoVo.zcEndDate}}
+                    </div>
+                  </i>
+                </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p><span>QQ号：</span>{{zcUserExtraInfoVo.zcQq}}</p>
+                <p><span>QQ号：</span>{{zcUserExtraInfoVo.zcQq}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcQq" :now="userBaseInfoVo.zcQq"/>
+                </p>
               </el-col>
               <el-col :span="6">
-                <p><span>工作年限：</span>{{zcUserExtraInfoVo.zcWorkYear}}年</p>
+                <p><span>工作年限：</span>{{zcUserExtraInfoVo.zcWorkYear}}年
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcWorkYear" :now="userBaseInfoVo.zcWorkYear"/>
+                </p>
               </el-col>
             </el-row>
           </div>
         </div>
         <!-- 职位信息 -->
-        <div class="position-info-block has-top-line clear-float" v-if="systemIds.includes('33000000000')">
+        <div class="position-info-block has-top-line clear-float" v-if="systemId.includes('33000000000')">
           <div v-if="userBaseInfoVo.isWsjdy===1">
             <div class="title title-1">卫生监督员</div>
             <div class="info-list">
-              <p><span>胸牌号：</span>{{userBaseInfoVo.xph}}</p>
+              <p><span>胸牌号：</span>{{userBaseInfoVo.xph}}
+                <Hint :operationType="operationType" :last="userBaseInfoEditVo.xph" :now="userBaseInfoVo.xph"/>
+              </p>
               <p><span>行政执法号：</span>{{userBaseInfoVo.zfzh}}</p>
               <p><span class="long-title-wrap">参加监督工作日期：</span>{{userBaseInfoVo.jdWorkDate}}</p>
             </div>
@@ -141,8 +231,8 @@
           <div v-if="userBaseInfoVo.isSsjjdy===1" class="title">双随机监督员</div>
           <div v-if="userBaseInfoVo.isSsjzg===1" class="title">双随机在岗</div>
           <p class="range-block"><span>执业范围：</span>{{userBaseInfoVo.ssjzyfwText}}
-            <i class="el-icon-warning" :class="{'show-history':current=='我是历史信息。。。'}" @click="handHistory('我是历史信息。。。')">
-              <div class="history-info-wrap">生活饮用水</div>
+            <i class="el-icon-warning" v-if="zcUserExtraInfoVo.ssjzyfwText!==zcUserExtraInfoEditVo.ssjzyfwText">
+              <div class="history-info-wrap">{{userBaseInfoEditVo.ssjzyfwText}}</div>
             </i></p>
           </p>
         </div>
@@ -152,7 +242,7 @@
     <!-- 按钮组 -->
     <el-divider class="mb20 mt0"></el-divider>
     <!-- 审核操作 -->
-    <div class="audit" v-if="operationType===1">
+    <div class="audit" v-if="operationType===1||operationType===3">
       <el-form :model="approvalInfo" :rules="approvalInfoRules" ref="approvalInfo" label-width="100px"
                label-position="left">
         <el-form-item label="是否同意：" prop="status">
@@ -177,7 +267,7 @@
       </el-form>
     </div>
     <div class="operation">
-      <div v-if="operationType===0||operationType===1">
+      <div v-if="operationType===0||operationType===1||operationType===3">
         <el-button plain @click="closeModal">取消</el-button>
         <el-button type="primary" @click="submit('approvalInfo')">保存</el-button>
       </div>
@@ -192,13 +282,15 @@
   import CustomModal from '@/components/customModal'
   import common from "@/mixins/common"
   import * as userApi from "@/api/system/user"
+  import Hint from './components/hint'
 
   export default {
     name: "index",
     mixins: [common],
     props: ['dialogVisible', 'operationType', 'item'],
     components: {
-      CustomModal
+      CustomModal,
+      Hint
     },
     data() {
       return {
@@ -211,7 +303,9 @@
         editPhone: false,
         currentItem: {},
         userBaseInfoVo: {},
+        userBaseInfoEditVo: {}, /*编辑前*/
         zcUserExtraInfoVo: {},
+        zcUserExtraInfoEditVo: {},/*编辑前*/
         approvalInfo: {
           roleIdList: []
         },
@@ -227,9 +321,12 @@
           ],
         },
         modifyRules: {},
-        systemIds: [],
+        systemId: '',
         systemRoles: '',
-        userId: ''
+        systemEditRoles: '', /*编辑前*/
+        userId: '',
+        changedFields: [],
+        changedContent: {},
       }
     },
     created() {
@@ -237,25 +334,50 @@
     },
     watch: {
       item(newVal) {
-        const {userId, userBaseInfoVo, zcUserExtraInfoVo, systemIds, systemRoles, roles} = newVal;
-        if (this.$props.operationType === 0 || this.$props.operationType === 1) {
-          if (systemIds && systemIds.length > 0) this.queryDicRoleList(systemIds[0]);
-        }
-        this.userBaseInfoVo = userBaseInfoVo || {};
-        this.zcUserExtraInfoVo = zcUserExtraInfoVo || {};
-        this.systemIds = systemIds || [];
-        this.systemRoles = systemRoles ? systemRoles.join(',') : '';
-        this.userId = userId;
-        this.approvalInfo = {
-          ...this.approvalInfo,
-          roleIdList: roles||[]
-        };
-        //审核时需要比对数据
-        if(this.$props.operationType === 1){
-          const {editContent} = newVal;
-          const newItem = JSON.parse(editContent);
-          const {userBaseInfoVo, zcUserExtraInfoVo, systemRoles, roles} = newItem
+        if (newVal.userBaseInfoVo) {
+          const {userId, userBaseInfoVo, zcUserExtraInfoVo, systemId, systemRoles, roles} = newVal;
+          if (this.$props.operationType === 0 || this.$props.operationType === 1 || this.$props.operationType === 3) {
+            if (systemId) this.queryDicRoleList(systemId);
+          }
+          this.userBaseInfoVo = userBaseInfoVo || {};
+          this.zcUserExtraInfoVo = zcUserExtraInfoVo || {};
+          this.systemId = systemId || [];
+          this.systemRoles = systemRoles ? systemRoles.join(',') : '';
+          this.userId = userId;
+          this.approvalInfo = {
+            ...this.approvalInfo,
+            roleIdList: roles || []
+          };
+          //审核时需要比对数据
+          if (this.$props.operationType === 3) {
+            const {userBaseInfoEditVo, systemEditRoles, roleEdits, zcUserExtraInfoEditVo} = newVal;
 
+            this.userBaseInfoEditVo = userBaseInfoEditVo || {};
+            this.systemEditRoles = systemEditRoles ? systemEditRoles.join(',') : '';
+            this.roleEdits = roleEdits || {};
+            this.zcUserExtraInfoEditVo = zcUserExtraInfoEditVo || {};
+
+            if (JSON.stringify(roleEdits) !== JSON.stringify(roles)) {
+              this.changedFields = [...this.changedFields, 'systemRoles'];
+              this.changedContent = {
+                ...this.changedContent,
+                systemRoles: systemEditRoles ? systemEditRoles.join(',') : ''
+              }
+            }
+            Object.keys(userBaseInfoEditVo).forEach(s => {
+              if (JSON.stringify(userBaseInfoEditVo[s]) !== JSON.stringify(userBaseInfoVo[s])) {
+                this.changedFields = [...this.changedFields, s];
+                this.changedContent = {
+                  ...this.changedContent,
+                  [s]: userBaseInfoEditVo[s]
+                }
+              }
+            });
+
+            console.log(this.changedFields, this.changedContent, 'changedContent')
+            // console.log(this.userBaseInfoEditVo, 'changedContent')
+
+          }
         }
       },
       dialogVisible(newVal) {
@@ -264,7 +386,7 @@
         } else {
           this.userBaseInfoVo = {};
           this.zcUserExtraInfoVo = {};
-          this.systemIds = [];
+          this.systemId = '';
           this.systemRoles = '';
           this.userId = '';
           this.approvalInfo = {
@@ -303,17 +425,17 @@
         if (this.$props.operationType === 0) {
           const {telphone} = this.userBaseInfoVo;
           const {roleIdList} = this.approvalInfo;
-          if(!telphone){
+          if (!telphone) {
             this.$message.info('请填写手机号');
             return
           }
-          if(!roleIdList||roleIdList.length===0){
+          if (!roleIdList || roleIdList.length === 0) {
             this.$message.info('请选择重新分配的角色');
             return;
           }
           const req = {
             userId: this.userId,
-            systemId: this.systemIds,
+            systemId: this.systemId,
             phone: telphone,
             roleIdList: roleIdList
           };
@@ -322,13 +444,13 @@
               this.closeModal()
             }
           })
-        } else if (this.$props.operationType === 1) {
+        } else if (this.$props.operationType === 1 || this.$props.operationType === 3) {
           //审核
           this.$refs['approvalInfo'].validate((valid) => {
             if (valid) {
               const req = {
                 userId: this.userId,
-                systemId: this.systemIds,
+                systemId: this.systemId,
                 ...this.approvalInfo
               };
               userApi.approval(req).then(res => {
