@@ -20,7 +20,7 @@ export function setUserInfo(value) {
 }
 
 export function getUserInfo() {
-  let userInfo = Cookies.get('userInfo');
+  let userInfo = Cookies.get('userInfo')||'{}';
   return JSON.parse(userInfo)||{}
 }
 

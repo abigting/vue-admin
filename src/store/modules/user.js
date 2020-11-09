@@ -74,6 +74,7 @@ const actions = {
         access_token: getToken(),
         username: getUserInfo().name
       }).then(res => {
+        console.log(res, 'res')
         if (res) {
           removeAllcookie();
           resolve(res)

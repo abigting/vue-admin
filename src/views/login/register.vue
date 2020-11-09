@@ -212,17 +212,17 @@
             <el-col :span="8">
               <el-form-item label="手机号：" prop="telphone" label-width="78px">
                 <el-input v-model="form.telphone">
-                  <!--                  <template slot="append">-->
-                  <!--                    <span class="action">获取验证码</span>-->
-                  <!--                  </template>-->
+                  <template slot="append">
+                    <span @click="getVerificationCode" class="action">{{count<60?`${count}S后重新获取`:'获取验证码'}}</span>
+                  </template>
                 </el-input>
               </el-form-item>
             </el-col>
-            <!--            <el-col :span="6">-->
-            <!--              <el-form-item label="手机验证码：" prop="checkCode">-->
-            <!--                <el-input v-model="form.checkCode"></el-input>-->
-            <!--              </el-form-item>-->
-            <!--            </el-col>-->
+            <el-col :span="6">
+              <el-form-item label="手机验证码：" prop="checkCode">
+                <el-input v-model="form.checkCode"></el-input>
+              </el-form-item>
+            </el-col>
             <el-col :span="6">
               <el-form-item label="电子邮箱：" prop="email">
                 <el-input v-model="form.email"></el-input>
@@ -286,6 +286,7 @@
           xl: "jbxl01",
           xw: 'xw',
         },
+        count: 60,
         rules: {
           name: [
             {required: true, message: '请输入姓名', trigger: 'blur'},
@@ -378,11 +379,12 @@
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            const {roles, checkCode, telphone, idcard, isWsjdy, isDagly, isTsjbzy, isSsjjdy, isSsjzg, ssjzyfw, ...rest} = this.form;
+            const {roles, checkCode, telphone, idcard, isWsjdy, isDagly, isTsjbzy, isSsjjdy, isSsjzg, ssjzyfw, areacode, ...rest} = this.form;
             const req = {
               systemId: 33000000000,
               roles: roles,
-              checkCode: 123456,
+              // checkCode: 123456,
+              checkCode,
               telphone,
               idcard,
               data: {
@@ -393,7 +395,7 @@
                 isSsjjdy: isSsjjdy ? 1 : 0,
                 isSsjzg: isSsjzg ? 1 : 0,
                 ssjzyfw: ssjzyfw ? ssjzyfw : [],
-                areacode: '330000000',
+                areacode: areacode[areacode.length - 1],
               }
             };
             userApi.register(req).then((res) => {
@@ -412,6 +414,29 @@
       },
       cancel() {
         this.$router.go(-1)
+      },
+      getVerificationCode() {
+        if(this.count<60){
+          return
+        }
+        userApi.createTelphonCode({
+          checkType: 0,
+          telphone: this.form.telphone
+        }).then((res) => {
+          this.timerFn();
+          if (res) {
+            this.form.checkCode = res;
+          }
+        });
+      },
+      timerFn() {
+        this.timer = setInterval(() => {
+          this.count--;
+          if (this.count <= 0) {
+            clearInterval(this.timer);
+            this.count = 60;
+          }
+        }, 1000)
       },
       changeAreaCode(value) {
         if (value) {

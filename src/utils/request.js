@@ -8,9 +8,10 @@ let request = axios.create({
   // timeout: 5000,     //超时时间，5000毫秒,
 });
 
-request.defaults.headers.common["access_token"] = getToken();
+// request.defaults.headers.common["access_token"] = getToken();
 
 request.interceptors.request.use(function (config) {
+  config.headers['access_token'] = getToken() || '';
   return config;
 }, function (err) {
   return Promise.reject(err);

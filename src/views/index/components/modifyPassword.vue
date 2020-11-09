@@ -6,8 +6,11 @@
                :rules="rules"
                label-width="0">
         <el-row>
+          <p v-if="isFirstLogin" style="color: #4985FE">
+            首次登录，请修改初始密码
+          </p>
           <el-col :span="24">
-            <el-form-item label-width="64px" label="手机号">
+            <el-form-item label-width="54px" label="手机号">
               {{form.telphone}}
             </el-form-item>
           </el-col>
@@ -30,7 +33,7 @@
             <i class="iconfont iconyanzhengma prefix-icon"></i>
           </el-col>
           <el-col :span="8">
-            <el-button @click="getVerificationCode">获取验证码</el-button>
+            <el-button :disabled="count<60" @click="getVerificationCode">{{count<60?`${count}S后重新获取`:'获取验证码'}}</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -54,19 +57,35 @@
       CustomModal
     },
     data() {
+      const passwordValidator = (rule, value, callback) => {
+        let str = value;
+        if (str == null || str.length < 8 || str.length > 12) {
+          callback('密码为8-12位');
+        }
+        const reg = new RegExp(/^(?![^a-zA-Z]+$)(?!\D+$)/);
+        if (reg.test(str)) {
+          callback();
+        } else {
+          callback('请包含数字和字母!');
+        }
+      };
       return {
         form: {
           telphone: getUserInfo().telphone
         },
+        isFirstLogin: getUserInfo().isFirstLogin,
+        count:60,
+        timer:null,
         rules: {
           password: [
             {required: true, message: '请输入密码', trigger: 'blur'},
+            {validator: passwordValidator, trigger: 'blur'},
           ],
           password2: [
             {required: true, message: '请确认密码', trigger: 'blur'},
           ],
           checkCode: [
-            {required: true, message: '请输入验证码', trigger: 'blur'},
+            {required: true, message: '请输入验证码', trigger: 'change'},
           ],
         },
       }
@@ -83,10 +102,20 @@
           checkType: 2,
           telphone: this.form.telphone
         }).then((res) => {
+          this.timerFn();
           if (res) {
             this.form.checkCode = res;
           }
         });
+      },
+      timerFn(){
+        this.timer = setInterval(()=>{
+          this.count --;
+          if(this.count<=0){
+            clearInterval(this.timer);
+            this.count = 60;
+          }
+        },1000)
       },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
@@ -144,5 +173,6 @@
   .content /deep/ .el-button--mini {
     height: 40px;
     width: 100%;
+    padding: 9px 2px;
   }
 </style>

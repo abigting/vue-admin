@@ -26,11 +26,11 @@
       </div>
       <!-- 编辑修改情况 -->
       <div v-if="operationType===0" class="edit-role-block">
-        <el-form :model="info" :rules="modifyRules" ref="infoForm" label-width="100px" label-position="left">
+        <el-form :model="info" :rules="modifyRules" ref="infoForm" label-width="110px" label-position="right">
           <el-form-item label="目前角色：">
             <div class="current-role">{{systemRoles}}</div>
           </el-form-item>
-          <el-form-item label="重新分配角色：" label-width="120px" prop="checkList">
+          <el-form-item label="重新分配角色：" label-width="110px" prop="checkList">
             <el-checkbox-group v-model="approvalInfo.roleIdList">
               <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
               </el-checkbox>
@@ -249,6 +249,13 @@
         this.approvalInfo = {
           ...this.approvalInfo,
           roleIdList: roles||[]
+        };
+        //审核时需要比对数据
+        if(this.$props.operationType === 1){
+          const {editContent} = newVal;
+          const newItem = JSON.parse(editContent);
+          const {userBaseInfoVo, zcUserExtraInfoVo, systemRoles, roles} = newItem
+
         }
       },
       dialogVisible(newVal) {
