@@ -115,7 +115,7 @@
       return {
         imgBase64: '',
         loginForm: {
-          username: "13912345678",
+          username: "17812345678",
           password: "xn123456",
         },
         loginRules: {},
@@ -161,10 +161,10 @@
           if (res) {
             this.loading= false;
             const {token, userZcVo} = res;
-            const {name, sex, compName, telphone, userId, isFirstLogin} = userZcVo;
+            const {name, sex, compName, telphone, id, isFirstLogin} = userZcVo;
             setCookie('token', token);
             setCookie('userInfo', {
-              name, sex, compName, telphone, userId, isFirstLogin
+              name, sex, compName, telphone, userId:id, isFirstLogin
             });
             this.$router.push({path: "/"});
           }

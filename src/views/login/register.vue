@@ -8,11 +8,13 @@
         </span>
       </div>
     </div>
+
+    <img class="cube0" src="../../assets/imgs/cube.png" alt="">
+    <img class="cube1" src="../../assets/imgs/cube.png" alt="">
+    <img class="cube2" src="../../assets/imgs/cube.png" alt="">
+    <img class="cube3" src="../../assets/imgs/cube.png" alt="">
     <div class="registerForm">
-      <img class="cube0" src="../../assets/imgs/cube.png" alt="">
-      <img class="cube1" src="../../assets/imgs/cube.png" alt="">
-      <img class="cube2" src="../../assets/imgs/cube.png" alt="">
-      <img class="cube3" src="../../assets/imgs/cube.png" alt="">
+
       <p class="title">监督员注册</p>
       <div class="content">
         <el-form ref="form"
@@ -280,12 +282,12 @@
           telphone: "17859865320",
           idcard: '1',
           name: 'Fiona',
-          sex: '1',
+          sex: 1,
           mz: '01',
           birthday: "2020-11-11",
           zzmm: "zzmm01",
           xl: "jbxl01",
-          xw: 'xw',
+          // xw: 'xw',
         },
         count: 60,
         rules: {
@@ -445,6 +447,10 @@
             areaCode: value[value.length - 1],
             type: 2
           });
+          this.form={
+            ...this.form,
+            orgcode:null
+          }
         } else {
 
         }
@@ -557,7 +563,7 @@
 
   .cube0 {
     position: absolute;
-    left: -100px;
+    left: 100px;
     width: 138px;
     bottom: 0;
   }
@@ -572,7 +578,7 @@
   .cube2 {
     position: absolute;
     top: 112px;
-    left: -50px;
+    left: 150px;
     transform: (-50%, -50%);
     width: 101px;
   }
@@ -580,7 +586,7 @@
   .cube3 {
     position: absolute;
     bottom: 0;
-    right: -100px;
+    right: 100px;
     width: 82px;
   }
 
@@ -590,8 +596,8 @@
   }
 
   @media screen and (max-width: 1600px) {
-    .registerForm {
-      margin-bottom: 40px;
+    .content {
+      max-height: 500px;
     }
   }
 

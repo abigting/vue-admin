@@ -230,11 +230,18 @@
     .userInfo {
       position: absolute;
       cursor: pointer;
-      top: 0;
+      top: 30px;
       right: 16px;
+      line-height: 30px;
 
       .name {
         margin-left: 8px;
+        width: 64px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
       }
 
       .fixed-menu-item {
@@ -337,7 +344,7 @@
     cursor: pointer;
     top: 2px;
     color: #d1d8e6;
-    right: 114px;
+    right: 128px;
     font-size: 30px;
   }
 

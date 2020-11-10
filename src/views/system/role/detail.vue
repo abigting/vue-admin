@@ -12,7 +12,7 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="角色所属子系统" prop="systemId">
-                <el-select v-model="form.systemId" placeholder="" clearable @change="changeSystem">
+                <el-select v-model="form.systemId" placeholder="" clearable @change="changeSystem" :disabled="disabled">
                   <el-option :label="item.value"
                              :value="item.code"
                              v-for="item in systemTypeList"
@@ -22,17 +22,17 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="角色名称" prop="roleName">
-                <el-input v-model="form.roleName"></el-input>
+                <el-input v-model="form.roleName" :disabled="disabled"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="角色说明" prop="roleDescribe">
-                <el-input v-model="form.roleDescribe"></el-input>
+                <el-input v-model="form.roleDescribe" :disabled="disabled"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item>
-                <el-checkbox v-model="form.needCheck">
+                <el-checkbox v-model="form.needCheck" :disabled="disabled">
                   需要监督员审核
                 </el-checkbox>
               </el-form-item>
@@ -52,6 +52,7 @@
               <td style="width:12%; background:#F5F6FA" class="firstMenu">
                 <div>
                   <el-checkbox class="check"
+                               :disabled="disabled"
                                @change="value=>handleChoose(value, item)"
                                v-model="item.checked"/>
                   {{item.menuName}}
@@ -67,6 +68,7 @@
                     <div class="parentNode hasLine">
                       <div :class="{'nameBox':true, childrenIsMenu: child.flag===0, childrenIsActions: child.flag===1}">
                         <el-checkbox class="check"
+                                     :disabled="disabled"
                                      @change="value=>handleChoose(value, child)"
                                      v-model="child.checked"/>
                         {{child.menuName}}
@@ -79,6 +81,7 @@
                             <div v-if="child1.flag===1" class="includeAction">
                             <span>
                                 <el-checkbox
+                                  :disabled="disabled"
                                   class="check"
                                   @change="value=>handleChoose(value, child1)"
                                   v-model="child1.checked"/>
@@ -87,6 +90,7 @@
                               <div class="actionBox">
                                <span v-for="action in child1.children">
                                  <el-checkbox
+                                   :disabled="disabled"
                                    class="check"
                                    @change="value=>handleChoose(value, action)"
                                    v-model="action.checked"/>
@@ -98,6 +102,7 @@
                             <div v-else-if="child1.children" class="includeMenu">
                         <span>
                            <el-checkbox class="check"
+                                        :disabled="disabled"
                                         @change="value=>handleChoose(value, child1)"
                                         v-model="child1.checked"/>
                           {{child1.menuName}}
@@ -105,6 +110,7 @@
                               <div class="menuBox">
                                 <div v-for="child2 in child1.children">
                                   <el-checkbox class="check"
+                                               :disabled="disabled"
                                                @change="value=>handleChoose(value, child2)"
                                                v-model="child2.checked"/>
                                   {{child2.menuName}}
@@ -115,6 +121,7 @@
                             <div v-else class="includeAction">
                             <span>
                                <el-checkbox class="check"
+                                            :disabled="disabled"
                                             @change="value=>handleChoose(value, child1)"
                                             v-model="child1.checked"/>
                               {{child1.menuName}}
@@ -128,6 +135,7 @@
                             <div class="actionBox">
                              <span v-for="action in child.children">
                                <el-checkbox
+                                 :disabled="disabled"
                                  class="check"
                                  @change="value=>handleChoose(value, action)"
                                  v-model="action.checked"/>
@@ -156,6 +164,7 @@
 <script>
   import * as roleApi from "@/api/system/role"
   import common from "@/mixins/common"
+  import {ACTION} from "../../../mixins/dictionary";
 
   export default {
     name: "detail",
@@ -581,6 +590,7 @@
           // }
         ],
         auth: [],
+        disabled: false
       }
     },
     computed: {},
@@ -610,7 +620,7 @@
         this.getPermissionList({code: value});
       },
       getInfo() {
-        const {id} = this.$route.query;
+        const {id, action} = this.$route.query;
         if (id) {
           roleApi.getInfo({roleId: id}).then(res => {
             if (res) {
@@ -622,7 +632,8 @@
               this.auth = res.permissionList || [];
               this.getPermissionList({code: res.systemId});
             }
-          })
+          });
+          if(action===ACTION.REVIEW) this.disabled = true
         } else {
           this.getPermissionList({code: this.form.systemId});
         }

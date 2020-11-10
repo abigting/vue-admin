@@ -1,5 +1,7 @@
 <template>
-  <CustomModal :visible="dialogVisible" title="修改账号信息" @handCancel="closeModal">
+  <CustomModal :visible="dialogVisible"
+               :title="operationType===1||operationType===3?'审核':operationType===0?'修改':operationType===2?'查看':''"
+               @handCancel="closeModal">
     <div class="user-info-block">
       <!-- 基本信息 -->
       <div class="basic-info clear-float">
@@ -18,7 +20,8 @@
         <div class="block phone">
           <span>手机号</span>
           <div class="allow-edit" v-show="editPhone">
-            <el-input ref="editPhone" v-model="userBaseInfoVo.telphone" class="edit-phone" placeholder="请输入"></el-input>
+            <el-input @blur="editPhone=false" ref="editPhone" v-model="userBaseInfoVo.telphone" class="edit-phone"
+                      placeholder="请输入"></el-input>
           </div>
           <p v-if="!editPhone">
             {{userBaseInfoVo.telphone}}
@@ -37,6 +40,8 @@
             <el-checkbox-group v-model="approvalInfo.roleIdList">
               <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
               </el-checkbox>
+              <!--              <el-checkbox :label="2"  :key="2">2-->
+              <!--              </el-checkbox>-->
             </el-checkbox-group>
           </el-form-item>
         </el-form>
@@ -72,7 +77,7 @@
 
             <div class="triangle"></div>
           </div>
-          <div class="custom-info-list" v-if="systemId.includes('33000000000')">
+          <div class="custom-info-list" v-if="systemId==='33000000000'">
             <el-row>
               <el-col :span="12">
                 <p><span>所在机构：</span>{{userBaseInfoVo.orgname}}
@@ -157,7 +162,7 @@
               </el-col>
             </el-row>
           </div>
-          <div class="custom-info-list" v-if="systemId.includes('33000000001')">
+          <div class="custom-info-list" v-if="systemId==='33000000001'">
             <el-row>
               <el-col :span="12">
                 <p><span>所属单位地址：</span>{{zcUserExtraInfoVo.zcAddr}}
@@ -213,6 +218,23 @@
               </el-col>
             </el-row>
           </div>
+          <div class="custom-info-list"
+               v-if="systemId==='33000000002'||systemId==='33000000003'||systemId==='33000000004'">
+            <el-row>
+              <el-col :span="12">
+                <p><span>性别：</span>{{userBaseInfoVo.sex}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.sex"
+                        :now="userBaseInfoVo.sex"/>
+                </p>
+              </el-col>
+              <el-col :span="12">
+                <p><span>单位名称：</span>{{userBaseInfoVo.orgname}}
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.orgname"
+                        :now="userBaseInfoVo.orgname"/>
+                </p>
+              </el-col>
+            </el-row>
+          </div>
         </div>
         <!-- 职位信息 -->
         <div class="position-info-block has-top-line clear-float" v-if="systemId.includes('33000000000')">
@@ -235,11 +257,11 @@
           <div v-if="userBaseInfoVo.isTsjbzy===1" class="title">投诉举报专员</div>
           <div v-if="userBaseInfoVo.isSsjjdy===1" class="title">双随机监督员</div>
           <div v-if="userBaseInfoVo.isSsjzg===1" class="title">双随机在岗</div>
-            <p class="range-block" v-if="userBaseInfoVo.ssjzyfwText">
-              <span>执业范围：</span>{{userBaseInfoVo.ssjzyfwText}}
-              <Hint :operationType="operationType" :last="userBaseInfoEditVo.ssjzyfwText"
-                    :now="userBaseInfoVo.ssjzyfwText"/>
-            </p>
+          <p class="range-block" v-if="userBaseInfoVo.ssjzyfwText">
+            <span>执业范围：</span>{{userBaseInfoVo.ssjzyfwText}}
+            <Hint :operationType="operationType" :last="userBaseInfoEditVo.ssjzyfwText"
+                  :now="userBaseInfoVo.ssjzyfwText"/>
+          </p>
           </p>
         </div>
       </div>
@@ -361,7 +383,6 @@
             this.systemEditRoles = systemEditRoles ? systemEditRoles.join(',') : '';
             this.roleEdits = roleEdits || {};
             this.zcUserExtraInfoEditVo = zcUserExtraInfoEditVo || {};
-
             if (JSON.stringify(roleEdits) !== JSON.stringify(roles)) {
               this.changedFields = [...this.changedFields, 'systemRoles'];
               this.changedContent = {
@@ -404,7 +425,9 @@
       handleEdit() {
         this.editPhone = !this.editPhone;
         if (this.editPhone) {
-          this.$refs.editPhone.focus();
+          this.$nextTick(function () {
+            this.$refs.editPhone.focus();
+          });
         }
       },
       //查看弹窗信息-历史信息
@@ -659,6 +682,7 @@
       color: #3a3d49;
       width: 120px;
       vertical-align: middle;
+      text-align: left;
     }
 
     .long-title-wrap {

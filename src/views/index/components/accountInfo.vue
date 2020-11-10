@@ -19,8 +19,8 @@
           <el-col :span="6">
             <el-form-item label="性别：" prop="sex">
               <el-radio-group v-model="form.sex" :disabled="disabled">
-                <el-radio label="0">男</el-radio>
-                <el-radio label="1">女</el-radio>
+                <el-radio :label="0">男</el-radio>
+                <el-radio :label="1">女</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -112,6 +112,7 @@
               ></el-cascader>
             </el-form-item>
           </el-col>
+
           <el-col :span="6">
             <el-form-item label="" prop="orgname" label-width="0">
               <el-select v-model="form.orgcode" placeholder="" :disabled="disabled">
@@ -175,7 +176,8 @@
         <el-row>
           <el-col :span="3">
             <el-form-item label-width="0">
-              <el-checkbox label="双随机监督员" :disabled="disabled" v-model="form.isSsjjdy"></el-checkbox>
+              <el-checkbox label="双随机监督员" @change="value=>linkFn(value, 'isSsjjdy')" :disabled="disabled"
+                           v-model="form.isSsjjdy"></el-checkbox>
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -210,7 +212,7 @@
           <!--            <el-col :span="24" class="hint">-->
           <!--              手机验证码5分钟内有效，请先填写上述信息-->
           <!--            </el-col>-->
-          <el-col :span="8">
+          <el-col :span="6">
             <el-form-item label="手机号：" prop="telphone" label-width="78px">
               <el-input v-model="form.telphone" disabled>
                 <!--                  <template slot="append">-->
@@ -386,9 +388,10 @@
     },
     methods: {
       getInfo() {
-        userApi.queryUserBaseInfoByUserId({userId: getUserInfo().userId}).then((res) => {
+        userApi.queryUserBaseInfoByUserId({userId: getUserInfo().userId, systemId: 33000000000}).then((res) => {
           if (res) {
             const {isWsjdy, isDagly, isTsjbzy, isSsjzg, isSsjjdy, areacode} = res;
+
             this.form = {
               ...res,
               isWsjdy: isWsjdy === 1,
@@ -400,7 +403,7 @@
               areacode: ["330000000"]
             };
 
-            this.changeAreaCode(splitAddrCodeWithStreet(areacode))
+            this.changeAreaCode(splitAddrCodeWithStreet(areacode), true)
           }
         });
       },
@@ -408,14 +411,34 @@
         // this.disabled = true;
         this.$emit('handCancel')
       },
-      changeAreaCode(value) {
+      changeAreaCode(value, noReset) {
         if (value) {
           this.queryDicJgList({
             areaCode: value[value.length - 1],
             type: 2
           });
+          if(!noReset){
+            this.form={
+              ...this.form,
+              orgcode:null
+            }
+          }
         } else {
 
+        }
+      },
+      linkFn(value, type) {
+
+        switch (type) {
+          case 'isSsjjdy':
+            this.form = {
+              ...this.form,
+              isSsjzg: false,
+              ssjzyfw: []
+            };
+            return;
+          default:
+            return;
         }
       },
       onSubmit(formName) {
@@ -499,5 +522,17 @@
     top: 16px;
     right: 16px;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 1600px) {
+    .registerForm {
+      max-height: 600px;
+    }
+  }
+
+  @media screen and (max-width: 1400px) {
+    .registerForm {
+      max-height: 550px;
+    }
   }
 </style>

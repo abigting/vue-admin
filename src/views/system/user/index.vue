@@ -221,7 +221,7 @@
     created() {
       this.getList();
       this.getSystemType();
-      this.queryDicRoleList();
+      // this.queryDicRoleList();
     },
     methods: {
       closeModal() {
@@ -284,12 +284,10 @@
         } else {
           this.operationType = type;
         }
-
-        this.dialogVisible = true;
-
         userApi.getInfo({userId: row.userId, systemId: row.systemId}).then(res => {
           if (res) {
             this.currentItem = res;
+            this.dialogVisible = true;
           }
         })
       },
