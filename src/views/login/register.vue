@@ -105,7 +105,8 @@
                   :props="{
                   expandTrigger: 'hover',
                   value: 'code',
-                  label: 'name'
+                  label: 'name',
+                  checkStrictly: true
                 }"
                   @change="changeAreaCode"
                   placeholder="请选择地区"
@@ -416,7 +417,7 @@
         this.$router.go(-1)
       },
       getVerificationCode() {
-        if(this.count<60){
+        if (this.count < 60) {
           return
         }
         userApi.createTelphonCode({

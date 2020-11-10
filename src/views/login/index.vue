@@ -156,8 +156,10 @@
           this.$message.info('请填写验证码');
           return
         }
+        this.loading= true;
         userApi.login(this.loginForm).then(res => {
           if (res) {
+            this.loading= false;
             const {token, userZcVo} = res;
             const {name, sex, compName, telphone, userId, isFirstLogin} = userZcVo;
             setCookie('token', token);
@@ -167,6 +169,7 @@
             this.$router.push({path: "/"});
           }
         }).catch(() => {
+          this.loading= false;
           console.log("登录失败");
         });
       },
@@ -213,7 +216,6 @@
     background: linear-gradient(180deg, #1789FA 0%, #1454D5 100%);
   }
 
-
   .systemLogo {
     text-align: center;
     padding-top: 78px;
@@ -228,13 +230,13 @@
     bottom: 0;
     right: -88px;
     width: 80px;
-    height: 40px;
-    border: 1px solid #cfc3c3;
+    height: 42px;
     cursor: pointer;
-
+    border-radius: 2px;
+    border: 1px solid #cfc3c3;
     > img {
-      width: 78px;
-      height: 38px;
+      width: 100%;
+      height: 40px;
     }
   }
 
@@ -245,7 +247,7 @@
 
   .login-container /deep/ .el-input {
     display: inline-block;
-    height: 32px;
+    height: 38px;
     width: 85%;
 
     input {
@@ -253,10 +255,10 @@
       border: 0px;
       -webkit-appearance: none;
       border-radius: 0px;
-      padding: 12px 5px 12px 15px;
+      /*padding: 12px 5px 12px 15px;*/
       // color: rgb(83, 78, 78);
       // color: $light_gray;
-      height: 32px;
+      height: 38px;
 
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px white inset !important;
@@ -327,7 +329,7 @@
     .el-form-item {
       border: 1px solid rgb(207, 195, 195);
       background: white;
-      border-radius: 3px;
+      border-radius: 2px;
       margin-bottom: 12px;
     }
 
