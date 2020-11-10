@@ -404,7 +404,7 @@
             userApi.register(req).then((res) => {
               if (res) {
                 this.$message({
-                  message: "注册成功",
+                  message: "注册成功，等待审核通过",
                   type: "success",
                 });
                 this.$router.push('/login')

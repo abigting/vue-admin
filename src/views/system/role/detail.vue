@@ -1018,4 +1018,20 @@
   .operation {
     margin-top: 20px;
   }
+
+  @media screen and (max-width: 1400px) {
+    .content {
+      .limitedWidth {
+        width: 1100px;
+      }
+    }
+
+    .secondMenu .thirdMenu .actionBox > span{
+      width: 90px;
+    }
+
+    .firstAction .actionBox > span{
+      width: 90px;
+    }
+  }
 </style>

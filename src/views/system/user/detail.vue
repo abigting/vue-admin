@@ -51,14 +51,13 @@
         <div class="detailed-info-block has-top-line clear-float">
           <div class="top-title-block" v-if="operationType!==0">
             <div class="title" v-if="systemId.includes('33000000000')">效能/ {{systemRoles}}
-              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
-                    :now="userBaseInfoVo.systemRoles"/>
+              <Hint :operationType="operationType" :last="systemEditRoles"
+                    :now="systemRoles"/>
             </div>
             <div class="title" v-if="systemId.includes('33000000001')">自查/ {{systemRoles}}
               <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
                     :now="userBaseInfoVo.systemRoles"/>
             </div>
-
 
             <div class="title" v-if="systemId.includes('33000000002')">口腔诊所在线监测系统/ {{systemRoles}}
               <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
@@ -93,65 +92,61 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>民族：</span>{{userBaseInfoVo.mz}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.mz" :now="userBaseInfoVo.mz"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>出生日期：</span>{{userBaseInfoVo.birthday}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.birthday"
                         :now="userBaseInfoVo.birthday"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>政治面貌：</span>{{userBaseInfoVo.zzmm}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zzmm" :now="userBaseInfoVo.zzmm"/>
                 </p>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>学历：</span>{{userBaseInfoVo.xl}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.xl" :now="userBaseInfoVo.xl"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>学位：</span>{{userBaseInfoVo.xw}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.xw" :now="userBaseInfoVo.xw"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>毕业院校：</span>{{userBaseInfoVo.university}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.university"
                         :now="userBaseInfoVo.university"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>参加工作日期：</span>{{userBaseInfoVo.workDate}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.workDate"
                         :now="userBaseInfoVo.workDate"/>
                 </p>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>所学专业：</span>{{userBaseInfoVo.discipline}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.discipline"
                         :now="userBaseInfoVo.discipline"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>职务：</span>{{userBaseInfoVo.zw}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zw" :now="userBaseInfoVo.zw"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>职称：</span>{{userBaseInfoVo.zc}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zc" :now="userBaseInfoVo.zc"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p>
                   <span>电子邮箱：</span>
                   <span class="info" :title="userBaseInfoVo.email">
@@ -362,47 +357,65 @@
     watch: {
       item(newVal) {
         if (newVal.userBaseInfoVo) {
-          const {userId, userBaseInfoVo, zcUserExtraInfoVo, systemId, systemRoles, roles} = newVal;
-          if (this.$props.operationType === 0 || this.$props.operationType === 1 || this.$props.operationType === 3) {
-            if (systemId) this.queryDicRoleList(systemId);
-          }
-          this.userBaseInfoVo = userBaseInfoVo || {};
-          this.zcUserExtraInfoVo = zcUserExtraInfoVo || {};
-          this.systemId = systemId || [];
-          this.systemRoles = systemRoles ? systemRoles.join(',') : '';
-          this.userId = userId;
-          this.approvalInfo = {
-            ...this.approvalInfo,
-            roleIdList: roles || []
-          };
-          //审核时需要比对数据
+
+          //审核时需要比对数据， 将两个对象颠倒
           if (this.$props.operationType === 3) {
-            const {userBaseInfoEditVo, systemEditRoles, roleEdits, zcUserExtraInfoEditVo} = newVal;
-
-            this.userBaseInfoEditVo = userBaseInfoEditVo || {};
-            this.systemEditRoles = systemEditRoles ? systemEditRoles.join(',') : '';
-            this.roleEdits = roleEdits || {};
-            this.zcUserExtraInfoEditVo = zcUserExtraInfoEditVo || {};
-            if (JSON.stringify(roleEdits) !== JSON.stringify(roles)) {
-              this.changedFields = [...this.changedFields, 'systemRoles'];
-              this.changedContent = {
-                ...this.changedContent,
-                systemRoles: systemEditRoles ? systemEditRoles.join(',') : ''
-              }
+            const { userId,systemId,
+              userBaseInfoVo, zcUserExtraInfoVo,  systemRoles, roles,
+              userBaseInfoEditVo, zcUserExtraInfoEditVo, systemEditRoles, roleEdits, } = newVal;
+            if (this.$props.operationType === 0 || this.$props.operationType === 1 || this.$props.operationType === 3) {
+              if (systemId) this.queryDicRoleList(systemId);
             }
-            Object.keys(userBaseInfoEditVo).forEach(s => {
-              if (JSON.stringify(userBaseInfoEditVo[s]) !== JSON.stringify(userBaseInfoVo[s])) {
-                this.changedFields = [...this.changedFields, s];
-                this.changedContent = {
-                  ...this.changedContent,
-                  [s]: userBaseInfoEditVo[s]
-                }
-              }
-            });
+            this.userId = userId;
+            this.systemId = systemId || [];
 
-            console.log(this.changedFields, this.changedContent, 'changedContent')
-            // console.log(this.userBaseInfoEditVo, 'changedContent')
+            this.userBaseInfoVo = userBaseInfoEditVo || {};
+            this.zcUserExtraInfoVo = zcUserExtraInfoEditVo || {};
+            this.systemRoles = systemEditRoles ? systemEditRoles.join(',') : '';
 
+
+            this.userBaseInfoEditVo = userBaseInfoVo || {};
+            this.systemEditRoles = systemRoles ? systemRoles.join(',') : '';
+            this.zcUserExtraInfoEditVo = zcUserExtraInfoVo || {};
+            this.approvalInfo = {
+              ...this.approvalInfo,
+              roleIdList: roleEdits || []
+            };
+            // const {userBaseInfoEditVo, systemEditRoles, roleEdits, zcUserExtraInfoEditVo} = newVal;
+            // this.userBaseInfoEditVo = userBaseInfoEditVo || {};
+            // this.systemEditRoles = systemEditRoles ? systemEditRoles.join(',') : '';
+            // this.roleEdits = roleEdits || {};
+            // this.zcUserExtraInfoEditVo = zcUserExtraInfoEditVo || {};
+            // if (JSON.stringify(roleEdits) !== JSON.stringify(roles)) {
+            //   this.changedFields = [...this.changedFields, 'systemRoles'];
+            //   this.changedContent = {
+            //     ...this.changedContent,
+            //     systemRoles: systemEditRoles ? systemEditRoles.join(',') : ''
+            //   }
+            // }
+            // Object.keys(userBaseInfoEditVo).forEach(s => {
+            //   if (JSON.stringify(userBaseInfoEditVo[s]) !== JSON.stringify(userBaseInfoVo[s])) {
+            //     this.changedFields = [...this.changedFields, s];
+            //     this.changedContent = {
+            //       ...this.changedContent,
+            //       [s]: userBaseInfoEditVo[s]
+            //     }
+            //   }
+            // });
+          }else{
+            const {userId, userBaseInfoVo, zcUserExtraInfoVo, systemId, systemRoles, roles} = newVal;
+            if (this.$props.operationType === 0 || this.$props.operationType === 1 || this.$props.operationType === 3) {
+              if (systemId) this.queryDicRoleList(systemId);
+            }
+            this.userBaseInfoVo = userBaseInfoVo || {};
+            this.zcUserExtraInfoVo = zcUserExtraInfoVo || {};
+            this.systemId = systemId || [];
+            this.systemRoles = systemRoles ? systemRoles.join(',') : '';
+            this.userId = userId;
+            this.approvalInfo = {
+              ...this.approvalInfo,
+              roleIdList: roles || []
+            };
           }
         }
       },
@@ -680,7 +693,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       color: #3a3d49;
-      width: 120px;
+      width: auto;
       vertical-align: middle;
       text-align: left;
     }
