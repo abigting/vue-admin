@@ -37,7 +37,7 @@ export function uploadNew(data) {
 //系统角色列表查询接口
 export function queryDicRoleList(data) {
   return request({
-    url: '/xnrh-yhzx/api/common/queryDicRoleList',
+    url: '/xnrh-yhzx/api/role/showList',
     method: 'post',
     data
   })

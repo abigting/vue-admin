@@ -71,7 +71,8 @@ export default {
     queryDicRoleList(systemId) {
       commonApi.queryDicRoleList({systemId:systemId?systemId:33000000000}).then(res => {
         if(res){
-          this.dicRoleList = res
+          const {datas} = res;
+          this.dicRoleList = datas||[]
         }
       })
     },

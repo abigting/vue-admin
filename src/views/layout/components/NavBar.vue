@@ -14,10 +14,10 @@
           <i class="el-icon-caret-bottom el-icon-arrow-down"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="avatar-menu-wrap">
-          <el-dropdown-item><span @click="handleClick('4')"><i class="iconfont iconshouye blue-text"></i>返回首页</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('4')"><i class="iconfont iconshouye blue-text"></i>返回首页</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -398,26 +398,24 @@
     .fixed-menu-item {
       display: block;
       font-size: 14px;
-      padding: 4px 0;
       text-align: center;
-      width: 120px;
       box-sizing: border-box;
       overflow: hidden;
       transition: all .1s linear;
       white-space: nowrap;
     }
 
-    .el-dropdown-menu--mini {
-      padding: 0 !important;
-    }
+    /*.el-dropdown-menu--mini {*/
+    /*  padding: 0 !important;*/
+    /*}*/
 
-    .fixed-menu-item:hover {
-      font-size: 18px;
-      font-weight: 600;
-    }
+    /*.fixed-menu-item:hover {*/
+    /*  font-size: 18px;*/
+    /*  font-weight: 600;*/
+    /*}*/
 
-    .login-out-item:hover {
-      color: #F56C6C !important;
-    }
+    /*.login-out-item:hover {*/
+    /*  color: #F56C6C !important;*/
+    /*}*/
   }
 </style>

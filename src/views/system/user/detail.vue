@@ -46,24 +46,44 @@
         <div class="detailed-info-block has-top-line clear-float">
           <div class="top-title-block" v-if="operationType!==0">
             <div class="title" v-if="systemId.includes('33000000000')">效能/ {{systemRoles}}
-              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles" :now="userBaseInfoVo.systemRoles"/>
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
+                    :now="userBaseInfoVo.systemRoles"/>
             </div>
-            <!--            <div class="title" v-if="systemIds.includes('33000000001')">-->
-            <div class="title" v-else>自查/ {{systemRoles}}
-              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles" :now="userBaseInfoVo.systemRoles"/>
+            <div class="title" v-if="systemId.includes('33000000001')">自查/ {{systemRoles}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
+                    :now="userBaseInfoVo.systemRoles"/>
             </div>
+
+
+            <div class="title" v-if="systemId.includes('33000000002')">口腔诊所在线监测系统/ {{systemRoles}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
+                    :now="userBaseInfoVo.systemRoles"/>
+            </div>
+
+            <div class="title" v-if="systemId.includes('33000000003')">消毒保洁在线监测系统/ {{systemRoles}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
+                    :now="userBaseInfoVo.systemRoles"/>
+            </div>
+
+            <div class="title" v-if="systemId.includes('33000000004')">水厂水质在线监测系统/ {{systemRoles}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.systemRoles"
+                    :now="userBaseInfoVo.systemRoles"/>
+            </div>
+
             <div class="triangle"></div>
           </div>
           <div class="custom-info-list" v-if="systemId.includes('33000000000')">
             <el-row>
               <el-col :span="12">
                 <p><span>所在机构：</span>{{userBaseInfoVo.orgname}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.orgname" :now="userBaseInfoVo.orgname"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.orgname"
+                        :now="userBaseInfoVo.orgname"/>
                 </p>
               </el-col>
               <el-col :span="12">
                 <p><span>所在科室：</span>{{userBaseInfoVo.department}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.department" :now="userBaseInfoVo.department"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.department"
+                        :now="userBaseInfoVo.department"/>
                 </p>
               </el-col>
             </el-row>
@@ -75,7 +95,8 @@
               </el-col>
               <el-col :span="6">
                 <p><span>出生日期：</span>{{userBaseInfoVo.birthday}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.birthday" :now="userBaseInfoVo.birthday"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.birthday"
+                        :now="userBaseInfoVo.birthday"/>
                 </p>
               </el-col>
               <el-col :span="6">
@@ -97,19 +118,22 @@
               </el-col>
               <el-col :span="6">
                 <p><span>毕业院校：</span>{{userBaseInfoVo.university}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.university" :now="userBaseInfoVo.university"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.university"
+                        :now="userBaseInfoVo.university"/>
                 </p>
               </el-col>
               <el-col :span="6">
                 <p><span>参加工作日期：</span>{{userBaseInfoVo.workDate}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.workDate" :now="userBaseInfoVo.workDate"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.workDate"
+                        :now="userBaseInfoVo.workDate"/>
                 </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="6">
                 <p><span>所学专业：</span>{{userBaseInfoVo.discipline}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.discipline" :now="userBaseInfoVo.discipline"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.discipline"
+                        :now="userBaseInfoVo.discipline"/>
                 </p>
               </el-col>
               <el-col :span="6">
@@ -137,49 +161,54 @@
             <el-row>
               <el-col :span="12">
                 <p><span>所属单位地址：</span>{{zcUserExtraInfoVo.zcAddr}}
-                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcAddr" :now="zcUserExtraInfoVo.zcAddr"/>
+                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcAddr"
+                        :now="zcUserExtraInfoVo.zcAddr"/>
                 </p>
               </el-col>
               <el-col :span="12">
                 <p><span>所属单位名称：</span>{{zcUserExtraInfoVo.zcCompName}}
-                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcCompName" :now="zcUserExtraInfoVo.zcCompName"/>
+                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcCompName"
+                        :now="zcUserExtraInfoVo.zcCompName"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>专业编码：</span>{{zcUserExtraInfoVo.zcCompSpec}}
-                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcCompSpec" :now="zcUserExtraInfoVo.zcCompSpec"/>
+                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcCompSpec"
+                        :now="zcUserExtraInfoVo.zcCompSpec"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>人员类型：</span>{{zcUserExtraInfoVo.zcPersonType}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcPersonType" :now="userBaseInfoVo.zcPersonType"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcPersonType"
+                        :now="userBaseInfoVo.zcPersonType"/>
                 </p>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>健康证编码：</span>{{zcUserExtraInfoVo.zcHealthCertificate}}
-                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcHealthCertificate" :now="zcUserExtraInfoVo.zcHealthCertificate"/>
+                  <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcHealthCertificate"
+                        :now="zcUserExtraInfoVo.zcHealthCertificate"/>
                 </p>
               </el-col>
               <el-col :span="12">
                 <p><span>健康证期限：</span>{{zcUserExtraInfoVo.zcStartDate}}至{{zcUserExtraInfoVo.zcEndDate}}
-                  <i class="el-icon-warning" v-if="zcUserExtraInfoVo.zcStartDate!==zcUserExtraInfoEditVo.zcStartDate||zcUserExtraInfoVo.zcEndDate!==zcUserExtraInfoEditVo.zcEndDate">
-                    <div class="history-info-wrap">{{zcUserExtraInfoEditVo.zcStartDate}}至{{zcUserExtraInfoEditVo.zcEndDate}}
+                  <i class="el-icon-warning"
+                     v-if="(zcUserExtraInfoVo.zcStartDate!==zcUserExtraInfoEditVo.zcStartDate||zcUserExtraInfoVo.zcEndDate!==zcUserExtraInfoEditVo.zcEndDate)&& operationType===3">
+                    <div class="history-info-wrap">
+                      {{zcUserExtraInfoEditVo.zcStartDate}}至{{zcUserExtraInfoEditVo.zcEndDate}}
                     </div>
                   </i>
                 </p>
               </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>QQ号：</span>{{zcUserExtraInfoVo.zcQq}}
-                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcQq" :now="zcUserExtraInfoVo.zcQq"/>
+                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcQq"
+                        :now="zcUserExtraInfoVo.zcQq"/>
                 </p>
               </el-col>
-              <el-col :span="6">
+              <el-col :span="12">
                 <p><span>工作年限：</span>{{zcUserExtraInfoVo.zcWorkYear}}年
-                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcWorkYear" :now="zcUserExtraInfoVo.zcWorkYear"/>
+                  <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcWorkYear"
+                        :now="zcUserExtraInfoVo.zcWorkYear"/>
                 </p>
               </el-col>
             </el-row>
@@ -197,7 +226,8 @@
                 <Hint :operationType="operationType" :last="userBaseInfoEditVo.zfzh" :now="userBaseInfoVo.zfzh"/>
               </p>
               <p><span class="long-title-wrap">参加监督工作日期：</span>{{userBaseInfoVo.jdWorkDate}}
-                <Hint :operationType="operationType" :last="userBaseInfoEditVo.jdWorkDate" :now="userBaseInfoVo.jdWorkDate"/>
+                <Hint :operationType="operationType" :last="userBaseInfoEditVo.jdWorkDate"
+                      :now="userBaseInfoVo.jdWorkDate"/>
               </p>
             </div>
           </div>
@@ -205,13 +235,14 @@
           <div v-if="userBaseInfoVo.isTsjbzy===1" class="title">投诉举报专员</div>
           <div v-if="userBaseInfoVo.isSsjjdy===1" class="title">双随机监督员</div>
           <div v-if="userBaseInfoVo.isSsjzg===1" class="title">双随机在岗</div>
-          <p class="range-block"><span>执业范围：</span>{{userBaseInfoVo.ssjzyfwText}}
-            <Hint :operationType="operationType" :last="userBaseInfoEditVo.ssjzyfwText" :now="userBaseInfoVo.ssjzyfwText"/>
-          </p>
+            <p class="range-block" v-if="userBaseInfoVo.ssjzyfwText">
+              <span>执业范围：</span>{{userBaseInfoVo.ssjzyfwText}}
+              <Hint :operationType="operationType" :last="userBaseInfoEditVo.ssjzyfwText"
+                    :now="userBaseInfoVo.ssjzyfwText"/>
+            </p>
           </p>
         </div>
       </div>
-
     </div>
     <!-- 按钮组 -->
     <el-divider class="mb20 mt0"></el-divider>
@@ -570,7 +601,6 @@
       color: #3A3D49;
       float: left;
       margin: 0;
-      margin-top: 12px;
 
       span {
         font-size: 14px;
@@ -622,7 +652,7 @@
       text-align: right;
     }
 
-    .info{
+    .info {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;

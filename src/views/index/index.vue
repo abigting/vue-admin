@@ -9,7 +9,7 @@
       </div>
       <i class="iconfont iconxitong1 settingIcon" :size="30" style="vertical-align: middle" @click="jump({key:'9'})">
       </i>
-      <el-dropdown class="userInfo" @click="handleClick">
+      <el-dropdown class="userInfo">
           <span class="el-dropdown-link">
             <el-avatar :size="30" style="vertical-align: middle">
                  {{userInfo.name?userInfo.name[0]:'无'}}
@@ -20,11 +20,11 @@
             </span>
           </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><span @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span>
           </el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span>
           </el-dropdown-item>
-          <el-dropdown-item><span @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -231,11 +231,22 @@
       position: absolute;
       cursor: pointer;
       top: 0;
-      right: 30px;
-      height: 60px;
+      right: 16px;
 
       .name {
         margin-left: 8px;
+      }
+
+      .fixed-menu-item {
+        display: block;
+        font-size: 14px;
+        padding: 4px 0;
+        text-align: center;
+        width: 120px;
+        box-sizing: border-box;
+        overflow: hidden;
+        transition: all .1s linear;
+        white-space: nowrap;
       }
     }
   }
@@ -324,9 +335,9 @@
   .settingIcon {
     position: absolute;
     cursor: pointer;
-    top: 0;
+    top: 2px;
     color: #d1d8e6;
-    right: 150px;
+    right: 114px;
     font-size: 30px;
   }
 

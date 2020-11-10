@@ -52,7 +52,10 @@
 
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="所属子系统：">
-              <el-select v-model="queryForm.systemId" placeholder="请选择所属子系统" clearable>
+              <el-select v-model="queryForm.systemId"
+                         placeholder="请选择所属子系统"
+                         @change="handleChangeSystemId"
+                         clearable>
                 <el-option :label="item.value"
                            :value="item.code"
                            v-for="item in systemTypeList"
@@ -62,7 +65,16 @@
           </el-col>
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
             <el-form-item label="角色：">
-              <el-input v-model="queryForm.roleId" placeholder="请输入角色"></el-input>
+              <el-select v-model="queryForm.roleId"
+                         placeholder="请选择角色"
+                         clearable
+                         :disabled="queryForm.systemId===33000000002||queryForm.systemId===33000000003||queryForm.systemId===33000000004">
+                <el-option :label="item.roleName"
+                           :value="item.roleId"
+                           v-for="item in dicRoleList"
+                           :key="item.roleId"></el-option>
+              </el-select>
+
             </el-form-item>
           </el-col>
           <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
@@ -101,9 +113,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="enable" label="使用状态" min-width="64" align="center">
+        <el-table-column prop="enable" label="是否启用" min-width="64" align="center">
           <template slot-scope="scope">
-            {{scope.row.enable?'禁用':'使用'}}
+            {{scope.row.enable?'禁用':'启用'}}
           </template>
         </el-table-column>
 
@@ -125,9 +137,12 @@
                 <span class="primary-btn" slot="reference">启用</span>
               </el-popconfirm>
 
-              <el-button type="text" v-if="scope.row.enable===0" size="small" class="modify-btn" @click="showDetail(scope.row,0)">修改</el-button>
+              <el-button type="text" v-if="scope.row.enable===0" size="small" class="modify-btn"
+                         @click="showDetail(scope.row,0)">修改
+              </el-button>
 
-              <el-popconfirm v-if="scope.row.isDelete===0" title="确定删除吗？" @onConfirm="deleteItem(scope.row,scope.$index)">
+              <el-popconfirm v-if="scope.row.isDelete===0" title="确定删除吗？"
+                             @onConfirm="deleteItem(scope.row,scope.$index)">
                 <span class="delete-btn" slot="reference">删除</span>
               </el-popconfirm>
             </div>
@@ -206,6 +221,7 @@
     created() {
       this.getList();
       this.getSystemType();
+      this.queryDicRoleList();
     },
     methods: {
       closeModal() {
@@ -242,6 +258,13 @@
       toQuery() {
         this.getList();
       },
+      handleChangeSystemId(value) {
+        this.queryDicRoleList(value);
+        this.queryForm = {
+          ...this.queryForm,
+          roleId: null
+        }
+      },
       toRest() {
         this.queryForm = {
           page: 1,
@@ -254,11 +277,11 @@
         const {status} = row;
         // 注册以后审核：0  修改以后审核：1
         this.currentItem = row;
-        if(status===0){
+        if (status === 0) {
           this.operationType = 1;
-        }else if(status===1){
+        } else if (status === 1) {
           this.operationType = 3;
-        }else{
+        } else {
           this.operationType = type;
         }
 
