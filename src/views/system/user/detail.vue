@@ -265,7 +265,7 @@
     <el-divider class="mb20 mt0"></el-divider>
     <!-- 审核操作 -->
     <div class="audit" v-if="operationType===1||operationType===3">
-      <el-form :model="approvalInfo" :rules="approvalInfoRules" ref="approvalInfo" label-width="100px"
+      <el-form :model="approvalInfo" :rules="approvalInfoRules" ref="approvalInfo" label-width="120px"
                label-position="left">
         <el-form-item label="是否同意：" prop="status">
           <el-radio-group v-model="approvalInfo.status" @change="linkFn">
@@ -280,7 +280,7 @@
             </el-input>
           </div>
         </el-form-item>
-        <el-form-item label="分配角色：" prop="roleIdList" label-width="100px" class="mb0" v-else>
+        <el-form-item label="分配角色：" prop="roleIdList" class="mb0" v-else>
           <el-checkbox-group v-model="approvalInfo.roleIdList">
             <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
             </el-checkbox>

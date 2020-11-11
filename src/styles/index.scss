@@ -82,7 +82,9 @@ a,a:focus,a:hover {
  //左侧菜单选中指示点
   .el-menu-item.is-active{
     position: relative;
+    background: #4A7BED !important;
   }
+
 .el-menu-item.is-active::after{
     //content: '';
     //display: block;

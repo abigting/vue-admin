@@ -52,9 +52,7 @@
             <template slot-scope="scope">
               <span class="action" @click="showDetail(ACTION.REVIEW, scope.row)">查看</span>
               <span class="action" @click="showDetail(ACTION.EDIT, scope.row)">编辑</span>
-              <el-popconfirm title="确认删除？" @onConfirm="deleteItem(scope.row)">
-                <span class="delete" slot="reference">删除</span>
-              </el-popconfirm>
+              <span class="delete" slot="reference" @click="deleteItem(scope.row)">删除</span>
             </template>
           </el-table-column>
         </el-table>
@@ -168,17 +166,25 @@
         this.$router.push(`/system/role/detail?action=${action}&id=${item.roleId}`)
       },
       deleteItem(item) {
-        roleApi.deleteItem({
-          roleId: item.roleId
-        }).then(res => {
-          if (res) {
-            this.getList();
-            Message({
-              message: '删除成功',
-              type: 'success'
-            });
-          }
-        })
+        this.$confirm('删除该信息不可逆，是否确定将该信息删除?', '确定要删除吗', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          roleApi.deleteItem({
+            roleId: item.roleId
+          }).then(res => {
+            if (res) {
+              this.getList();
+              Message({
+                message: '删除成功',
+                type: 'success'
+              });
+            }
+          })
+        }).catch(() => {
+
+        });
       }
     }
   }

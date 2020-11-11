@@ -144,11 +144,7 @@
                          @click="showDetail(scope.row,0)">修改
               </el-button>
 
-              <el-popconfirm v-if="scope.row.isDelete===0"
-                             title="确定删除吗？"
-                             @onConfirm="deleteItem(scope.row,scope.$index)">
-                <span class="delete-btn" slot="reference">删除</span>
-              </el-popconfirm>
+              <span class="delete-btn" slot="reference"  @click="deleteItem(scope.row)">删除</span>
             </div>
           </template>
         </el-table-column>
@@ -296,17 +292,25 @@
         })
       },
       deleteItem(item) {
-        userApi.deleteItem({
-          userId: item.userId
-        }).then(res => {
-          if (res) {
-            this.getList();
-            Message({
-              message: '删除成功',
-              type: 'success'
-            });
-          }
-        })
+        this.$confirm('删除该信息不可逆，是否确定将该信息删除?', '确定要删除吗', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          userApi.deleteItem({
+            userId: item.userId
+          }).then(res => {
+            if (res) {
+              this.getList();
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }
+          })
+        }).catch(() => {
+
+        });
       },
       //新增
       addItem() {
