@@ -5,6 +5,7 @@
  */
 import Cookies from 'js-cookie';
 import request from './request';
+import storage from '@/utils/localStorage'
 import qs from 'qs';
 // export function setCookie(name, val) {
 //   Cookies.set(name, val, { expires: 7, path: '/' });

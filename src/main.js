@@ -73,7 +73,7 @@ Vue.prototype.timeOut = timeOut;
  // 按钮元素控制 v-permission=" "
  Vue.directive('permission', {
    inserted: (el, binding, vnode) => {
-     const auths =storage.get('auths');
+     const auths =storage.get('auths')||[];
      // let permissionList = vnode.context.$route.meta.permission||[];
      if (!auths.includes(binding.value)) {
        el.parentNode.removeChild(el)

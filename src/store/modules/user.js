@@ -9,7 +9,8 @@ import {
   removeToken,
   setUserInfo,
   getUserInfo,
-  removeAllcookie
+  removeAllcookie,
+  removeAllInfo
 } from '@/utils/auth';
 
 const state = {
@@ -75,7 +76,7 @@ const actions = {
         username: getUserInfo().name
       }).then(res => {
         if (res) {
-          removeAllcookie();
+          removeAllInfo();
           resolve(res)
         }
       }).catch(error => {

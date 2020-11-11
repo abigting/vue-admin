@@ -1,5 +1,6 @@
 // cookie
 import Cookies from 'js-cookie'
+import storage from '@/utils/localStorage'
 
 const TokenKey = 'token';
 
@@ -33,6 +34,13 @@ export function removeAllcookie() {
   Cookies.remove('userInfo');
 }
 
+export function removeAllInfo() {
+  Cookies.remove('userInfo');
+  Cookies.remove(TokenKey);
+  storage.remove('menuList');
+  storage.remove('auths');
+}
+
 export function getCookie(name) {
   return Cookies.get(name);
 }
@@ -43,4 +51,11 @@ export function removeCookie(name) {
 
 export function setCookie(name, val) {
   Cookies.set(name, val, { expires: 7, path: '/' });
+}
+
+export function judgeHide(code) {
+  const auths = storage.get('auths')||[''];
+
+  console.log(auths, 'auths')
+  return !auths.includes(code)
 }
