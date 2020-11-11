@@ -8,7 +8,7 @@ const test = {
   name: 'system',
   redirect: '/system/documents/lawLibrary',
   meta: {
-    title: '系统管理',
+    title: '用户中心',
     icon: 'iconxitong'
   },
   component: Layout,

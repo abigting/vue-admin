@@ -715,7 +715,10 @@
         for (let i = 1; i < level; i++) {
           auth = this.judgeParentNode(treeData, auth);
         }
-        this.auth = auth;
+        this.auth = this.unique(auth||[]);
+      },
+      unique(arr){
+        return Array.from(new Set(arr)); // 利用Array.from将Set结构转换成数组
       },
       judgeParentNode(treeData, auth) {
         let list = auth.map(s => {

@@ -21,7 +21,7 @@
             </el-col>
             <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6">
               <el-button type="primary" class="ml24" @click="toQuery">查询</el-button>
-              <el-button type="success" class="ml24 add-btn" @click="addItem(ACTION.ADD)">新增</el-button>
+              <el-button type="success" class="ml24 add-btn"  v-permission="'38010100010'" @click="addItem(ACTION.ADD)">新增</el-button>
               <!--              <el-button type="primary" plain @click="exportExecl">导出</el-button>-->
 
             </el-col>
@@ -36,9 +36,9 @@
                   :element-loading-background="loadingBg"
                   :header-cell-style="{background:'#eef1f6',color:'#606266'}">
           <el-table-column prop="roleName" label="角色名称" min-width="100" align="center">
-            <template slot-scope="scope">
-              {{scope.row.systemName}}-{{scope.row.roleName}}
-            </template>
+<!--            <template slot-scope="scope">-->
+<!--              {{scope.row.systemName}}-{{scope.row.roleName}}-->
+<!--            </template>-->
           </el-table-column>
           <el-table-column prop="systemName" label="所属子系统" min-width="100" align="center"></el-table-column>
           <el-table-column prop="needCheck" label="是否需要监督员审核" min-width="100" align="center">
@@ -50,9 +50,9 @@
           <el-table-column prop="roleDescribe" label="说明" min-width="100"   show-overflow-tooltip align="center"></el-table-column>
           <el-table-column prop="operation" label="操作" min-width="120" align="center" fixed="right">
             <template slot-scope="scope">
-              <span class="action" @click="showDetail(ACTION.REVIEW, scope.row)">查看</span>
-              <span class="action" @click="showDetail(ACTION.EDIT, scope.row)">编辑</span>
-              <span class="delete" slot="reference" @click="deleteItem(scope.row)">删除</span>
+              <span class="action" v-permission="'38010100020'" @click="showDetail(ACTION.REVIEW, scope.row)">查看</span>
+              <span class="action" v-permission="'38010100030'" @click="showDetail(ACTION.EDIT, scope.row)">修改</span>
+              <span class="delete" v-permission="'38010100040'" slot="reference" @click="deleteItem(scope.row)">删除</span>
             </template>
           </el-table-column>
         </el-table>
@@ -64,7 +64,6 @@
                        layout="total,  sizes, prev, pager,next,jumper"
                        @size-change="sizeChange" @current-change="pageChange" :page-size="queryForm.size"/>
       </div>
-
     </div>
   </div>
 </template>

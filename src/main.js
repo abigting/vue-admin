@@ -5,7 +5,7 @@ import App from './App'
 import 'default-passive-events'
 import './permission'
 import "babel-polyfill"
-
+import storage from '@/utils/localStorage'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI, { size: 'mini' })
@@ -19,8 +19,7 @@ function timeOut(){
 		this.isLoading = false;
 	},280)
 }
-Vue.prototype.timeOut = timeOut
-
+Vue.prototype.timeOut = timeOut;
 //移动指令 v-drag
  Vue.directive('drag',{
    inserted: function (el, binding, vnode) {
@@ -70,18 +69,19 @@ Vue.prototype.timeOut = timeOut
  // Vue.component('nationalAddress',nationalAddress);//全国地区
  // Vue.component('levelAddress',levelAddress);//跟用户等级匹配的地区
  // Vue.component('exportTips',exportTips); //导出提示条
- 
- //按钮元素控制 v-permission=" "
- // Vue.directive('permission', {
- //   inserted: (el, binding, vnode) => {
- //     let permissionList = vnode.context.$route.meta.permission||[];
- //     if (!permissionList.includes(binding.value)) {
- //       el.parentNode.removeChild(el)
- //     }
- //   }
- // })
 
-Vue.config.productionTip = false
+ // 按钮元素控制 v-permission=" "
+ Vue.directive('permission', {
+   inserted: (el, binding, vnode) => {
+     const auths =storage.get('auths');
+     // let permissionList = vnode.context.$route.meta.permission||[];
+     if (!auths.includes(binding.value)) {
+       el.parentNode.removeChild(el)
+     }
+   }
+ });
+
+Vue.config.productionTip = false;
 
 new Vue({
   el: '#app',

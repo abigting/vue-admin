@@ -32,13 +32,13 @@ request.interceptors.response.use(async (res) => {
           data.attachments.errors.forEach(s => messageData = messageData.concat(`${s.name}${s.message}`, ';'));
           Message.error(messageData);
         }
-      } else if (errorCode === 'AUTH.RESOURCE.E0002' || errorCode === 'AUTH.RESOURCE.E0001') {
+      } else if (errorCode === 'E0199') {
         // 防止连续弹出多个message
         Message.closeAll();
         Message.error(exceptionContent);
         setTimeout(() => {
-            // window.location.href = `/`;
-          removeAllcookie();
+            window.location.href = `/login`;
+            removeAllcookie();
             // storage.clear();
           }, 500
         )

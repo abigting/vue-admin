@@ -122,29 +122,28 @@
         <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <div v-if="scope.row.status===0||scope.row.status===1">
-              <span class="blue-text" @click="showDetail(scope.row,1)">审核</span>
+              <span class="blue-text" @click="showDetail(scope.row,1)" v-permission="'38010200020'">审核</span>
             </div>
             <div v-else-if="scope.row.isDelete">
-              <el-button type="text" size="small" @click="showDetail(scope.row,2)">查看</el-button>
+              <el-button type="text" size="small" @click="showDetail(scope.row,2)" v-permission="'38010200010'">查看
+              </el-button>
             </div>
             <div v-else>
-              <el-button type="text" size="small" @click="showDetail(scope.row,2)">查看</el-button>
-
+              <el-button type="text" size="small" @click="showDetail(scope.row,2)" v-permission="'38010200010'">查看
+              </el-button>
               <el-popconfirm v-if="scope.row.enable===0" title="确定禁用？" class="disabled-btn"
                              @onConfirm="handDisbale(scope.row, 1)">
-                <span class="primary-btn" slot="reference">禁用</span>
+                <span class="primary-btn" slot="reference" v-permission="'38010200030'">禁用</span>
               </el-popconfirm>
-
               <el-popconfirm v-if="scope.row.enable===1" title="确定启用？" class="disabled-btn"
                              @onConfirm="handDisbale(scope.row, 0)">
-                <span class="primary-btn" slot="reference">启用</span>
+                <span class="primary-btn" slot="reference" v-permission="'38010200030'">启用</span>
               </el-popconfirm>
-
               <el-button type="text" v-if="scope.row.enable===0" size="small" class="modify-btn"
-                         @click="showDetail(scope.row,0)">修改
+                         @click="showDetail(scope.row,0)" v-permission="'38010200040'">修改
               </el-button>
-
-              <span class="delete-btn" slot="reference"  @click="deleteItem(scope.row)">删除</span>
+              <span class="delete-btn" slot="reference" @click="deleteItem(scope.row)"
+                    v-permission="'38010200050'">删除</span>
             </div>
           </template>
         </el-table-column>

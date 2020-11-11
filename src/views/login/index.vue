@@ -94,6 +94,7 @@
 <script>
   import * as userApi from "@/api/user";
   import {setCookie, getToken} from '@/utils/auth';
+  import storage from '@/utils/localStorage'
 
   export default {
     name: "Login",
@@ -117,6 +118,7 @@
         loginForm: {
           username: "17859865320",
           password: "xn123456",
+          systemId: 33000000000
         },
         loginRules: {},
         loading: false,
@@ -160,12 +162,18 @@
         userApi.login(this.loginForm).then(res => {
           if (res) {
             this.loading= false;
-            const {token, userZcVo} = res;
+            const {token, userZcVo, menuListVo} = res;
             const {name, sex, compName, telphone, id, isFirstLogin} = userZcVo;
             setCookie('token', token);
             setCookie('userInfo', {
               name, sex, compName, telphone, userId:id, isFirstLogin
             });
+            const permission = menuListVo.find(s=>s.systemId===33000000000);
+            if(permission){
+              const {menuList, auths} = permission;
+              storage.set('menuList', menuList||[]);
+              storage.set('auths', auths||[]);
+            }
             this.$router.push({path: "/"});
           }
         }).catch(() => {
