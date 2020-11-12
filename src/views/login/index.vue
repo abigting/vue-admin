@@ -95,6 +95,8 @@
   import * as userApi from "@/api/user";
   import {setCookie, getToken} from '@/utils/auth';
   import storage from '@/utils/localStorage'
+  import store from "../../store";
+  import router from "../../router";
 
   export default {
     name: "Login",
@@ -158,33 +160,27 @@
           this.$message.info('请填写验证码');
           return
         }
-        this.loading= true;
+        this.loading = true;
         userApi.login(this.loginForm).then(res => {
           if (res) {
-            this.loading= false;
+            this.loading = false;
             const {token, userZcVo, menuListVo} = res;
             const {name, sex, compName, telphone, id, isFirstLogin} = userZcVo;
             setCookie('token', token);
             setCookie('userInfo', {
-              name, sex, compName, telphone, userId:id, isFirstLogin
+              name, sex, compName, telphone, userId: id, isFirstLogin
             });
-            const permission = menuListVo.find(s=>s.systemId===33000000000);
-            if(permission){
-              const {menuList, auths} = permission;
-              // this.$store.dispatch('permission/generateRoutes', auths);
-              storage.set('menuList', menuList||[]);
-              storage.set('auths', auths||[]);
-
-              // console.log(this.$store.getters.routes, 'Fiona')
-              // this.$router.options.routes = this.$store.getters.routes;
-              // this.$router.addRoutes(this.$store.getters.routes)
+            const permission = menuListVo.find(s => s.systemId === 33000000000);
+            if (permission) {
+              const {auths} = permission;
+              storage.set('auths', auths || []);
             }
             this.$router.push({path: "/"});
-          }else{
-            this.loading= false;
+          } else {
+            this.loading = false;
           }
         }).catch(() => {
-          this.loading= false;
+          this.loading = false;
           console.log("登录失败");
         });
       },
@@ -249,6 +245,7 @@
     cursor: pointer;
     border-radius: 2px;
     border: 1px solid #cfc3c3;
+
     > img {
       width: 100%;
       height: 40px;

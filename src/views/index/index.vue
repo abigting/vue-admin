@@ -195,6 +195,7 @@
             this.$store.dispatch('user/logout').then(res => {
               setTimeout(() => {
                 this.$router.push('/login');
+                location.reload()
               }, 1000);
             });
             return;

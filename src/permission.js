@@ -1,8 +1,4 @@
 import router from './router'
-import {
-  constantRoutes,
-  asyncRoutes
-} from './router'
 import store from './store'
 import {Message} from 'element-ui'
 import NProgress from 'nprogress' // progress bar
@@ -13,17 +9,16 @@ import storage from '@/utils/localStorage'
 NProgress.configure({
   showSpinner: false
 });
+
 const whiteList = ['/login', '/register']; // 不重定向白名单
-router.beforeEach(async(to, from, next) => {
+
+router.beforeEach(async (to, from, next) => {
   NProgress.start();
   if (getToken()) {
-    if (router.options.routes.length===5) {
+    if (store.getters.addRoutes.length === 0) {
       try {
         const auths = storage.get('auths');
         await store.dispatch('permission/generateRoutes', auths).then(accessRoutes => {
-
-          console.log(accessRoutes, 'accessRoutes')
-
           router.addRoutes(accessRoutes);
           router.options.routes = router.options.routes.concat(accessRoutes);
           next({...to, replace: true})
@@ -34,7 +29,6 @@ router.beforeEach(async(to, from, next) => {
         next(`/login`)
       }
     } else {
-      //放行
       next()
     }
   } else {

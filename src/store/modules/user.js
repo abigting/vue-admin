@@ -3,6 +3,8 @@ import {
   logout,
   // getInfo
 } from '@/api/user';
+import { resetRouter, constantRoutes } from '@/router';
+
 import {
   getToken,
   setToken,
@@ -12,6 +14,7 @@ import {
   removeAllcookie,
   removeAllInfo
 } from '@/utils/auth';
+import router from "../../router";
 
 const state = {
   token: getToken(),
@@ -69,15 +72,16 @@ const actions = {
   },
 
   // 注销
-  logout({commit, state}) {
+  logout({commit, dispatch, state}) {
     return new Promise((resolve, reject) => {
-      logout({
-        access_token: getToken(),
-        username: getUserInfo().name
-      }).then(res => {
+      logout({access_token: getToken(), username: getUserInfo().name}).then(res => {
         if (res) {
           removeAllInfo();
-          resolve(res)
+          // dispatch("tagsView/delAllViews", {}, {root: true});
+          // commit("permission/SET_ROUTES", [], {root: true});
+          // resetRouter();
+          // router.options.routes = constantRoutes;
+          resolve(res);
         }
       }).catch(error => {
         reject(error)

@@ -6,16 +6,14 @@ import storage from '@/utils/localStorage'
 import router from '../../router'
 
 const state = {
-  addRoutes: storage.get('addRoutes') || [],
-  routes: storage.get('routes') || [],
-}
+  addRoutes: [],
+  routes: [],
+};
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes;
     state.routes = constantRoutes.concat(routes);
-    storage.set('addRoutes', routes);
-    storage.set('routes',constantRoutes.concat(routes));
   },
 };
 
