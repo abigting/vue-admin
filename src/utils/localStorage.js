@@ -2,7 +2,7 @@ import Message from 'element-ui'
 
 class Cache {
   // 前缀
-  prefix = 'projectHz';
+  prefix = 'YHZX';
   // 过期时间，默认100天
   expires = 24 * 60 * 60 * 100;
 

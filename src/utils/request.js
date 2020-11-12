@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getToken, removeAllcookie} from '@/utils/auth';
+import {getToken, removeAllInfo} from '@/utils/auth';
 import {Message} from 'element-ui';
 // import storage from '~/utils/localStorage';
 
@@ -37,9 +37,9 @@ request.interceptors.response.use(async (res) => {
         Message.closeAll();
         Message.error(exceptionContent);
         setTimeout(() => {
-            window.location.href = `/login`;
-            removeAllcookie();
-            // storage.clear();
+          this.$router.push('/login');
+          location.reload();
+          removeAllInfo();
           }, 500
         )
       } else if (errorCode === 'CORE.E0001') {

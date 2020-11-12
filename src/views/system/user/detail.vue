@@ -37,12 +37,14 @@
             <div class="current-role">{{systemRoles}}</div>
           </el-form-item>
           <el-form-item label="重新分配角色：" label-width="110px" prop="checkList">
-            <el-checkbox-group v-model="approvalInfo.roleIdList">
+            <el-checkbox-group v-if="rolesMultiple" v-model="approvalInfo.roleIdList">
               <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
               </el-checkbox>
-              <!--              <el-checkbox :label="2"  :key="2">2-->
-              <!--              </el-checkbox>-->
             </el-checkbox-group>
+            <el-radio-group v-else v-model="approvalInfo.roleIdList">
+              <el-radio :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
+              </el-radio>
+            </el-radio-group>
           </el-form-item>
         </el-form>
       </div>
@@ -328,9 +330,12 @@
         userBaseInfoEditVo: {}, /*编辑前*/
         zcUserExtraInfoVo: {},
         zcUserExtraInfoEditVo: {},/*编辑前*/
+        systemRoles: '',
+        systemEditRoles: '', /*编辑前*/
         approvalInfo: {
           roleIdList: []
         },
+        rolesMultiple: true,
         approvalInfoRules: {
           status: [
             {required: true, message: '请选择是否同意', trigger: 'blur'},
@@ -344,8 +349,6 @@
         },
         modifyRules: {},
         systemId: '',
-        systemRoles: '',
-        systemEditRoles: '', /*编辑前*/
         userId: '',
         changedFields: [],
         changedContent: {},
@@ -357,12 +360,20 @@
     watch: {
       item(newVal) {
         if (newVal.userBaseInfoVo) {
+          //自查角色单选
+          if (newVal.systemId === '33000000001') {
+            this.rolesMultiple = false;
+          } else {
+            this.rolesMultiple = true;
+          }
 
           //审核时需要比对数据， 将两个对象颠倒
           if (this.$props.operationType === 3) {
-            const { userId,systemId,
-              userBaseInfoVo, zcUserExtraInfoVo,  systemRoles, roles,
-              userBaseInfoEditVo, zcUserExtraInfoEditVo, systemEditRoles, roleEdits, } = newVal;
+            const {
+              userId, systemId,
+              userBaseInfoVo, zcUserExtraInfoVo, systemRoles, roles,
+              userBaseInfoEditVo, zcUserExtraInfoEditVo, systemEditRoles, roleEdits,
+            } = newVal;
             if (this.$props.operationType === 0 || this.$props.operationType === 1 || this.$props.operationType === 3) {
               if (systemId) this.queryDicRoleList(systemId);
             }
@@ -373,7 +384,6 @@
             this.zcUserExtraInfoVo = zcUserExtraInfoEditVo || {};
             this.systemRoles = systemEditRoles ? systemEditRoles.join(',') : '';
 
-
             this.userBaseInfoEditVo = userBaseInfoVo || {};
             this.systemEditRoles = systemRoles ? systemRoles.join(',') : '';
             this.zcUserExtraInfoEditVo = zcUserExtraInfoVo || {};
@@ -381,28 +391,10 @@
               ...this.approvalInfo,
               roleIdList: roleEdits || []
             };
-            // const {userBaseInfoEditVo, systemEditRoles, roleEdits, zcUserExtraInfoEditVo} = newVal;
-            // this.userBaseInfoEditVo = userBaseInfoEditVo || {};
-            // this.systemEditRoles = systemEditRoles ? systemEditRoles.join(',') : '';
-            // this.roleEdits = roleEdits || {};
-            // this.zcUserExtraInfoEditVo = zcUserExtraInfoEditVo || {};
-            // if (JSON.stringify(roleEdits) !== JSON.stringify(roles)) {
-            //   this.changedFields = [...this.changedFields, 'systemRoles'];
-            //   this.changedContent = {
-            //     ...this.changedContent,
-            //     systemRoles: systemEditRoles ? systemEditRoles.join(',') : ''
-            //   }
-            // }
+
             // Object.keys(userBaseInfoEditVo).forEach(s => {
-            //   if (JSON.stringify(userBaseInfoEditVo[s]) !== JSON.stringify(userBaseInfoVo[s])) {
-            //     this.changedFields = [...this.changedFields, s];
-            //     this.changedContent = {
-            //       ...this.changedContent,
-            //       [s]: userBaseInfoEditVo[s]
-            //     }
-            //   }
             // });
-          }else{
+          } else {
             const {userId, userBaseInfoVo, zcUserExtraInfoVo, systemId, systemRoles, roles} = newVal;
             if (this.$props.operationType === 0 || this.$props.operationType === 1 || this.$props.operationType === 3) {
               if (systemId) this.queryDicRoleList(systemId);
@@ -412,10 +404,18 @@
             this.systemId = systemId || [];
             this.systemRoles = systemRoles ? systemRoles.join(',') : '';
             this.userId = userId;
-            this.approvalInfo = {
-              ...this.approvalInfo,
-              roleIdList: roles || []
-            };
+            if (systemId === '33000000001') {
+              //自查角色单选
+              this.approvalInfo = {
+                ...this.approvalInfo,
+                roleIdList: roles ? roles[0] : null
+              };
+            } else {
+              this.approvalInfo = {
+                ...this.approvalInfo,
+                roleIdList: roles || []
+              };
+            }
           }
         }
       },
@@ -466,6 +466,7 @@
         if (this.$props.operationType === 0) {
           const {telphone} = this.userBaseInfoVo;
           const {roleIdList} = this.approvalInfo;
+
           if (!telphone) {
             this.$message.info('请填写手机号');
             return
@@ -474,12 +475,18 @@
             this.$message.info('请选择重新分配的角色');
             return;
           }
-          const req = {
+
+          let req = {
             userId: this.userId,
             systemId: this.systemId,
             phone: telphone,
-            roleIdList: roleIdList
           };
+          if (this.systemId === '33000000001') {
+            //自查角色单选
+            req = {...req, roleIdList: [roleIdList]}
+          } else {
+            req = {...req, roleIdList}
+          }
           userApi.editItem(req).then(res => {
             if (res) {
               this.closeModal()

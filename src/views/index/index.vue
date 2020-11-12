@@ -144,7 +144,7 @@
             return;
           case '3':
             //效能评价
-
+            window.open(`${window.location.origin}/xnrh-zfxnpj-web/#/login?token=${Cookies.get('token')}`, "_blank");
             return;
           case '4':
             //数据交换

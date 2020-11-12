@@ -255,6 +255,10 @@
         }
       },
       toQuery() {
+        this.queryForm = {
+          ...this.queryForm,
+          page: 1
+        };
         this.getList();
       },
       handleChangeSystemId(value) {
