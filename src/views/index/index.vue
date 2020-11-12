@@ -175,7 +175,20 @@
             this.modifyPasswordDialog = true;
             return;
           case '3':
-            this.$store.dispatch('user/logout').then(res => this.$router.push('/login'));
+            const loading = this.$loading({
+              lock: true,
+              text: '退出登录中...',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            setTimeout(() => {
+              loading.close();
+            }, 1000);
+            this.$store.dispatch('user/logout').then(res => {
+              setTimeout(() => {
+                this.$router.push('/login');
+              }, 1000);
+            });
             return;
         }
       },

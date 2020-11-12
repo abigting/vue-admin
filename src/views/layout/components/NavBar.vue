@@ -14,10 +14,14 @@
           <i class="el-icon-caret-bottom el-icon-arrow-down"/>
         </div>
         <el-dropdown-menu slot="dropdown" class="avatar-menu-wrap">
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('4')"><i class="iconfont iconshouye blue-text"></i>返回首页</span></el-dropdown-item>
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('4')"><i
+            class="iconfont iconshouye blue-text"></i>返回首页</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('1')"><i
+            class="iconfont iconbianji blue-text"></i>账号信息</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('2')"><i
+            class="iconfont iconmima blue-text"></i>修改密码</span></el-dropdown-item>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('3')"><i
+            class="iconfont icontuichu blue-text"></i>退出登录</span></el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -240,13 +244,26 @@
             this.modifyPasswordDialog = true;
             return;
           case '3':
-            this.$store.dispatch('user/logout').then(res => this.$router.push('/login'));
+            const loading = this.$loading({
+              lock: true,
+              text: '退出登录中...',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
+            setTimeout(() => {
+              loading.close();
+            }, 1000);
+            this.$store.dispatch('user/logout').then(res => {
+              setTimeout(() => {
+                this.$router.push('/login');
+              }, 1000);
+            });
             return;
           case '4':
             this.$router.push("/");
             return;
-            default:
-              return;
+          default:
+            return;
         }
       },
       logout() {
