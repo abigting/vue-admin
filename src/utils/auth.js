@@ -39,6 +39,7 @@ export function removeAllInfo() {
   Cookies.remove(TokenKey);
   storage.remove('menuList');
   storage.remove('auths');
+  storage.remove('routes');
 }
 
 export function getCookie(name) {
@@ -55,7 +56,5 @@ export function setCookie(name, val) {
 
 export function judgeHide(code) {
   const auths = storage.get('auths')||[''];
-
-  console.log(auths, 'auths')
   return !auths.includes(code)
 }

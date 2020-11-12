@@ -75,7 +75,7 @@ Vue.prototype.timeOut = timeOut;
    inserted: (el, binding, vnode) => {
      const auths =storage.get('auths')||[];
      // let permissionList = vnode.context.$route.meta.permission||[];
-     if (!auths.includes(binding.value)) {
+     if (!auths.includes(binding.value.toString())) {
        el.parentNode.removeChild(el)
      }
    }

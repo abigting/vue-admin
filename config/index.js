@@ -7,8 +7,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/xnrh-yhzx': {
-        target: "http://192.168.22.104:9002/", /*林忠宇*/
-        // target: "http://192.168.22.201:2020/", /*测试*/
+        // target: "http://192.168.22.104:9002/", /*林忠宇*/
+        target: "http://192.168.22.201:2020/", /*测试*/
         // target: "http://192.168.22.110:9002/", /*侯哥*/
         // target: "http://192.168.22.160:9002/", /*刘佳龙*/
       },

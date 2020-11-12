@@ -5,12 +5,13 @@ import {judgeHide} from '../../utils/auth'
 const system = {
   path: '/system',
   name: 'system',
-  redirect: '/system/documents/lawLibrary',
+  // redirect: '/system/role',
   meta: {
     title: '用户中心',
     icon: 'iconxitong'
   },
   component: Layout,
+  menuId:'38010000000',
   children: [
     {
       path: 'user',
@@ -18,6 +19,7 @@ const system = {
       component: () => import('@/views/system/user/index'),
       meta: {
         title: '用户管理',
+        menuId:'38010200000'
       },
       // hidden: true,
       children: []
@@ -28,9 +30,9 @@ const system = {
       component: () => import('@/views/system/role/index'),
       meta: {
         title: '角色管理',
-        level:1,
+        menuId:'38010100000',
+        level:1
       },
-      // hidden: judgeHide('38010100000'),
       children: [{
         path: 'detail',
         component: () => import('@/views/system/role/detail'),
@@ -38,9 +40,9 @@ const system = {
         hidden: true,
         meta: {
           title: '角色详情',
-          level: 2,
+          level: 2
         }
-      }]
+      }, ]
     },
   ]
 }

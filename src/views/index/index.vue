@@ -7,7 +7,7 @@
             <img src="@/assets/imgs/logoText.png" alt="" class="logo">
         </span>
       </div>
-      <i class="iconfont iconxitong1 settingIcon" :size="30" style="vertical-align: middle" @click="jump({key:'9'})">
+      <i class="iconfont iconxitong1 settingIcon" :size="30" style="vertical-align: middle" v-permission="38000000000" @click="jump({key:'9'})">
       </i>
       <el-dropdown class="userInfo">
           <span class="el-dropdown-link">

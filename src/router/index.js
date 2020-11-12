@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import system from './module/system'; //系统管理
+import Layout from '@/views/layout/Layout'
 
 Vue.use(Router);
 
 export const constantRoutes = [
-  {...system},
+  // {...system},
   {
     path: '/',
     component: () => import('@/views/index/index'),
@@ -39,7 +40,10 @@ export const constantRoutes = [
   },
 ];
 
-export const asyncRoutes = [];
+//动态加载路由
+export const asyncRoutes = [{...system}];
+
+// export const asyncRoutes = [];
 const createRouter = () => new Router({
   scrollBehavior: () => ({
     y: 0
@@ -54,3 +58,4 @@ export function resetRouter() {
 }
 
 export default router
+

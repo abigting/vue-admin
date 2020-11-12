@@ -2,22 +2,27 @@ import {
   asyncRoutes,
   constantRoutes
 } from '@/router'
+import storage from '@/utils/localStorage'
+import router from '../../router'
 
 const state = {
-  routes: [],
-  addRoutes: []
+  addRoutes: storage.get('addRoutes') || [],
+  routes: storage.get('routes') || [],
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
-  }
-}
+    state.addRoutes = routes;
+    state.routes = constantRoutes.concat(routes);
+    storage.set('addRoutes', routes);
+    storage.set('routes',constantRoutes.concat(routes));
+  },
+};
 
 function routerMatch(permission, asyncRouter) {
   return new Promise((resolve) => {
     const routers = [];
+
     function createRouter(permission) {
       permission.forEach((item) => {
         let path = item.path;
@@ -46,22 +51,47 @@ function routerMatch(permission, asyncRouter) {
         })
       })
     }
+
     createRouter(permission)
     resolve(routers)
   })
 }
 
-const actions = {
-  generateRoutes({
-    commit
-  }, roles) {
-    return new Promise(resolve => {
-      let accessedRoutes = routerMatch(roles, asyncRoutes);
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
-    })
+function hasPermission(menuMap, route) {
+  if (route.meta && route.meta.menuId) {
+    for (const item of menuMap) {
+      if (item === route.meta.menuId) {
+        return true
+      }
+    }
+    return false
+  } else {
+    return true
   }
 }
+
+function filterAsyncRouter(asyncRoutes, menuMap) {
+  const accessedRouters = asyncRoutes.filter(route => {
+    if (hasPermission(menuMap, route)) {
+      if (route.children && route.children.length) {
+        route.children = filterAsyncRouter(route.children, menuMap)
+      }
+      return true
+    }
+    return false
+  });
+  return accessedRouters
+}
+
+const actions = {
+  generateRoutes({commit}, data) {
+    return new Promise(resolve => {
+      const accessRouters = filterAsyncRouter(asyncRoutes, data);
+      commit('SET_ROUTES', accessRouters);
+      resolve(accessRouters)
+    })
+  }
+};
 
 export default {
   namespaced: true,
