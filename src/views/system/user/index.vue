@@ -90,12 +90,12 @@
                 v-loading="loading"
                 :element-loading-text="loadingText">
         <el-table-column prop="userId" label="账号ID" width="80" align="center"></el-table-column>
-        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="telphone" label="手机号" align="center"></el-table-column>
-        <el-table-column prop="idcard" label="身份证号" width="150" align="center"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="100" align="center"></el-table-column>
+        <el-table-column prop="telphone" label="手机号" width="140" align="center"></el-table-column>
+        <el-table-column prop="idcard" label="身份证号" width="180" align="center"></el-table-column>
         <el-table-column prop="orgname" label="所在机构" align="center"></el-table-column>
-        <el-table-column prop="systemName" label="所属子系统" width="140" align="center"></el-table-column>
-        <el-table-column prop="roleNames" label="角色" min-width="100" align="center"></el-table-column>
+        <el-table-column prop="systemName" label="所属子系统" width="120" align="center"></el-table-column>
+        <el-table-column prop="roleNames" label="角色" min-width="100" align="center" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="当前状态" width="120" align="center">
           <template slot-scope="scope">
             <!--0-注册待审核 1-修改待审核 2-审核通过 3-审核不通过-->
@@ -107,13 +107,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="isDelete" label="删除状态" min-width="64" align="center">
+        <el-table-column prop="isDelete" label="删除状态" width="100" align="center">
           <template slot-scope="scope">
             {{scope.row.isDelete?'是':'否'}}
           </template>
         </el-table-column>
 
-        <el-table-column prop="enable" label="是否启用" min-width="64" align="center">
+        <el-table-column prop="enable" label="是否启用" width="100" align="center">
           <template slot-scope="scope">
             {{scope.row.enable?'禁用':'启用'}}
           </template>

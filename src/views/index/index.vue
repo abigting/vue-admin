@@ -36,6 +36,7 @@
     <div class="menuBox">
       <div class="menu"
            v-for="item in menus"
+           v-permission="item.menuId"
            :key="item.key"
            @mouseenter="showAnimation(item.key, true)"
            @mouseleave="showAnimation(item.key, false)"
@@ -90,36 +91,42 @@
         userInfo: getUserInfo(),
         menus: [{
           name: '驾驶舱',
+          menuId:'33000000000',
           key: '0',
           path: '',
           img: require('../../assets/imgs/img_7.png')
         },
           {
             name: '智能办案',
+            menuId:'34000000000',
             key: '1',
             path: '/caseM/index',
             img: require('../../assets/imgs/img_8.png')
           },
           {
             name: '自查系统',
+            menuId:'31000000000',
             key: '2',
             path: '',
             img: require('../../assets/imgs/img_6.png')
           },
           {
             name: '效能评价',
+            menuId:'32000000000',
             key: '3',
             path: '',
             img: require('../../assets/imgs/img_4.png')
           },
           {
             name: '数据交换',
+            menuId:'9999',
             key: '4',
             path: '',
             img: require('../../assets/imgs/img_5.png')
           },
           {
             name: '在线监测',
+            menuId:'9999',
             key: '5',
             path: '',
             img: require('../../assets/imgs/img_3.png')
@@ -144,7 +151,7 @@
             return;
           case '3':
             //效能评价
-            window.open(`${window.location.origin}/xnrh-zfxnpj-web/#/login?token=${Cookies.get('token')}`, "_blank");
+            window.open(`${window.location.origin}/xnrh-zfxnpj-web/#/index?token=${Cookies.get('token')}`, "_blank");
             return;
           case '4':
             //数据交换

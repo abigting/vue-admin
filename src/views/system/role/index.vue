@@ -48,7 +48,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="roleDescribe" label="说明" min-width="100"   show-overflow-tooltip align="center"></el-table-column>
-          <el-table-column prop="operation" label="操作" min-width="120" align="center" fixed="right">
+          <el-table-column prop="operation" label="操作" width="160" align="center" fixed="right">
             <template slot-scope="scope">
               <span class="action" v-permission="'38010100020'" @click="showDetail(ACTION.REVIEW, scope.row)">查看</span>
               <span class="action" v-permission="'38010100030'" @click="showDetail(ACTION.EDIT, scope.row)">修改</span>
