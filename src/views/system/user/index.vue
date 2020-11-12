@@ -139,7 +139,9 @@
                              @onConfirm="handDisbale(scope.row, 0)">
                 <span class="primary-btn" slot="reference" v-permission="'38010200030'">启用</span>
               </el-popconfirm>
-              <el-button type="text" v-if="scope.row.enable===0" size="small" class="modify-btn"
+              <el-button type="text"
+                         v-if="scope.row.enable===0"
+                         size="small" class="modify-btn"
                          @click="showDetail(scope.row,0)" v-permission="'38010200040'">修改
               </el-button>
               <span class="delete-btn" slot="reference" @click="deleteItem(scope.row)"
