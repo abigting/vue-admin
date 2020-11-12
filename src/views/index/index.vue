@@ -7,7 +7,8 @@
             <img src="@/assets/imgs/logoText.png" alt="" class="logo">
         </span>
       </div>
-      <i class="iconfont iconxitong1 settingIcon" :size="30" style="vertical-align: middle" v-permission="38000000000" @click="jump({key:'9'})">
+      <i class="iconfont iconxitong1 settingIcon" :size="30" style="vertical-align: middle" v-permission="38000000000"
+         @click="jump({key:'9'})">
       </i>
       <el-dropdown class="userInfo">
           <span class="el-dropdown-link">
@@ -20,11 +21,14 @@
             </span>
           </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('1')"><i class="iconfont iconbianji blue-text"></i>账号信息</span>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('1')"><i
+            class="iconfont iconbianji blue-text"></i>账号信息</span>
           </el-dropdown-item>
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('2')"><i class="iconfont iconmima blue-text"></i>修改密码</span>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('2')"><i
+            class="iconfont iconmima blue-text"></i>修改密码</span>
           </el-dropdown-item>
-          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('3')"><i class="iconfont icontuichu blue-text"></i>退出登录</span>
+          <el-dropdown-item><span class="fixed-menu-item" @click="handleClick('3')"><i
+            class="iconfont icontuichu blue-text"></i>退出登录</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -68,6 +72,7 @@
   import SettingPng from '../../assets/imgs/setting.png'
   import {removeAllcookie} from '../../utils/auth'
   import {getUserInfo} from '@/utils/auth'
+  import {asyncRoutes} from '@/router'
 
   export default {
     name: "index",
@@ -161,7 +166,10 @@
             return;
           case '9':
             //设置
-            this.$router.push('/system/user');
+            const systemMenu = asyncRoutes.find(s => s.menuId === "38010000000");
+            if (systemMenu) {
+              this.$router.push(`${systemMenu.path}/${systemMenu.children[0].path}`);
+            }
             return;
         }
 

@@ -42,6 +42,7 @@ export const constantRoutes = [
 
 //动态加载路由
 export const asyncRoutes = [{...system},  { path: '*', redirect: '/404', hidden: true }];
+// export const asyncRoutes = [ { path: '*', redirect: '/404', hidden: true }];
 
 // export const asyncRoutes = [];
 const createRouter = () => new Router({

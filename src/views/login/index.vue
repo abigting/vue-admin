@@ -171,11 +171,13 @@
             const permission = menuListVo.find(s=>s.systemId===33000000000);
             if(permission){
               const {menuList, auths} = permission;
-              this.$store.dispatch('permission/generateRoutes', auths);
+              // this.$store.dispatch('permission/generateRoutes', auths);
               storage.set('menuList', menuList||[]);
               storage.set('auths', auths||[]);
-              this.$router.options.routes = this.$store.getters.routes;
-              this.$router.addRoutes(this.$store.getters.routes)
+
+              // console.log(this.$store.getters.routes, 'Fiona')
+              // this.$router.options.routes = this.$store.getters.routes;
+              // this.$router.addRoutes(this.$store.getters.routes)
             }
             this.$router.push({path: "/"});
           }else{
