@@ -33,15 +33,15 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true
   },
-  {
-    path: '*',
-    redirect: "/404",
-    hidden: true
-  },
+  // {
+  //   path: '*',
+  //   redirect: "/404",
+  //   hidden: true
+  // },
 ];
 
 //动态加载路由
-export const asyncRoutes = [{...system}];
+export const asyncRoutes = [{...system},  { path: '*', redirect: '/404', hidden: true }];
 
 // export const asyncRoutes = [];
 const createRouter = () => new Router({
