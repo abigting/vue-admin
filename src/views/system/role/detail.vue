@@ -155,7 +155,7 @@
       </div>
     </div>
     <div class="operation">
-      <el-button type="primary" @click="onSubmit('form')">保存</el-button>
+      <el-button v-if="!disabled" type="primary" @click="onSubmit('form')">保存</el-button>
       <el-button @click="cancel">取消</el-button>
     </div>
   </div>

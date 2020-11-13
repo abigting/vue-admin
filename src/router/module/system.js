@@ -8,7 +8,7 @@ const system = {
   // redirect: '/system/role',
   meta: {
     title: '用户中心',
-    icon: 'iconxitong'
+    icon: 'setting'
   },
   component: Layout,
   menuId:'38010000000',
