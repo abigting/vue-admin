@@ -620,9 +620,9 @@
         this.getPermissionList({code: value});
       },
       getInfo() {
-        const {id, action} = this.$route.query;
-        if (id) {
-          roleApi.getInfo({roleId: id}).then(res => {
+        const {id, systemId, action} = this.$route.query;
+        if (id&&systemId) {
+          roleApi.getInfo({roleId: id, systemId}).then(res => {
             if (res) {
               //数据处理
               this.form = {

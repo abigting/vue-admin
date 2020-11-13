@@ -162,7 +162,7 @@
         this.$router.push(`/system/role/detail?action=${action}`)
       },
       showDetail(action, item) {
-        this.$router.push(`/system/role/detail?action=${action}&id=${item.roleId}`)
+        this.$router.push(`/system/role/detail?action=${action}&id=${item.roleId}&systemId=${item.systemId}`)
       },
       deleteItem(item) {
         this.$confirm('删除该信息不可逆，是否确定将该信息删除?', '确定要删除吗', {
@@ -171,7 +171,8 @@
           type: 'warning'
         }).then(() => {
           roleApi.deleteItem({
-            roleId: item.roleId
+            roleId: item.roleId,
+            systemId: item.systemId
           }).then(res => {
             if (res) {
               this.getList();
