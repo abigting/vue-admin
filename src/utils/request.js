@@ -1,6 +1,7 @@
 import axios from "axios";
 import {getToken, removeAllInfo} from '@/utils/auth';
 import {Message} from 'element-ui';
+import Router from 'vue-router'
 // import storage from '~/utils/localStorage';
 
 let request = axios.create({
@@ -37,11 +38,10 @@ request.interceptors.response.use(async (res) => {
         Message.closeAll();
         Message.error(exceptionContent);
         setTimeout(() => {
-          this.$router.push('/login');
-          location.reload();
+          Router.push('/login');
           removeAllInfo();
-          }, 500
-        )
+          location.reload();
+          }, 500)
       } else if (errorCode === 'CORE.E0001') {
         // 上一次操作正在处理中，请稍后再试---无需提示
       } else if (res.request.responseURL.indexOf('http://iva.terabits.cn:9090') !== -1) {

@@ -116,10 +116,6 @@
       font-weight: 600;
       color: #4A7BED;
     }
-    //用户信息区域
-    .user-info-block{
-      padding: 0 30px 30px;
-    }
     // 基本信息块
     .basic-info{
       padding: 20px 0;

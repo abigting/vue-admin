@@ -452,7 +452,7 @@
 
 <style lang="scss">
   .edit-role-block {
-    height: 80px;
+    min-height: 80px;
   }
 
   #user-index-pages {

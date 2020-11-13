@@ -283,10 +283,15 @@
           </div>
         </el-form-item>
         <el-form-item label="分配角色：" prop="roleIdList" class="mb0" v-else>
-          <el-checkbox-group v-model="approvalInfo.roleIdList">
+          <el-checkbox-group v-if="rolesMultiple" v-model="approvalInfo.roleIdList">
             <el-checkbox :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
             </el-checkbox>
           </el-checkbox-group>
+
+          <el-radio-group v-else v-model="approvalInfo.roleIdList">
+            <el-radio :label="item.roleId" v-for="item in dicRoleList" :key="item.roleId">{{item.roleName}}
+            </el-radio>
+          </el-radio-group>
         </el-form-item>
       </el-form>
     </div>
@@ -496,11 +501,18 @@
           //审核
           this.$refs['approvalInfo'].validate((valid) => {
             if (valid) {
-              const req = {
+              const {roleIdList} = this.approvalInfo;
+              let req = {
                 userId: this.userId,
                 systemId: this.systemId,
                 ...this.approvalInfo
               };
+              if (this.systemId === '33000000001') {
+                //自查角色单选
+                req = {...req, roleIdList: [roleIdList]}
+              } else {
+                req = {...req, roleIdList}
+              }
               userApi.approval(req).then(res => {
                 if (res) {
                   this.closeModal()
@@ -527,7 +539,7 @@
   //用户信息区域
   .user-info-block {
     width: 1000px;
-    /*height: 600px;*/
+    max-height: 800px;
     overflow-y: auto;
     padding: 16px 30px 0 30px;
   }
@@ -757,7 +769,7 @@
     border-radius: 4px;
     border: 1px solid #DADDE6;
     padding: 20px;
-
+    margin-bottom: 12px;
     .has-top-line {
       border: none;
       padding: 0;
@@ -881,6 +893,12 @@
     right: 34%;
     bottom: 6px;
     color: #4985FE;
+  }
+
+  @media screen and (max-width: 1600px) {
+    .user-info-block {
+      max-height: 500px;
+    }
   }
 
 </style>
