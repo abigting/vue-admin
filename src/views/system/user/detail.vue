@@ -192,11 +192,12 @@
                 </p>
               </el-col>
               <el-col :span="12">
-                <p><span>健康证期限：</span>{{zcUserExtraInfoVo.zcStartDate}}至{{zcUserExtraInfoVo.zcEndDate}}
+                <p><span>健康证期限：</span>
+                  {{zcUserExtraInfoVo.zcStartDate?zcUserExtraInfoVo.zcStartDate:'-'}}至{{zcUserExtraInfoVo.zcEndDate?zcUserExtraInfoVo.zcEndDate:'-'}}
                   <i class="el-icon-warning"
                      v-if="(zcUserExtraInfoVo.zcStartDate!==zcUserExtraInfoEditVo.zcStartDate||zcUserExtraInfoVo.zcEndDate!==zcUserExtraInfoEditVo.zcEndDate)&& operationType===3">
                     <div class="history-info-wrap">
-                      {{zcUserExtraInfoEditVo.zcStartDate}}至{{zcUserExtraInfoEditVo.zcEndDate}}
+                      {{zcUserExtraInfoEditVo.zcStartDate?zcUserExtraInfoEditVo.zcStartDate:'-'}}至{{zcUserExtraInfoEditVo.zcEndDate?zcUserExtraInfoEditVo.zcEndDate:'-'}}
                     </div>
                   </i>
                 </p>

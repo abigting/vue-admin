@@ -1,7 +1,6 @@
 import axios from "axios";
 import {getToken, removeAllInfo} from '@/utils/auth';
 import {Message} from 'element-ui';
-import Router from 'vue-router'
 // import storage from '~/utils/localStorage';
 
 let request = axios.create({
@@ -38,7 +37,6 @@ request.interceptors.response.use(async (res) => {
         Message.closeAll();
         Message.error(exceptionContent);
         setTimeout(() => {
-          Router.push('/login');
           removeAllInfo();
           location.reload();
           }, 500)
