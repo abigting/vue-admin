@@ -464,7 +464,10 @@
         if (s === 2) {
           delete this.approvalInfo.rejectReason
         } else {
-          this.approvalInfo.roleIdList = []
+          if(this.rolesMultiple)
+          this.approvalInfo.roleIdList = [];
+          else
+            this.approvalInfo.roleIdList = null;
         }
       },
       submit() {
@@ -510,7 +513,7 @@
               };
               if (this.systemId === '33000000001') {
                 //自查角色单选
-                req = {...req, roleIdList: [roleIdList]}
+                req = {...req, roleIdList: roleIdList?[roleIdList]:[]}
               } else {
                 req = {...req, roleIdList}
               }
