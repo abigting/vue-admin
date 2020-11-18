@@ -105,6 +105,8 @@
                         :now="userBaseInfoVo.birthday"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>政治面貌：</span>{{userBaseInfoVo.zzmm}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zzmm" :now="userBaseInfoVo.zzmm"/>
@@ -115,6 +117,8 @@
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.xl" :now="userBaseInfoVo.xl"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>学位：</span>{{userBaseInfoVo.xw}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.xw" :now="userBaseInfoVo.xw"/>
@@ -126,6 +130,8 @@
                         :now="userBaseInfoVo.university"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>参加工作日期：</span>{{userBaseInfoVo.workDate}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.workDate"
@@ -138,6 +144,8 @@
                         :now="userBaseInfoVo.discipline"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>职务：</span>{{userBaseInfoVo.zw}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zw" :now="userBaseInfoVo.zw"/>
@@ -148,6 +156,8 @@
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zc" :now="userBaseInfoVo.zc"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p>
                   <span>电子邮箱：</span>
@@ -173,6 +183,8 @@
                         :now="zcUserExtraInfoVo.zcCompName"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>专业编码：</span>{{zcUserExtraInfoVo.zcCompSpec}}
                   <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcCompSpec"
@@ -185,6 +197,8 @@
                         :now="userBaseInfoVo.zcPersonType"/>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>健康证编码：</span>{{zcUserExtraInfoVo.zcHealthCertificate}}
                   <Hint :operationType="operationType" :last="userBaseInfoEditVo.zcHealthCertificate"
@@ -202,6 +216,8 @@
                   </i>
                 </p>
               </el-col>
+            </el-row>
+            <el-row>
               <el-col :span="12">
                 <p><span>QQ号：</span>{{zcUserExtraInfoVo.zcQq}}
                   <Hint :operationType="operationType" :last="zcUserExtraInfoEditVo.zcQq"

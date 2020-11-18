@@ -95,7 +95,8 @@
         <el-table-column prop="idcard" label="身份证号" width="180" align="center"></el-table-column>
         <el-table-column prop="orgname" label="所在机构" align="center"></el-table-column>
         <el-table-column prop="systemName" label="所属子系统" width="120" align="center"></el-table-column>
-        <el-table-column prop="roleNames" label="角色" min-width="100" align="center" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="roleNames" label="角色" min-width="100" align="center"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="当前状态" width="120" align="center">
           <template slot-scope="scope">
             <!--0-注册待审核 1-修改待审核 2-审核通过 3-审核不通过-->
@@ -223,6 +224,14 @@
       this.getList();
       this.getSystemType();
       // this.queryDicRoleList();
+    },
+    watch: {
+      $route(to) {
+        const {query} = to;
+        if (query.refresh === '1') {
+          this.getList();
+        }
+      }
     },
     methods: {
       closeModal() {

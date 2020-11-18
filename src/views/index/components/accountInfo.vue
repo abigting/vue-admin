@@ -469,6 +469,9 @@
                   message: "保存成功",
                   type: "success",
                 });
+                if(this.$route.path === "/system/user"){
+                  this.$router.push('/system/user?refresh=1');
+                }
                 this.closeModal()
               }
             });
