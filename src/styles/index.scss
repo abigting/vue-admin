@@ -7,11 +7,11 @@
   #app{
     height: 100%;
     background: rgba(241, 243, 247, 1);
-    -moz-user-select: none; /*火狐取消选中效果*/
-    -webkit-user-select: none; /*webkit浏览器*/
-    -ms-user-select: none; /*IE10*/
-    -khtml-user-select: none; /*早期浏览器*/
-    user-select: none;
+    //-moz-user-select: none; /*火狐取消选中效果*/
+    //-webkit-user-select: none; /*webkit浏览器*/
+    //-ms-user-select: none; /*IE10*/
+    //-khtml-user-select: none; /*早期浏览器*/
+    //user-select: none;
   }
 
   html {

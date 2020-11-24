@@ -45,10 +45,10 @@
           <img :src="item.img" alt=""
                :class="{'detectionImg':item.key ==='5'}">
         </div>
-        <!--        <div class="detection" v-if="item.key ==='2'&&item.key===detectionHover">-->
-        <div class="detection" v-if="item.key ==='2'">
+                <div class="detection" v-if="item.key ==='2'&&item.key===detectionHover">
+<!--        <div class="detection" v-if="item.key ==='2'">-->
           <div class="detectionLine3">
-            <div class="each" @click="jump({key:'6'})">
+            <div class="each" @click="jump({key:'2'})">
               公共场所
             </div>
             <div class="each" @click="jump({key:'7'})">

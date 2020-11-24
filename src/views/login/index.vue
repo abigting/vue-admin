@@ -27,7 +27,12 @@
         auto-complete="on"
         label-position="left"
       >
-        <h3 class="title">登录</h3>
+        <h3 class="title">
+          <span :class="{'password-login':true,'is-active':activeType==='password-login'}"
+                @click="activeType = 'password-login'">密码登录</span>
+          <span :class="{'phone-login':true,'is-active':activeType==='phone-login'}"
+                @click="activeType = 'phone-login'">手机号登录</span>
+        </h3>
         <el-form-item prop="username">
           <span class="svg-container">
             <i class="el-icon-message"></i>
@@ -37,42 +42,64 @@
             name="username"
             type="text"
             auto-complete="on"
-            placeholder="请输入用户名"
+            placeholder="请输入手机号"
             @keyup.enter="handleLogin"
           />
         </el-form-item>
-        <el-form-item prop="password">
+
+        <template v-if="activeType==='password-login'">
+          <el-form-item prop="password">
           <span class="svg-container">
             <i class="el-icon-lock"></i>
           </span>
-          <el-input
-            :type="pwdType"
-            v-model="loginForm.password"
-            name="password"
-            auto-complete="on"
-            placeholder="请输入密码"
-            @keyup.enter="handleLogin"
-          />
-          <span class="show-pwd" @click="showPwd">
+            <el-input
+              :type="pwdType"
+              v-model="loginForm.password"
+              name="password"
+              auto-complete="on"
+              placeholder="请输入密码"
+              @keyup.enter="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'"/>
           </span>
-        </el-form-item>
-        <el-form-item class="checkCode">
+          </el-form-item>
+          <el-form-item class="checkCode">
+          <span class="svg-container">
+            <i class="el-icon-document-checked"></i>
+          </span>
+            <el-input
+              v-model="loginForm.imageCode"
+              type="text"
+              auto-complete="on"
+              placeholder="验证码"
+              style="width: 60%"
+              @keyup.enter="handleLogin"
+            />
+            <div class="yzmImg" @click="clickImgFN()">
+              <img :src="imgBase64" alt="">
+            </div>
+          </el-form-item>
+        </template>
+
+        <el-form-item v-if="activeType==='phone-login'" class="checkCode">
           <span class="svg-container">
             <i class="el-icon-document-checked"></i>
           </span>
           <el-input
-            v-model="loginForm.imageCode"
+            v-model="loginForm.checkCode"
             type="text"
             auto-complete="on"
             placeholder="验证码"
             style="width: 60%"
             @keyup.enter="handleLogin"
           />
-          <div class="yzmImg" @click="clickImgFN()">
-            <img :src="imgBase64" alt="">
+          <div class="yzmImg" @click="getVerificationCode()">
+            <el-button type="primary" :disabled="count<60" class="yzm-btn">{{count<60?`${count}S后重新获取`:'获取验证码'}}
+            </el-button>
           </div>
         </el-form-item>
+
         <el-form-item>
           <el-button
             :loading="loading"
@@ -120,14 +147,16 @@
         imgBase64: '',
         loginForm: {
           username: "17859865322",
-          password: "xn123456",
+          // password: "xn123456",
           systemId: 33000000000
         },
         loginRules: {},
         loading: false,
         pwdType: "password",
         redirect: undefined,
-        imgShow: false
+        imgShow: false,
+        activeType: 'password-login',
+        count: 60
       };
     },
     mounted() {
@@ -139,6 +168,15 @@
           this.redirect = route.query && route.query.redirect;
         },
         immediate: true
+      },
+      activeType: function (newVal, oldVal) {
+        if (newVal === 'password-login') {
+          delete this.loginForm['checkCode'];
+        } else {
+          delete this.loginForm['uuid'];
+          delete this.loginForm['password'];
+          delete this.loginForm['imageCode'];
+        }
       }
     },
     methods: {
@@ -150,19 +188,30 @@
         }
       },
       handleLogin() {
-        const {username, password, imageCode} = this.loginForm;
+        const {username, password, imageCode, checkCode} = this.loginForm;
+        let req = this.loginForm;
         if (!username) {
           this.$message.info('请填写账号');
           return
-        } else if (!password) {
-          this.$message.info('请填写密码');
-          return
-        } else if (!imageCode) {
-          this.$message.info('请填写验证码');
-          return
+        }
+        if (this.activeType === 'password-login') {
+          if (!password) {
+            this.$message.info('请填写密码');
+            return
+          } else if (!imageCode) {
+            this.$message.info('请填写验证码');
+            return
+          } else {
+            req = {...this.loginForm, password: md5(password)}
+          }
+        } else {
+          if (!checkCode) {
+            this.$message.info('请填写短信验证码');
+            return
+          }
         }
         this.loading = true;
-        userApi.login({...this.loginForm, password: md5(password)}).then(res => {
+        userApi.login(req).then(res => {
           if (res) {
             this.loading = false;
             const {token, userZcVo, menuListVo} = res;
@@ -206,7 +255,34 @@
       },
       register() {
         this.$router.push('/register')
-      }
+      },
+      getVerificationCode() {
+        if (this.loginForm.username) {
+          if (this.count < 60) {
+            return
+          }
+          userApi.createTelphonCode({
+            checkType: 1,
+            telphone: this.loginForm.username
+          }).then((res) => {
+            this.timerFn();
+            if (res) {
+              this.loginForm.checkCode = res;
+            }
+          });
+        } else {
+          this.$message.info('请输入手机号')
+        }
+      },
+      timerFn() {
+        this.timer = setInterval(() => {
+          this.count--;
+          if (this.count <= 0) {
+            clearInterval(this.timer);
+            this.count = 60;
+          }
+        }, 1000)
+      },
     },
     created() {
       this.clickImgFN();
@@ -240,8 +316,8 @@
   .yzmImg {
     position: absolute;
     bottom: 0;
-    right: -88px;
-    width: 80px;
+    right: -96px;
+    width: 88px;
     height: 42px;
     cursor: pointer;
     border-radius: 2px;
@@ -253,9 +329,15 @@
     }
   }
 
+  .yzm-btn {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   .checkCode {
     position: relative;
-    width: 70%;
+    width: 68%;
   }
 
   .login-container /deep/ .el-input {
@@ -322,11 +404,29 @@
     }
 
     .title {
-      font-size: 23px;
-      font-weight: 400;
-      color: #1680df;
-      margin: 0px auto 21px auto;
+      margin: 0 auto 21px auto;
       text-align: center;
+      font-weight: 600;
+      color: #1f2022;
+      font-size: 20px;
+
+      .password-login {
+        display: inline-block;
+        width: 120px;
+        opacity: 0.6;
+        cursor: pointer;
+      }
+
+      .phone-login {
+        display: inline-block;
+        width: 120px;
+        opacity: 0.6;
+        cursor: pointer;
+      }
+
+      .is-active {
+        opacity: 1;
+      }
     }
 
     .show-pwd {
