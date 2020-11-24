@@ -48,6 +48,7 @@
 <script>
   import CustomModal from '@/components/customModal'
   import {getUserInfo} from '@/utils/auth'
+  import md5 from 'js-md5'
   import * as userApi from "@/api/user";
 
   export default {
@@ -124,7 +125,8 @@
             if (password !== password2) {
               this.$message.info('两次密码输入不同')
             }
-            userApi.updatePassWord(this.form).then((res) => {
+
+            userApi.updatePassWord({...this.form, password: md5(password)}).then((res) => {
               if (res) {
                 this.$message({
                   message: "修改成功",

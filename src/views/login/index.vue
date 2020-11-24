@@ -97,6 +97,7 @@
   import storage from '@/utils/localStorage'
   import store from "../../store";
   import router from "../../router";
+  import md5 from 'js-md5'
 
   export default {
     name: "Login",
@@ -161,7 +162,7 @@
           return
         }
         this.loading = true;
-        userApi.login(this.loginForm).then(res => {
+        userApi.login({...this.loginForm, password: md5(password)}).then(res => {
           if (res) {
             this.loading = false;
             const {token, userZcVo, menuListVo} = res;

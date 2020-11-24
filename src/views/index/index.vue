@@ -45,15 +45,39 @@
           <img :src="item.img" alt=""
                :class="{'detectionImg':item.key ==='5'}">
         </div>
-        <div class="detection" v-if="item.key ==='5'&&detectionHover">
-          <div class="each" @click="jump({key:'6'})">
-            口腔诊所
+        <!--        <div class="detection" v-if="item.key ==='2'&&item.key===detectionHover">-->
+        <div class="detection" v-if="item.key ==='2'">
+          <div class="detectionLine3">
+            <div class="each" @click="jump({key:'6'})">
+              公共场所
+            </div>
+            <div class="each" @click="jump({key:'7'})">
+              学校卫生
+            </div>
+            <div class="each" @click="jump({key:''})">
+              医疗卫生
+            </div>
           </div>
-          <div class="each" @click="jump({key:'7'})">
-            消毒保洁
+        </div>
+        <div class="detection" v-else-if="item.key ==='5'&&item.key===detectionHover">
+          <div class="detectionLine1">
+            <div class="each" @click="jump({key:'6'})">
+              口腔诊所
+            </div>
+            <div class="each" @click="jump({key:'7'})">
+              消毒保洁
+            </div>
+            <div class="each" @click="jump({key:''})">
+              职业健康
+            </div>
           </div>
-          <div class="each" @click="jump({key:'8'})">
-            水质监测
+          <div class="detectionLine2">
+            <div class="each" @click="jump({key:'8'})">
+              水质监测
+            </div>
+            <div class="each" @click="jump({key:''})">
+              医疗行为
+            </div>
           </div>
         </div>
         <div v-else class="textBox">
@@ -91,42 +115,42 @@
         userInfo: getUserInfo(),
         menus: [{
           name: '驾驶舱',
-          menuId:'33000000000',
+          menuId: '33000000000',
           key: '0',
           path: '',
           img: require('../../assets/imgs/img_7.png')
         },
           {
             name: '智能办案',
-            menuId:'34000000000',
+            menuId: '34000000000',
             key: '1',
             path: '/caseM/index',
             img: require('../../assets/imgs/img_8.png')
           },
           {
             name: '自查系统',
-            menuId:'31000000000',
+            menuId: '31000000000',
             key: '2',
             path: '',
             img: require('../../assets/imgs/img_6.png')
           },
           {
             name: '效能评价',
-            menuId:'32000000000',
+            menuId: '32000000000',
             key: '3',
             path: '',
             img: require('../../assets/imgs/img_4.png')
           },
           {
             name: '数据交换',
-            menuId:'9999',
+            menuId: '9999',
             key: '4',
             path: '',
             img: require('../../assets/imgs/img_5.png')
           },
           {
-            name: '在线监测',
-            menuId:'9999',
+            name: '智慧监管',
+            menuId: '9999',
             key: '5',
             path: '',
             img: require('../../assets/imgs/img_3.png')
@@ -136,6 +160,11 @@
     },
     methods: {
       jump(item) {
+        if (!Cookies.get('token')) {
+          this.$message.info('登录信息失效，请重新登录');
+          this.$router.push('/login');
+          return;
+        }
         switch (item.key) {
           case '0':
             //驾驶舱
@@ -155,6 +184,7 @@
             return;
           case '4':
             //数据交换
+            window.open(`${window.location.origin}/xnrh-sjjh-web/#/index?token=${Cookies.get('token')}`, "_blank");
             return;
           case '5':
             //在线检测
@@ -209,8 +239,10 @@
         }
       },
       showAnimation(key, value) {
-        if (key === '5') {
-          this.detectionHover = value;
+        if (value) {
+          this.detectionHover = key;
+        } else {
+          this.detectionHover = null;
         }
       }
     }
@@ -350,20 +382,43 @@
     width: 320px;
     height: 168px;
     background-color: rgba(19, 68, 166, 0.8);
-    display: flex;
+    /*display: flex;*/
     justify-content: space-between;
-    padding: 52px 48px;
+    padding: 44px 12px;
     animation: enter 0.4s ease-in-out 0s 1 alternate forwards;
 
-    .each {
-      /*display: inline-block;*/
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 24px;
-      font-weight: 600;
-      width: 48px;
+    .detectionLine1, .detectionLine3 {
+      display: flex;
+      justify-content: space-around;
+    }
 
-      &:hover {
-        color: rgba(255, 255, 255, 1);
+    .detectionLine2 {
+      text-align: center;
+
+      .each {
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+
+    .detectionLine1, .detectionLine2, .detectionLine3 {
+      .each {
+        /*display: inline-block;*/
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 22px;
+        font-weight: 600;
+        /*width: 48px;*/
+        line-height: 40px;
+
+        &:hover {
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+    }
+
+    .detectionLine3{
+      .each{
+        line-height: 80px;
       }
     }
   }
