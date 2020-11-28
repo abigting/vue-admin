@@ -41,10 +41,16 @@
             <el-option label="区域二" value="beijing"></el-option>
           </el-select>
         </el-form-item>
+
+          <el-form-item label="地区">
+              <AddressCascader v-model="queryForm.address" :checkStrictly="true"/>
+          </el-form-item>
+
       </el-form>
       <div class="right-button">
         <el-button @click="toRest">重置</el-button>
         <el-button type="primary" @click="toQuery">查询</el-button>
+        <el-button type="primary" @click=" show = !show">test</el-button>
       </div>
     </div>
     <div class="table-block">
@@ -102,18 +108,29 @@
 
 <script>
   import initData from "@/mixins/initData";
+  import AddressCascader from '../../../components/addressCascader'
   export default{
     mixins: [initData],
+    components:{AddressCascader},
     data(){
       return{
         data:[{}],
+
+        show: '',
         queryForm:{
-          test:''
+          test:'',
+          address:'330304000',
         },
       }
     },
     methods:{
-      toQuery(){},
+      toQuery(){
+        console.log(this.queryForm, 'queryForm')
+      },
+
+      handleChange(value){
+        console.log(value, 'value')
+      },
       toRest(){},
       navTo(path){
         if(path){

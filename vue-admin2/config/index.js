@@ -6,14 +6,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/xnrh-sjdp': {
+        target: 'http://223.4.78.37:80/', //正式
+      },
+      '/xnrh-common': {
+        target: 'http://223.4.78.37:80/', //正式
+      },
       '/xnrh-yhzx': {
-        target: "http://223.4.78.37",
-        // secure: true,
-        // changeOrigin: true,
-        // pathRewrite: {
-        //   '^/api': ""
-        // }
-      }
+        target: 'http://223.4.78.37:80/', //正式
+      },
     },
     // Various Dev Server settings
     // host: internalIp.v4.sync(),//http://192.168.22.24 YJ  备注IE不兼容internalIp方法
