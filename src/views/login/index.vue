@@ -30,8 +30,8 @@
         <h3 class="title">
           <span :class="{'password-login':true,'is-active':activeType==='password-login'}"
                 @click="activeType = 'password-login'">密码登录</span>
-          <span :class="{'phone-login':true,'is-active':activeType==='phone-login'}"
-                @click="activeType = 'phone-login'">手机号登录</span>
+<!--          <span :class="{'phone-login':true,'is-active':activeType==='phone-login'}"-->
+<!--                @click="activeType = 'phone-login'">手机号登录</span>-->
         </h3>
         <el-form-item prop="username">
           <span class="svg-container">

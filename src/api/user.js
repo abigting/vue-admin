@@ -72,3 +72,12 @@ export function createTelphonCode(data) {
     data
   })
 }
+
+// 数据交换登录
+export function sjjhLogin(data) {
+  return request({
+    url: '/xnrh-sjjhpt/api/user/login',
+    method: 'post',
+    data
+  })
+}

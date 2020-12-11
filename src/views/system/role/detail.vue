@@ -32,8 +32,8 @@
             </el-col>
             <el-col :span="6">
               <el-form-item>
-                <el-checkbox v-model="form.needCheck" :disabled="disabled">
-                  需要监督员审核
+                <el-checkbox v-model="form.needCheck" :disabled="disabled" label="需要监督员审核">
+
                 </el-checkbox>
               </el-form-item>
             </el-col>
@@ -54,8 +54,9 @@
                   <el-checkbox class="check"
                                :disabled="disabled"
                                @change="value=>handleChoose(value, item)"
+                               :label="item.menuName"
                                v-model="item.checked"/>
-                  {{item.menuName}}
+<!--                  {{item.menuName}}-->
                 </div>
               </td>
               <td style="width:88%">
@@ -70,8 +71,9 @@
                         <el-checkbox class="check"
                                      :disabled="disabled"
                                      @change="value=>handleChoose(value, child)"
+                                     :label="child.menuName"
                                      v-model="child.checked"/>
-                        {{child.menuName}}
+<!--                        {{child.menuName}}-->
                       </div>
                       <div class="thirdMenuBox">
                         <!--第三级是菜单-->
@@ -84,8 +86,9 @@
                                   :disabled="disabled"
                                   class="check"
                                   @change="value=>handleChoose(value, child1)"
+                                  :label="child1.menuName"
                                   v-model="child1.checked"/>
-                             {{child1.menuName}}
+<!--                             {{child1.menuName}}-->
                             </span>
                               <div class="actionBox">
                                <span v-for="action in child1.children">
@@ -93,8 +96,9 @@
                                    :disabled="disabled"
                                    class="check"
                                    @change="value=>handleChoose(value, action)"
+                                   :label="action.menuName"
                                    v-model="action.checked"/>
-                               {{action.menuName}}
+<!--                               {{action.menuName}}-->
                                </span>
                               </div>
                             </div>
@@ -104,16 +108,18 @@
                            <el-checkbox class="check"
                                         :disabled="disabled"
                                         @change="value=>handleChoose(value, child1)"
+                                        :label="child1.menuName"
                                         v-model="child1.checked"/>
-                          {{child1.menuName}}
+<!--                          {{child1.menuName}}-->
                         </span>
                               <div class="menuBox">
                                 <div v-for="child2 in child1.children">
                                   <el-checkbox class="check"
                                                :disabled="disabled"
                                                @change="value=>handleChoose(value, child2)"
+                                               :label="child2.menuName"
                                                v-model="child2.checked"/>
-                                  {{child2.menuName}}
+<!--                                  {{child2.menuName}}-->
                                 </div>
                               </div>
                             </div>
@@ -123,8 +129,9 @@
                                <el-checkbox class="check"
                                             :disabled="disabled"
                                             @change="value=>handleChoose(value, child1)"
+                                            :label="child1.menuName"
                                             v-model="child1.checked"/>
-                              {{child1.menuName}}
+<!--                              {{child1.menuName}}-->
                             </span>
                             </div>
                           </div>
@@ -138,8 +145,9 @@
                                  :disabled="disabled"
                                  class="check"
                                  @change="value=>handleChoose(value, action)"
+                                 :label="action.menuName"
                                  v-model="action.checked"/>
-                             {{action.menuName}}
+<!--                             {{action.menuName}}-->
                              </span>
                             </div>
                           </div>

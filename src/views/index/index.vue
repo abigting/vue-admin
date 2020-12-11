@@ -2,7 +2,7 @@
   <div class="navicationBg">
     <div class="header">
       <div class="systemLogoBox">
-        <img src="@/assets/imgs/logo.svg" alt="" class="logo">
+        <!--        <img src="@/assets/imgs/logo.svg" alt="" class="logo">-->
         <span class="sysName">
             <img src="@/assets/imgs/logoText.png" alt="" class="logo">
         </span>
@@ -45,38 +45,41 @@
           <img :src="item.img" alt=""
                :class="{'detectionImg':item.key ==='5'}">
         </div>
-                <div class="detection" v-if="item.key ==='2'&&item.key===detectionHover">
-<!--        <div class="detection" v-if="item.key ==='2'">-->
+        <div class="detection" v-if="item.key ==='2'&&item.key===detectionHover">
+          <!--        <div class="detection" v-if="item.key ==='2'">-->
           <div class="detectionLine3">
-            <div class="each" @click="jump({key:'2'})">
+            <div class="each" @click="jump({key:'ggcs'})">
               公共场所
             </div>
-            <div class="each" @click="jump({key:'7'})">
+            <div class="each" @click="jump({key:'xxws'})">
               学校卫生
             </div>
-            <div class="each" @click="jump({key:''})">
+            <div class="each" @click="jump({key:'ylws'})">
               医疗卫生
             </div>
           </div>
         </div>
         <div class="detection" v-else-if="item.key ==='5'&&item.key===detectionHover">
           <div class="detectionLine1">
-            <div class="each" @click="jump({key:'6'})">
+            <div class="each" @click="jump({key:'kqzs'})">
               口腔诊所
             </div>
-            <div class="each" @click="jump({key:'7'})">
+            <div class="each" @click="jump({key:'xdbj'})">
               消毒保洁
             </div>
-            <div class="each" @click="jump({key:''})">
+            <div class="each" @click="jump({key:'zyjk'})">
               职业健康
             </div>
           </div>
-          <div class="detectionLine2">
+          <div class="detectionLine1">
             <div class="each" @click="jump({key:'8'})">
               水质监测
             </div>
-            <div class="each" @click="jump({key:''})">
+            <div class="each" @click="jump({key:'ylxw'})">
               医疗行为
+            </div>
+            <div class="each" @click="jump({key:'ylfw'})">
+              医疗废物
             </div>
           </div>
         </div>
@@ -98,6 +101,7 @@
   import {removeAllcookie} from '../../utils/auth'
   import {getUserInfo} from '@/utils/auth'
   import {asyncRoutes} from '@/router'
+  import * as userApi from "@/api/user"
 
   export default {
     name: "index",
@@ -135,7 +139,7 @@
             img: require('../../assets/imgs/img_6.png')
           },
           {
-            name: '效能评价',
+            name: '量化分级',
             menuId: '32000000000',
             key: '3',
             path: '',
@@ -176,6 +180,10 @@
             return;
           case '2':
             //自查系统
+            // window.open(`${window.location.origin}/xnrh-zczl-web/#/login?token=${Cookies.get('token')}`, "_blank");
+            return;
+          case 'ggcs':
+            //自查系统
             window.open(`${window.location.origin}/xnrh-zczl-web/#/login?token=${Cookies.get('token')}`, "_blank");
             return;
           case '3':
@@ -184,22 +192,35 @@
             return;
           case '4':
             //数据交换
-            window.open(`${window.location.origin}/xnrh-sjjh-web/#/index?token=${Cookies.get('token')}`, "_blank");
+            userApi.sjjhLogin({
+              "password": "admin",
+              "username": "admin",
+              "uuid": "fsdafdsfaafs"
+            }).then(res => {
+              if (res) {
+                const {token} = res;
+                if (token) {
+                  window.open(`${window.location.origin}/xnrh-sjjhpt-web/#/index?token=${token}`, "_blank");
+                } else {
+                  this.$message.info('获取不到token无法跳转')
+                }
+              }
+            });
             return;
           case '5':
             //在线检测
             return;
-          case '6':
+          case 'kqzs':
             //口腔
-            window.open(`https://wj.platform.ilabservice.cloud/index`, "_blank");
+            window.open(`http://223.4.78.37:30181/?access_token=${Cookies.get('token')}`, "_blank");
             return;
-          case '7':
+          case 'xdbj':
             //消毒
-            window.open(`http://provincedisinfection.terabits.cn/`, "_blank");
+            window.open(`http://iva.terabits.cn:9090/auth/login/dw?access_token=${Cookies.get('token')}`, "_blank");
             return;
           case '8':
             //水质
-            window.open(`https://zj.waterview.cn/index.php`, "_blank");
+            window.open(`https://zj.waterview.cn/blue/token.php?access_token=${Cookies.get('token')}`, "_blank");
             return;
           case '9':
             //设置
@@ -207,6 +228,26 @@
             if (systemMenu) {
               this.$router.push(`${systemMenu.path}/${systemMenu.children[0].path}`);
             }
+            return;
+          case 'ylfw':
+            //医疗废物
+            window.open(`http://ylfw.zjwjw.gov.cn:3002/#/home/main?token=sjdl`, "_blank");
+            return;
+          case 'zyjk':
+            //职业健康
+            window.open(`http://59.202.42.166/data-view`, "_blank");
+            return;
+          case 'ylws':
+            //医疗卫生
+            window.open(`http://zc.zjwjw.gov.cn:3001/thirdLogin?token=sjdl`, "_blank");
+            return;
+          case 'ylxw':
+            //医疗行为
+            window.open(`http://aioclinic.com/invs/avoidPwLoad.do`, "_blank");
+            return;
+          case 'xxws':
+            //学校卫生
+            window.open(`http://zjwj.zjwjw.gov.cn:8888/hii/typt/userSso?token=kXRbVOwOUc8DU2Df0H3Nu3oMGmcmHRrpVJttfIVlrjw=`, "_blank");
             return;
         }
 
@@ -284,7 +325,7 @@
       vertical-align: middle;
 
       > img {
-        width: 660px;
+        width: 530px;
       }
     }
 
@@ -416,8 +457,8 @@
       }
     }
 
-    .detectionLine3{
-      .each{
+    .detectionLine3 {
+      .each {
         line-height: 80px;
       }
     }

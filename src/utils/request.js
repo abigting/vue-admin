@@ -32,7 +32,15 @@ request.interceptors.response.use(async (res) => {
           data.attachments.errors.forEach(s => messageData = messageData.concat(`${s.name}${s.message}`, ';'));
           Message.error(messageData);
         }
-      } else if (errorCode === 'E0199') {
+      } else if (errorCode === 'AUTH.RESOURCE.E0002') {
+        // 防止连续弹出多个message
+        Message.closeAll();
+        Message.error(exceptionContent);
+        setTimeout(() => {
+          removeAllInfo();
+          location.reload();
+        }, 500)
+      }else if (errorCode === 'E0199') {
         // 防止连续弹出多个message
         Message.closeAll();
         Message.error(exceptionContent);
@@ -42,9 +50,6 @@ request.interceptors.response.use(async (res) => {
           }, 500)
       } else if (errorCode === 'CORE.E0001') {
         // 上一次操作正在处理中，请稍后再试---无需提示
-      } else if (res.request.responseURL.indexOf('http://iva.terabits.cn:9090') !== -1) {
-        const {headers} = res;
-        window.open(`http://provincedisinfection.terabits.cn/SignIns?Authorization=${headers.authorization}`)
       } else {
         // 防止连续弹出多个message
         Message.closeAll();
