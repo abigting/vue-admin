@@ -30,8 +30,8 @@
         <h3 class="title">
           <span :class="{'password-login':true,'is-active':activeType==='password-login'}"
                 @click="activeType = 'password-login'">密码登录</span>
-<!--          <span :class="{'phone-login':true,'is-active':activeType==='phone-login'}"-->
-<!--                @click="activeType = 'phone-login'">手机号登录</span>-->
+          <span :class="{'phone-login':true,'is-active':activeType==='phone-login'}"
+                @click="activeType = 'phone-login'">手机号登录</span>
         </h3>
         <el-form-item prop="username">
           <span class="svg-container">
@@ -267,9 +267,12 @@
           }).then((res) => {
             this.timerFn();
             if (res) {
-              this.loginForm.checkCode = res;
+              // this.loginForm.checkCode = res;
+              this.$message.success(res)
+            } else {
+              clearInterval(this.timer);
             }
-          });
+          })
         } else {
           this.$message.info('请输入手机号')
         }
@@ -288,9 +291,12 @@
       this.clickImgFN();
       let lett = this;
       document.onkeydown = function (e) {
+        const {hash} = window.location;
         let key = window.event.keyCode;
         if (key === 13) {
-          lett.handleLogin();
+          if (hash === '#/login') {
+            lett.handleLogin();
+          }
         }
       }
     }

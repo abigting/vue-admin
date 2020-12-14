@@ -103,7 +103,7 @@
             <span v-if="scope.row.status===0" class="dot dot-gray"></span>
             <span v-else-if="scope.row.status===1" class="dot dot-gray"></span>
             <span v-else-if="scope.row.status===2" class="dot dot-green"></span>
-            <span v-else-if="scope.row.status===3" class="dot dot-red"></span>
+            <span v-else-if="scope.row.status===3||scope.row.status===4" class="dot dot-red"></span>
             <span>{{statusMap[scope.row.status]}}</span>
           </template>
         </el-table-column>
@@ -183,7 +183,7 @@
     data() {
       return {
         userStatus: userStatus,
-        statusMap: ['待审核', '待审核', '审核通过', '审核不通过'],
+        statusMap: ['待审核', '待审核', '审核通过', '审核不通过', '审核不通过'],
         operationType: null, //0编辑 1审核 2详情查看
         yhlx: 2, //测试用户类型 效能/自查
         currentItem: {}, //当前查看/审核/编辑用户
@@ -312,7 +312,8 @@
           type: 'warning'
         }).then(() => {
           userApi.deleteItem({
-            userId: item.userId
+            userId: item.userId,
+            systemId: item.systemId,
           }).then(res => {
             if (res) {
               this.getList();

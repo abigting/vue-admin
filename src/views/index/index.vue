@@ -361,9 +361,9 @@
   }
 
   .menuBox {
-    width: 1040px;
+    width: 1056px;
     margin: 80px auto;
-    display: flex;
+    /*display: flex;*/
     justify-content: space-between;
     flex-wrap: wrap;
 
@@ -372,7 +372,7 @@
       height: 168px;
       display: inline-block;
       background: #ffffff;
-      margin: 25px 0;
+      margin: 25px 16px;
       overflow: hidden;
       font-size: 24px;
       font-weight: 600;

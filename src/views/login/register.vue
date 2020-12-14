@@ -2,7 +2,7 @@
   <div class="registerWrapper">
     <div class="header">
       <div class="systemLogoBox">
-        <img src="@/assets/imgs/logo.svg" alt="" class="logo">
+<!--        <img src="@/assets/imgs/logo.svg" alt="" class="logo">-->
         <span class="sysName">
             <img src="@/assets/imgs/logoText.png" alt="" class="logo">
         </span>
@@ -404,7 +404,7 @@
             userApi.register(req).then((res) => {
               if (res) {
                 this.$message({
-                  message: "注册成功，等待审核通过",
+                  message: res,
                   type: "success",
                 });
                 this.$router.push('/login')
@@ -428,7 +428,10 @@
         }).then((res) => {
           this.timerFn();
           if (res) {
-            this.form.checkCode = res;
+            // this.form.checkCode = res;
+            this.$message.success(res)
+          }else{
+            clearInterval(this.timer);
           }
         });
       },
@@ -516,7 +519,7 @@
         vertical-align: middle;
 
         > img {
-          width: 660px;
+          width: 556px;
         }
       }
 

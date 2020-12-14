@@ -33,7 +33,8 @@
             <i class="iconfont iconyanzhengma prefix-icon"></i>
           </el-col>
           <el-col :span="8">
-            <el-button :disabled="count<60" @click="getVerificationCode">{{count<60?`${count}S后重新获取`:'获取验证码'}}</el-button>
+            <el-button :disabled="count<60" @click="getVerificationCode">{{count<60?`${count}S后重新获取`:'获取验证码'}}
+            </el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -57,6 +58,13 @@
     components: {
       CustomModal
     },
+    watch: {
+      modifyPasswordDialog(newVal) {
+        if (!newVal) {
+          this.$refs['form'].resetFields();
+        }
+      }
+    },
     data() {
       const passwordValidator = (rule, value, callback) => {
         let str = value;
@@ -75,8 +83,8 @@
           telphone: getUserInfo().telphone
         },
         isFirstLogin: getUserInfo().isFirstLogin,
-        count:60,
-        timer:null,
+        count: 60,
+        timer: null,
         rules: {
           password: [
             {required: true, message: '请输入密码', trigger: 'blur'},
@@ -105,18 +113,21 @@
         }).then((res) => {
           this.timerFn();
           if (res) {
-            this.form.checkCode = res;
+            // this.form.checkCode = res;
+            this.$message.success(res)
+          } else {
+            clearInterval(this.timer);
           }
         });
       },
-      timerFn(){
-        this.timer = setInterval(()=>{
-          this.count --;
-          if(this.count<=0){
+      timerFn() {
+        this.timer = setInterval(() => {
+          this.count--;
+          if (this.count <= 0) {
             clearInterval(this.timer);
             this.count = 60;
           }
-        },1000)
+        }, 1000)
       },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
