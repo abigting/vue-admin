@@ -192,20 +192,21 @@
             return;
           case '4':
             //数据交换
-            userApi.sjjhLogin({
-              "password": "admin",
-              "username": "admin",
-              "uuid": "fsdafdsfaafs"
-            }).then(res => {
-              if (res) {
-                const {token} = res;
-                if (token) {
-                  window.open(`${window.location.origin}/xnrh-sjjhpt-web/#/index?token=${token}`, "_blank");
-                } else {
-                  this.$message.info('获取不到token无法跳转')
-                }
-              }
-            });
+            window.open(`${window.location.origin}/xnrh-sjjhpt-web/#/login`, "_blank");
+            // userApi.sjjhLogin({
+            //   "password": "admin",
+            //   "username": "admin",
+            //   "uuid": "fsdafdsfaafs"
+            // }).then(res => {
+            //   if (res) {
+            //     const {token} = res;
+            //     if (token) {
+            //       window.open(`${window.location.origin}/xnrh-sjjhpt-web/#/index?token=${token}`, "_blank");
+            //     } else {
+            //       this.$message.info('获取不到token无法跳转')
+            //     }
+            //   }
+            // });
             return;
           case '5':
             //在线检测
