@@ -36,7 +36,7 @@
     <div class="menuBox">
       <div class="menu"
            v-for="item in menus"
-           v-permission="item.menuId"
+           v-menu="item.menuId"
            :key="item.key"
            @mouseenter="showAnimation(item.key, true)"
            @mouseleave="showAnimation(item.key, false)"
@@ -48,37 +48,36 @@
         <div class="detection" v-if="item.key ==='2'&&item.key===detectionHover">
           <!--        <div class="detection" v-if="item.key ==='2'">-->
           <div class="detectionLine3">
-            <div class="each" @click="jump({key:'ggcs'})">
+            <div v-permission="31000000000" class="each" @click="jump({key:'ggcs'})">
               公共场所
             </div>
-            <div class="each" @click="jump({key:'xxws'})">
+            <div v-permission="42000000000" class="each" @click="jump({key:'xxws'})">
               学校卫生
             </div>
-            <div class="each" @click="jump({key:'ylws'})">
+            <div v-permission="43000000000" class="each" @click="jump({key:'ylws'})">
               医疗卫生
             </div>
           </div>
         </div>
         <div class="detection" v-else-if="item.key ==='5'&&item.key===detectionHover">
+          <!--        <div class="detection" v-else-if="item.key ==='5'">-->
           <div class="detectionLine1">
-            <div class="each" @click="jump({key:'kqzs'})">
+            <div v-permission="36000000000" class="each" @click="jump({key:'kqzs'})">
               口腔诊所
             </div>
-            <div class="each" @click="jump({key:'xdbj'})">
+            <div v-permission="35000000000" class="each" @click="jump({key:'xdbj'})">
               消毒保洁
             </div>
-            <div class="each" @click="jump({key:'zyjk'})">
+            <div v-permission="39000000000" class="each" @click="jump({key:'zyjk'})">
               职业健康
             </div>
-          </div>
-          <div class="detectionLine1">
-            <div class="each" @click="jump({key:'8'})">
+            <div v-permission="37000000000" class="each" @click="jump({key:'8'})">
               水质监测
             </div>
-            <div class="each" @click="jump({key:'ylxw'})">
+            <div v-permission="40000000000" class="each" @click="jump({key:'ylxw'})">
               医疗行为
             </div>
-            <div class="each" @click="jump({key:'ylfw'})">
+            <div v-permission="41000000000" class="each" @click="jump({key:'ylfw'})">
               医疗废物
             </div>
           </div>
@@ -97,11 +96,10 @@
   import ModifyPassword from './components/modifyPassword'
   import AccountInfo from './components/accountInfo'
   import Cookies from 'js-cookie';
-  import SettingPng from '../../assets/imgs/setting.png'
-  import {removeAllcookie} from '../../utils/auth'
+  import SettingPng from '@/assets/imgs/setting.png'
+  import storage from '@/utils/localStorage'
   import {getUserInfo} from '@/utils/auth'
   import {asyncRoutes} from '@/router'
-  import * as userApi from "@/api/user"
 
   export default {
     name: "index",
@@ -133,7 +131,7 @@
           },
           {
             name: '自查系统',
-            menuId: '31000000000',
+            menuId: ['31000000000', '42000000000', '43000000000'],
             key: '2',
             path: '',
             img: require('../../assets/imgs/img_6.png')
@@ -154,7 +152,7 @@
           },
           {
             name: '智慧监管',
-            menuId: '9999',
+            menuId: ['36000000000', '35000000000', '39000000000', '37000000000', '40000000000', '41000000000'],
             key: '5',
             path: '',
             img: require('../../assets/imgs/img_3.png')
@@ -176,7 +174,7 @@
             return;
           case '1':
             //智能办案
-            window.open(`${window.location.origin}/xnrh-znws-web/#/login?token=${Cookies.get('token')}`, "_blank");
+            window.open(`${window.location.origin}/xnrh-znws-web/#/dashboard?token=${Cookies.get('token')}`, "_blank");
             return;
           case '2':
             //自查系统
@@ -286,6 +284,25 @@
         } else {
           this.detectionHover = null;
         }
+      }
+    },
+    directives: {
+      menu: {
+        // 在绑定指令后，绑定的元素插入父元素时触发，在bind钩子后
+        inserted(el, binding) {
+          const auths = storage.get('auths') || [];
+          if (typeof binding.value === 'object') {
+            let permission = false;
+            binding.value.forEach(s => {
+              if (auths.includes(s)) permission = true
+            });
+            if (!permission) {
+              el.parentNode.removeChild(el)
+            }
+          } else if (!auths.includes(binding.value.toString()) && binding.value.toString() !== '9999') {
+            el.parentNode.removeChild(el)
+          }
+        },
       }
     }
   }
@@ -426,11 +443,11 @@
     background-color: rgba(19, 68, 166, 0.8);
     /*display: flex;*/
     justify-content: space-between;
-    padding: 44px 12px;
+    padding: 44px 8px;
     animation: enter 0.4s ease-in-out 0s 1 alternate forwards;
 
     .detectionLine1, .detectionLine3 {
-      display: flex;
+      /*display: flex;*/
       justify-content: space-around;
     }
 
@@ -443,6 +460,15 @@
       }
     }
 
+    .detectionLine1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      transform: translate(-50%, -50%);
+      padding: 44px 8px;
+    }
+
     .detectionLine1, .detectionLine2, .detectionLine3 {
       .each {
         /*display: inline-block;*/
@@ -451,6 +477,8 @@
         font-weight: 600;
         /*width: 48px;*/
         line-height: 40px;
+        display: inline-block;
+        margin: 0 4px;
 
         &:hover {
           color: rgba(255, 255, 255, 1);

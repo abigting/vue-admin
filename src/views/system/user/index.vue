@@ -379,6 +379,7 @@
       handDisbale(item, enable) {
         userApi.enable({
           userId: item.userId,
+          systemId: item.systemId,
           enable
         }).then(res => {
           if (res) {
